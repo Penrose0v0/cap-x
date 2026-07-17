@@ -9,6 +9,7 @@ import json
 import logging
 import multiprocessing
 import os
+import re
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -163,7 +164,16 @@ def _load_config(args: LaunchArgs) -> tuple[Any, dict[str, Any], list]:
 
 
 def _extract_code(content: str) -> list[str]:
-    """Extract Python code from Markdown fenced code block.
+    """Extract Python code from a Markdown fenced code block.
+
+    Strips any <think>...</think> reasoning trace first (a reasoning model's trace can end
+    up inline in `content` if the serving stack doesn't split it into a separate field), then
+    takes the LAST fenced ```python ... ``` block rather than spanning from the first opening
+    fence to the last closing fence in the whole string. Models that redraft code multiple
+    times within one completion (thinking through several revisions before a final answer)
+    would otherwise have every draft, and the prose in between, concatenated into one string
+    and exec'd -- producing a SyntaxError on whatever natural-language sentence landed at the
+    point exec() expected code.
 
     Args:
         content: Raw model response
@@ -171,16 +181,11 @@ def _extract_code(content: str) -> list[str]:
     Returns:
         Extracted Python code list
     """
-    fence_start = "```python\n"
-    fence_end = "```"
-    start_idx = 0
-    end_idx = len(content) + 1
-    if fence_start in content:
-        start_idx = content.find(fence_start) + len(fence_start)
-        content = content[start_idx:]
-    if fence_end in content:
-        end_idx = content.rfind(fence_end)
-        content = content[:end_idx]
+    content = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL)
+
+    matches = re.findall(r"```python\n(.*?)```", content, flags=re.DOTALL)
+    if matches:
+        content = matches[-1]
 
     content = content.strip()
     # NOTE: might gen empty code block at the end
