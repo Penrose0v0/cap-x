@@ -1,0 +1,47 @@
+# Usage: uv run capx/envs/launch.py --config-path env_configs/cube_lifting/franka_robosuite_cube_lifting_variants.yaml
+#
+# Robustness-eval variant of the cube_lifting task (LiftVariants, see
+# capx/envs/simulators/robosuite_cube_lift_variants.py). `low_level` is a _target_-based dict
+# rather than a plain registry string -- that's what lets `variation` be forwarded straight
+# into FrankaRobosuiteCubeLiftVariantsLowLevel / LiftVariants.
+#
+# Available presets (set `low_level.variation` to one of these):
+#   baseline, color_shift_mild, color_shift_strong, object_position_shift,
+#   robot_position_shift, lighting_bright, lighting_dim, distractor_object,
+#   target_object_swap, language_paraphrase, compound_hard
+
+env:
+  _target_: capx.envs.tasks.franka.franka_lift.FrankaLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level:
+      _target_: capx.envs.simulators.robosuite_cube_lift_variants.FrankaRobosuiteCubeLiftVariantsLowLevel
+      privileged: false
+      enable_render: true
+      variation: color_shift_mild
+    privileged: false
+    apis:
+      - FrankaControlApi
+    # prompt is inherited from FrankaLiftCodeEnv class default
+
+api_servers:
+  - _target_: capx.serving.launch_sam3_server.main
+    device: cuda
+    port: 8114
+    host: 127.0.0.1
+
+  - _target_: capx.serving.launch_contact_graspnet_server.main
+    port: 8115
+    host: 127.0.0.1
+
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/franka_robosuite_cube_lifting_variants
+
+trials: 100
+num_workers: 12

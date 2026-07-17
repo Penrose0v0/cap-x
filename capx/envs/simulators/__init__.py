@@ -9,25 +9,39 @@ register_env("franka_real_low_level", FrankaRealLowLevel)
 # Using Robosuite run: uv sync --extra robosuite
 try:
     from .robosuite_cube_lift import FrankaRobosuiteCubeLiftLowLevel
+    from .robosuite_cube_lift_variants import FrankaRobosuiteCubeLiftVariantsLowLevel
     from .robosuite_cubes import FrankaRobosuiteCubesLowLevel
     from .robosuite_cubes_restack import FrankaRobosuiteCubesRestackLowLevel
+    from .robosuite_cubes_restack_variants import FrankaRobosuiteCubesRestackVariantsLowLevel
+    from .robosuite_cubes_variants import FrankaRobosuiteCubesVariantsLowLevel
     from .robosuite_spill_wipe import FrankaRobosuiteSpillWipeLowLevel
+    from .robosuite_spill_wipe_variants import FrankaRobosuiteSpillWipeVariantsLowLevel
     from .robosuite_handover import RobosuiteHandoverEnv
+    from .robosuite_handover_variants import RobosuiteHandoverVariantsEnv
     from .robosuite_two_arm_lift import RobosuiteTwoArmLiftEnv
+    from .robosuite_two_arm_lift_variants import RobosuiteTwoArmLiftVariantsEnv
     from .robosuite_nut_assembly import FrankaRobosuiteNutAssembly
     from .robosuite_nut_assembly import FrankaRobosuiteNutAssemblyVisual
+    from .robosuite_nut_assembly_variants import FrankaRobosuiteNutAssemblyVariantsLowLevel
 
     register_env("franka_robosuite_cube_lift_low_level", FrankaRobosuiteCubeLiftLowLevel)
+    register_env("franka_robosuite_cube_lift_variants_low_level", FrankaRobosuiteCubeLiftVariantsLowLevel)
     register_env("franka_robosuite_cubes_low_level", FrankaRobosuiteCubesLowLevel)
     register_env("franka_robosuite_cubes_restack_low_level", FrankaRobosuiteCubesRestackLowLevel)
+    register_env("franka_robosuite_cubes_restack_variants_low_level", FrankaRobosuiteCubesRestackVariantsLowLevel)
+    register_env("franka_robosuite_cubes_variants_low_level", FrankaRobosuiteCubesVariantsLowLevel)
     register_env("franka_robosuite_spill_wipe_low_level", FrankaRobosuiteSpillWipeLowLevel)
+    register_env("franka_robosuite_spill_wipe_variants_low_level", FrankaRobosuiteSpillWipeVariantsLowLevel)
 
 
     register_env("franka_robosuite_nut_assembly_low_level", FrankaRobosuiteNutAssembly)
     register_env("franka_robosuite_nut_assembly_low_level_visual", FrankaRobosuiteNutAssemblyVisual)
+    register_env("franka_robosuite_nut_assembly_variants_low_level", FrankaRobosuiteNutAssemblyVariantsLowLevel)
 
     register_env("two_arm_handover_robosuite", RobosuiteHandoverEnv)
+    register_env("two_arm_handover_variants_robosuite", RobosuiteHandoverVariantsEnv)
     register_env("two_arm_lift_robosuite", RobosuiteTwoArmLiftEnv)
+    register_env("two_arm_lift_variants_robosuite", RobosuiteTwoArmLiftVariantsEnv)
 except Exception:
     import traceback
     print("Robosuite not installed!")

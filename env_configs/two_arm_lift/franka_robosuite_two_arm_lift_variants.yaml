@@ -1,0 +1,57 @@
+# Usage: uv run capx/envs/launch.py --config-path env_configs/two_arm_lift/franka_robosuite_two_arm_lift_variants.yaml
+#
+# Robustness-eval variant of the two_arm_lift task (TwoArmLiftVariants, see
+# capx/envs/simulators/robosuite_two_arm_lift_variants.py). `low_level` is a _target_-based
+# dict rather than a plain registry string -- that's what lets `variation` be forwarded
+# straight into RobosuiteTwoArmLiftVariantsEnv / TwoArmLiftVariants.
+#
+# Available presets (set `low_level.variation` to one of these):
+#   baseline, color_shift_mild, color_shift_strong, object_position_shift,
+#   robot_position_shift, lighting_bright, lighting_dim, distractor_object,
+#   target_object_swap, language_paraphrase, compound_hard
+# (target_object_swap swaps PotWithHandlesObject's construction kwargs for a smaller,
+#  solid-handled, untextured pot rather than an unrelated object class -- see
+#  TwoArmLiftVariants' module docstring for why a literal class swap isn't feasible here.)
+
+env:
+  _target_: capx.envs.tasks.franka.two_arm_lift.TwoArmLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level:
+      _target_: capx.envs.simulators.robosuite_two_arm_lift_variants.RobosuiteTwoArmLiftVariantsEnv
+      privileged: true
+      enable_render: true
+      variation: color_shift_mild
+    apis:
+      - FrankaTwoArmLiftApi
+    # prompt is inherited from TwoArmLiftCodeEnv class default
+
+api_servers:
+  - _target_: capx.serving.launch_owlvit_server.main
+    device: cuda
+    port: 8117
+    host: 127.0.0.1
+    model_name: google/owlv2-large-patch14-ensemble
+
+  - _target_: capx.serving.launch_sam2_server.main
+    device: cuda
+    port: 8113
+    host: 127.0.0.1
+    model_name: facebook/sam2.1-hiera-large
+
+  - _target_: capx.serving.launch_contact_graspnet_server.main
+    port: 8115
+    host: 127.0.0.1
+
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/franka_robosuite_two_arm_lift_variants
+
+trials: 100
+num_workers: 12
+use_oracle_code: false

@@ -1,0 +1,47 @@
+# Usage: uv run capx/envs/launch.py --config-path env_configs/nut_assembly/franka_robosuite_nut_assembly_variants.yaml
+#
+# Robustness-eval variant of the nut_assembly task (NutAssemblyVariants, see
+# capx/envs/simulators/robosuite_nut_assembly_variants.py). `low_level` is a _target_-based
+# dict rather than a plain registry string -- that's what lets `variation` be forwarded
+# straight into FrankaRobosuiteNutAssemblyVariantsLowLevel / NutAssemblyVariants.
+#
+# NOTE: this points at the non-visual FrankaRobosuiteNutAssembly control interface (the
+# Variants class mirrors that one, not FrankaRobosuiteNutAssemblyVisual), so the API below is
+# FrankaControlApi rather than the production config's FrankaControlNutAssemblyVisualApi.
+#
+# Available presets (set `low_level.variation` to one of these):
+#   baseline, color_shift_mild, color_shift_strong, object_position_shift,
+#   robot_position_shift, lighting_bright, lighting_dim, distractor_object,
+#   target_object_swap, language_paraphrase, compound_hard
+
+env:
+  _target_: capx.envs.tasks.franka.franka_nut_assembly.FrankaNutAssemblyCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level:
+      _target_: capx.envs.simulators.robosuite_nut_assembly_variants.FrankaRobosuiteNutAssemblyVariantsLowLevel
+      privileged: true
+      enable_render: true
+      variation: color_shift_mild
+    privileged: true
+    apis:
+      - FrankaControlApi
+    # prompt is inherited from FrankaNutAssemblyCodeEnv class default
+
+api_servers:
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+  - _target_: capx.serving.launch_sam3_server.main
+    device: cuda
+    port: 8114
+    host: 127.0.0.1
+
+record_video: true
+output_dir: ./outputs/franka_robosuite_nut_assembly_variants
+use_oracle_code: false
+trials: 100
+num_workers: 12
