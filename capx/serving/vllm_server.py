@@ -22,6 +22,8 @@ class Args:
     max_model_len: int | None = None
     download_dir: str | None = None
     log_file: str | None = None
+    enforce_eager: bool = False
+    moe_backend: str | None = None
 
 
 def _build_command(args: Args) -> list[str]:
@@ -46,6 +48,10 @@ def _build_command(args: Args) -> list[str]:
         cmd.extend(["--max-model-len", str(args.max_model_len)])
     if args.download_dir:
         cmd.extend(["--download-dir", args.download_dir])
+    if args.enforce_eager:
+        cmd.append("--enforce-eager")
+    if args.moe_backend:
+        cmd.extend(["--moe-backend", args.moe_backend])
     return cmd
 
 
