@@ -10,6 +10,7 @@ env/
 .env
 .openrouterkey
 .nvinferencekeys
+.claudeoauthtoken
 .capx_skills.json
 .pytest_cache/
 .ruff_cache/
@@ -47,3 +48,5 @@ wandb/
 *.ico
 *.webp
 check.md
+
+*.log
