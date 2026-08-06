@@ -69,7 +69,7 @@ echo "    Log: ${VLLM_LOG}"
 # script; without this it fails with FileNotFoundError: 'ninja' even though the package is
 # installed, since plain `.venv-vllm/bin/python ...` never puts that dir on PATH the way
 # `source .venv-vllm/bin/activate` would.
-PATH="$(pwd)/.venv-vllm/bin:${PATH}" CUDA_VISIBLE_DEVICES=${VLLM_GPU} .venv-vllm/bin/python capx/serving/vllm_server.py \
+PATH="$(pwd)/.venv-vllm/bin:${PATH}" CUDA_VISIBLE_DEVICES=${VLLM_GPU} setsid .venv-vllm/bin/python capx/serving/vllm_server.py \
     --model "${MODEL}" \
     --port "${VLLM_PORT}" \
     --enforce-eager \
@@ -86,7 +86,12 @@ cleanup() {
     fi
     echo ""
     echo "=== Shutting down vLLM server (pid ${VLLM_PID}) ==="
-    kill "${VLLM_PID}" 2>/dev/null || true
+    # setsid above makes VLLM_PID its own process group ID -- vLLM spawns its own
+    # EngineCore/worker subprocesses, which a plain `kill $VLLM_PID` leaves orphaned
+    # (reparented to PID 1, still holding GPU memory). Signaling -VLLM_PID hits the whole group.
+    kill -TERM -- "-${VLLM_PID}" 2>/dev/null || true
+    sleep 2
+    kill -KILL -- "-${VLLM_PID}" 2>/dev/null || true
     wait "${VLLM_PID}" 2>/dev/null || true
 }
 trap cleanup EXIT

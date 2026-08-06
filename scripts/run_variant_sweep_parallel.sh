@@ -126,8 +126,17 @@ ALL_BG_PIDS=()
 cleanup() {
     echo ""
     echo "=== Shutting down all background servers: ${ALL_BG_PIDS[*]} ==="
+    # Each of these was started via `setsid`, making its PID also its process group ID --
+    # signaling -$pid hits the whole group, including any subprocess/multiprocessing children
+    # it spawned internally. A plain `kill $pid` only hits the top process and leaves
+    # descendants orphaned (reparented to PID 1, still holding GPU memory and ports) -- this
+    # is exactly what happened to a previous run of this script, discovered days later.
     for pid in "${ALL_BG_PIDS[@]}"; do
-        kill "$pid" 2>/dev/null || true
+        kill -TERM -- "-${pid}" 2>/dev/null || true
+    done
+    sleep 2
+    for pid in "${ALL_BG_PIDS[@]}"; do
+        kill -KILL -- "-${pid}" 2>/dev/null || true
     done
     for pid in "${ALL_BG_PIDS[@]}"; do
         wait "$pid" 2>/dev/null || true
@@ -158,13 +167,13 @@ wait_for_port() {
 echo "=== Starting shared vision/planning services on GPU ${SHARED_SERVICES_GPU} ==="
 
 SAM3_LOG="/tmp/shared_sam3.log"
-CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} .venv/bin/python -m capx.serving.launch_sam3_server \
+CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} setsid .venv/bin/python -m capx.serving.launch_sam3_server \
     --device cuda --port 8114 --host 127.0.0.1 > "$SAM3_LOG" 2>&1 &
 SAM3_PID=$!
 ALL_BG_PIDS+=("$SAM3_PID")
 
 GRASPNET_LOG="/tmp/shared_graspnet.log"
-CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} .venv/bin/python -m capx.serving.launch_contact_graspnet_server \
+CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} setsid .venv/bin/python -m capx.serving.launch_contact_graspnet_server \
     --port 8115 --host 127.0.0.1 > "$GRASPNET_LOG" 2>&1 &
 GRASPNET_PID=$!
 ALL_BG_PIDS+=("$GRASPNET_PID")
@@ -173,19 +182,19 @@ PYROKI_LOG="/tmp/shared_pyroki.log"
 # launch_pyroki_server.py's __main__ calls main() directly (no tyro.cli), so CLI flags here
 # would be silently ignored -- its defaults (panda_description/panda_hand/port 8116) already
 # match what we want, so no flags are passed.
-CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} .venv/bin/python -m capx.serving.launch_pyroki_server \
+CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} setsid .venv/bin/python -m capx.serving.launch_pyroki_server \
     > "$PYROKI_LOG" 2>&1 &
 PYROKI_PID=$!
 ALL_BG_PIDS+=("$PYROKI_PID")
 
 SAM2_LOG="/tmp/shared_sam2.log"
-CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} .venv/bin/python -m capx.serving.launch_sam2_server \
+CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} setsid .venv/bin/python -m capx.serving.launch_sam2_server \
     --port 8113 --host 127.0.0.1 --model-name facebook/sam2.1-hiera-large > "$SAM2_LOG" 2>&1 &
 SAM2_PID=$!
 ALL_BG_PIDS+=("$SAM2_PID")
 
 OWLVIT_LOG="/tmp/shared_owlvit.log"
-CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} .venv/bin/python -m capx.serving.launch_owlvit_server \
+CUDA_VISIBLE_DEVICES=${SHARED_SERVICES_GPU} setsid .venv/bin/python -m capx.serving.launch_owlvit_server \
     --port 8117 --host 127.0.0.1 --model-name google/owlv2-large-patch14-ensemble > "$OWLVIT_LOG" 2>&1 &
 OWLVIT_PID=$!
 ALL_BG_PIDS+=("$OWLVIT_PID")
@@ -222,7 +231,7 @@ run_worker() {
     echo "[GPU ${gpu}] Assigned variants: ${variants[*]} (llm_port=${port})" | tee -a "$worker_log"
 
     local vllm_log="/tmp/vllm_server_gpu${gpu}.log"
-    PATH="$(pwd)/.venv-vllm/bin:${PATH}" CUDA_VISIBLE_DEVICES=${gpu} .venv-vllm/bin/python capx/serving/vllm_server.py \
+    PATH="$(pwd)/.venv-vllm/bin:${PATH}" CUDA_VISIBLE_DEVICES=${gpu} setsid .venv-vllm/bin/python capx/serving/vllm_server.py \
         --model "${MODEL}" \
         --port "${port}" \
         --enforce-eager \
@@ -272,7 +281,9 @@ run_worker() {
     done
 
     echo "[GPU ${gpu}] All assigned variants done. Shutting down vLLM (pid ${vllm_pid})." | tee -a "$worker_log"
-    kill "$vllm_pid" 2>/dev/null || true
+    kill -TERM -- "-${vllm_pid}" 2>/dev/null || true
+    sleep 2
+    kill -KILL -- "-${vllm_pid}" 2>/dev/null || true
     wait "$vllm_pid" 2>/dev/null || true
 }
 

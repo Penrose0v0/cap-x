@@ -64,7 +64,7 @@ echo "=== Output will be grouped under outputs/claude_code_${VARIATION}/ ==="
 
 echo "=== Starting claude-code-cli proxy on port ${PORT} (model=${MODEL}) ==="
 echo "    Log: ${SERVER_LOG}"
-uv run --frozen python -m capx.serving.claude_code_server \
+setsid uv run --frozen python -m capx.serving.claude_code_server \
     --port "${PORT}" \
     > "${SERVER_LOG}" 2>&1 &
 SERVER_PID=$!
@@ -77,7 +77,12 @@ cleanup() {
     fi
     echo ""
     echo "=== Shutting down proxy server (pid ${SERVER_PID}) ==="
-    kill "${SERVER_PID}" 2>/dev/null || true
+    # setsid above makes SERVER_PID its own process group ID, so signaling -SERVER_PID
+    # reaches any `claude` CLI subprocess it spawned too, not just the wrapper itself --
+    # a plain `kill $SERVER_PID` would leave an in-flight `claude -p` call orphaned.
+    kill -TERM -- "-${SERVER_PID}" 2>/dev/null || true
+    sleep 2
+    kill -KILL -- "-${SERVER_PID}" 2>/dev/null || true
     wait "${SERVER_PID}" 2>/dev/null || true
 }
 trap cleanup EXIT
