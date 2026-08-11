@@ -13,11 +13,19 @@
 # comment for the full explanation) -- so this reuses the same fix: ONE shared set of those
 # servers, with `api_servers` stripped from every per-variant yaml copy.
 #
-# Usage: bash scripts/run_claude_code_sweep_parallel.sh [MODEL_ALIAS] [SHARED_SERVICES_GPU] [TOTAL_TRIALS] [CLAUDE_PORT]
+# Usage: bash scripts/run_claude_code_sweep_parallel.sh [MODEL_ALIAS] [SHARED_SERVICES_GPU] [TOTAL_TRIALS] [CLAUDE_PORT] [TASKS]
 #   MODEL_ALIAS          claude -p --model alias, e.g. opus / sonnet / haiku (default: sonnet)
 #   SHARED_SERVICES_GPU  GPU for the shared SAM3/SAM2/GraspNet/PyRoki/OWL-ViT (default: 0)
 #   TOTAL_TRIALS         Trials per (task, variant) (default: 3)
 #   CLAUDE_PORT          Port for the shared claude-code-cli proxy (default: 8112)
+#   TASKS                Comma-separated task short names to run (default: all). One worker
+#                         per task, so this also controls how many workers launch. Choices:
+#                         cube_stack,cube_restack,cube_lifting,nut_assembly,spill_wipe,
+#                         two_arm_handover,two_arm_lift
+#   OUTPUT_PREFIX         outputs/<prefix>_<variant>/... (default: claude_code). Use a
+#                         different prefix for a rerun so it doesn't mix trial numbering with
+#                         an earlier run's folders in the same outputs/claude_code_<variant>/
+#                         directory (run_batch always starts counting from trial_01).
 set -e
 
 cd "$(git rev-parse --show-toplevel)"
@@ -26,6 +34,8 @@ MODEL_ALIAS=${1:-sonnet}
 SHARED_SERVICES_GPU=${2:-0}
 TOTAL_TRIALS=${3:-3}
 CLAUDE_PORT=${4:-8112}
+TASKS_FILTER=${5:-all}
+OUTPUT_PREFIX=${6:-claude_code}
 MODEL="claude-code/${MODEL_ALIAS}"
 CLAUDE_SERVER_URL="http://127.0.0.1:${CLAUDE_PORT}/chat/completions"
 
@@ -43,15 +53,32 @@ ALL_VARIANTS=(
     compound_hard
 )
 
-TASK_CONFIGS=(
-    env_configs/cube_stack/franka_robosuite_cube_stack_variants.yaml
-    env_configs/cube_restack/franka_robosuite_cube_restack_variants.yaml
-    env_configs/cube_lifting/franka_robosuite_cube_lifting_variants.yaml
-    env_configs/nut_assembly/franka_robosuite_nut_assembly_variants.yaml
-    env_configs/spill_wipe/franka_robosuite_spill_wipe_variants.yaml
-    env_configs/two_arm_handover/two_arm_handover_variants.yaml
-    env_configs/two_arm_lift/franka_robosuite_two_arm_lift_variants.yaml
+declare -A TASK_CONFIG_MAP=(
+    [cube_stack]="env_configs/cube_stack/franka_robosuite_cube_stack_variants.yaml"
+    [cube_restack]="env_configs/cube_restack/franka_robosuite_cube_restack_variants.yaml"
+    [cube_lifting]="env_configs/cube_lifting/franka_robosuite_cube_lifting_variants.yaml"
+    [nut_assembly]="env_configs/nut_assembly/franka_robosuite_nut_assembly_variants.yaml"
+    [spill_wipe]="env_configs/spill_wipe/franka_robosuite_spill_wipe_variants.yaml"
+    [two_arm_handover]="env_configs/two_arm_handover/two_arm_handover_variants.yaml"
+    [two_arm_lift]="env_configs/two_arm_lift/franka_robosuite_two_arm_lift_variants.yaml"
 )
+TASK_ORDER=(cube_stack cube_restack cube_lifting nut_assembly spill_wipe two_arm_handover two_arm_lift)
+
+TASK_CONFIGS=()
+if [ "$TASKS_FILTER" = "all" ]; then
+    for t in "${TASK_ORDER[@]}"; do
+        TASK_CONFIGS+=("${TASK_CONFIG_MAP[$t]}")
+    done
+else
+    IFS=',' read -ra REQUESTED_TASKS <<< "$TASKS_FILTER"
+    for t in "${REQUESTED_TASKS[@]}"; do
+        if [ -z "${TASK_CONFIG_MAP[$t]:-}" ]; then
+            echo "ERROR: unknown task '$t'. Choices: ${TASK_ORDER[*]}"
+            exit 1
+        fi
+        TASK_CONFIGS+=("${TASK_CONFIG_MAP[$t]}")
+    done
+fi
 
 # --- Python helper: sets low_level.variation and empties api_servers (see note above). ---
 PATCH_SCRIPT="/tmp/patch_capx_variant_yaml.py"
@@ -182,7 +209,7 @@ run_task_worker() {
             --args.models "${MODEL}" \
             --args.server-url "${CLAUDE_SERVER_URL}" \
             --args.total-trials "${TOTAL_TRIALS}" \
-            --args.output-dir "outputs/claude_code_${variant}" \
+            --args.output-dir "outputs/${OUTPUT_PREFIX}_${variant}" \
             >> "$worker_log" 2>&1
 
         echo "[${task_name}] === finished variant: ${variant} ===" | tee -a "$worker_log"
