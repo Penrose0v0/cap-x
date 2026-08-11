@@ -12,6 +12,7 @@ env/
 .nvinferencekeys
 .claudeoauthtoken
 .capx_skills.json
+.devcontainer/
 .pytest_cache/
 .ruff_cache/
 
