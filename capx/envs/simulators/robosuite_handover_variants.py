@@ -15,7 +15,7 @@ reasoning behind how "robot_position_shift" is interpreted for two robots.
 from __future__ import annotations
 
 import os
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 import viser
@@ -36,6 +36,7 @@ from robot_descriptions.loaders.yourdfpy import load_robot_description
 from viser.extras import ViserUrdf
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variants_common import resolve_variation_config
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
 
@@ -88,6 +89,11 @@ PROMPT_PARAPHRASES = [
 # Named variation presets. Each maps to a dict of overrides consumed by TwoArmHandoverVariants.
 # "baseline" reproduces the original TwoArmHandover task and is useful as a control condition
 # when measuring policy robustness against the other ten perturbations.
+# KNOWN ISSUE (documented, not fixed -- see variants_common.py's module docstring): the
+# prompt only ever says "the hammer" / "hammer handle" / "hammer head" -- no color word, so
+# color_tint is unaffected. But target_object_swap (swap_target: "mallet", SWAP_CONFIGS
+# above) is explicitly built to "look like a visually-distinct tool" -- exactly what makes
+# "the hammer" stop matching what's actually in the scene.
 VARIATIONS: dict[str, dict[str, Any]] = {
     "baseline": {},
     "color_shift_mild": {"color_tint": (1.0, 0.85, 0.6, 1.0)},
@@ -135,18 +141,13 @@ class TwoArmHandoverVariants(TwoArmHandover):
 
     def __init__(
         self,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        if variation not in VARIATIONS:
-            raise ValueError(f"Unknown variation '{variation}'. Choose one of {list(VARIATIONS)}")
-        config = dict(VARIATIONS[variation])
-        if variation_overrides:
-            config.update(variation_overrides)
-
-        self.variation = variation
-        self.variation_config = config
+        self.variation, self.variation_config = resolve_variation_config(
+            VARIATIONS, variation, variation_overrides
+        )
         self.distractor_objects: list[Any] = []
         self.language_instruction: str | None = None
 
@@ -468,7 +469,7 @@ class RobosuiteHandoverVariantsEnv(RobosuiteBaseEnv):
         viser_debug: bool = False,  # TODO: move the viser visualization manager into a separate class, low level env agnostic
         privileged: bool = False,
         enable_render: bool = False,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
     ) -> None:
         super().__init__()

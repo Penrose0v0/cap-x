@@ -21,7 +21,7 @@ applying on every subsequent reset, not just the first one.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 import viser.transforms as vtf
@@ -33,6 +33,7 @@ from robosuite.models.objects import BoxObject
 from robosuite.utils.mjcf_utils import array_to_string, find_elements
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variants_common import resolve_variation_config
 
 # Wipe has no discrete graspable/target object the way Stack has cubeA/cubeB -- the "target"
 # here is the procedurally generated dirt/spill marker path. So there's no natural
@@ -53,6 +54,11 @@ PROMPT_PARAPHRASES = [
 # Named variation presets. Each maps to a dict of overrides consumed by WipeVariants.
 # "baseline" reproduces the original Wipe task and is useful as a control condition when
 # measuring policy robustness against the other ten perturbations.
+# KNOWN ISSUE (documented, not fixed -- see variants_common.py's module docstring): the
+# prompt says "the 'brown spill'"; color_tint retints the shared dirt_mat material (e.g.
+# color_shift_strong is navy blue), so "brown" goes stale. dirt_pattern_swap (the
+# target_object_swap preset) splits the spill into two disconnected clusters while the
+# prompt still refers to it as singular -- a softer, grammatical version of the same issue.
 VARIATIONS: dict[str, dict[str, Any]] = {
     "baseline": {},
     "color_shift_mild": {"color_tint": (1.0, 0.75, 0.75, 1.0)},
@@ -108,18 +114,13 @@ class WipeVariants(Wipe):
 
     def __init__(
         self,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        if variation not in VARIATIONS:
-            raise ValueError(f"Unknown variation '{variation}'. Choose one of {list(VARIATIONS)}")
-        config = dict(VARIATIONS[variation])
-        if variation_overrides:
-            config.update(variation_overrides)
-
-        self.variation = variation
-        self.variation_config = config
+        self.variation, self.variation_config = resolve_variation_config(
+            VARIATIONS, variation, variation_overrides
+        )
         self.distractor_objects: list[Any] = []
         self.language_instruction: str | None = None
 
@@ -314,7 +315,7 @@ class FrankaRobosuiteSpillWipeVariantsLowLevel(RobosuiteBaseEnv):
         viser_debug: bool = False,
         privileged: bool = False,
         enable_render: bool = False,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
     ) -> None:
         super().__init__(

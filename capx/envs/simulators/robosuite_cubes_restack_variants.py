@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import collections.abc
 from copy import copy
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 import viser.transforms as vtf
@@ -49,6 +49,7 @@ from robosuite.utils.placement_samplers import ObjectPositionSampler
 from robosuite.utils.transform_utils import quat_multiply
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variants_common import resolve_variation_config
 
 
 class StackedObjectRandomSampler(ObjectPositionSampler):
@@ -258,6 +259,10 @@ PROMPT_PARAPHRASES = [
 _DEFAULT_X_RANGE = (-0.12, 0.16)
 _DEFAULT_Y_RANGE = (-0.12, 0.12)
 
+# KNOWN ISSUE (documented, not fixed -- see variants_common.py's module docstring): the
+# prompt says "red cube"/"green cube"; color_tint sets the SAME rgba on both cubeA and
+# cubeB (see rgba_a/rgba_b below), so neither word stays true and the color is no longer
+# distinguishing. target_object_swap turns cubeA into a cylinder ("cube" goes stale too).
 VARIATIONS: dict[str, dict[str, Any]] = {
     "baseline": {},
     "color_shift_mild": {"color_tint": (1.0, 0.75, 0.75, 1.0)},
@@ -306,18 +311,13 @@ class RestackVariants(Stack):
 
     def __init__(
         self,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        if variation not in VARIATIONS:
-            raise ValueError(f"Unknown variation '{variation}'. Choose one of {list(VARIATIONS)}")
-        config = dict(VARIATIONS[variation])
-        if variation_overrides:
-            config.update(variation_overrides)
-
-        self.variation = variation
-        self.variation_config = config
+        self.variation, self.variation_config = resolve_variation_config(
+            VARIATIONS, variation, variation_overrides
+        )
         self.distractor_objects: list[Any] = []
         self.language_instruction: str | None = None
 
@@ -510,7 +510,7 @@ class FrankaRobosuiteCubesRestackVariantsLowLevel(RobosuiteBaseEnv):
         viser_debug: bool = False,
         privileged: bool = False,
         enable_render: bool = False,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
     ) -> None:
         super().__init__(

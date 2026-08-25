@@ -11,7 +11,7 @@ perturbations, applied on top of the vanilla task.
 from __future__ import annotations
 
 import os
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 import viser
@@ -27,6 +27,7 @@ from robot_descriptions.loaders.yourdfpy import load_robot_description
 from viser.extras import ViserUrdf
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variants_common import resolve_variation_config
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
 
@@ -68,6 +69,10 @@ PROMPT_PARAPHRASE_TEMPLATES = [
 # Named variation presets. Each maps to a dict of overrides consumed by NutAssemblyVariants.
 # "baseline" reproduces the original NutAssemblySquare task and is useful as a control condition
 # when measuring policy robustness against the other nine perturbations.
+# KNOWN ISSUE (documented, not fixed -- see variants_common.py's module docstring): the
+# prompt says "brown square nut"; color_tint can make it a different color entirely, and
+# target_object_swap (swap_nut_type: "round") makes it a round nut -- "brown" and "square"
+# both go stale, and neither is corrected in the prompt text.
 VARIATIONS: dict[str, dict[str, Any]] = {
     "baseline": {},
     "color_shift_mild": {"color_tint": (1.0, 0.75, 0.75, 1.0)},
@@ -115,18 +120,13 @@ class NutAssemblyVariants(NutAssemblySquare):
 
     def __init__(
         self,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        if variation not in VARIATIONS:
-            raise ValueError(f"Unknown variation '{variation}'. Choose one of {list(VARIATIONS)}")
-        config = dict(VARIATIONS[variation])
-        if variation_overrides:
-            config.update(variation_overrides)
-
-        self.variation = variation
-        self.variation_config = config
+        self.variation, self.variation_config = resolve_variation_config(
+            VARIATIONS, variation, variation_overrides
+        )
         self.language_instruction: str | None = None
 
         swap_nut_type = self.variation_config.get("swap_nut_type", "square")
@@ -279,7 +279,7 @@ class FrankaRobosuiteNutAssemblyVariantsLowLevel(RobosuiteBaseEnv):
         viser_debug: bool = False,
         privileged: bool = True,
         enable_render: bool = False,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
     ) -> None:
         super().__init__(

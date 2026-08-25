@@ -32,7 +32,7 @@ Two things differ from the single-arm Stack case, both driven by TwoArmLift's sp
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 import viser
@@ -49,6 +49,7 @@ from robosuite.utils.mjcf_utils import array_to_string, find_elements
 from robosuite.utils.placement_samplers import SequentialCompositeSampler, UniformRandomSampler
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variants_common import resolve_variation_config
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
 
@@ -87,6 +88,13 @@ PROMPT_PARAPHRASES = [
 # Named variation presets. Each maps to a dict of overrides consumed by TwoArmLiftVariants.
 # "baseline" reproduces the original TwoArmLift task and is useful as a control condition
 # when measuring policy robustness against the other nine perturbations.
+# Unlike the other 6 task files, this one is NOT affected by the prompt/scene conflict
+# documented in variants_common.py's module docstring: the prompt only says "grasp one
+# handle... grasp the other handle" (no color or handle-shape word), and
+# target_object_swap (POT_CONFIG_SWAPS) only changes material/thickness -- both were
+# deliberately written this way (see the module docstring above) because the pot's named
+# sites/geoms are load-bearing for reward/success detection, so an unrelated-class swap
+# wasn't an option here anyway.
 VARIATIONS: dict[str, dict[str, Any]] = {
     "baseline": {},
     "color_shift_mild": {"color_tint": (1.0, 0.85, 0.85, 1.0)},
@@ -134,18 +142,13 @@ class TwoArmLiftVariants(TwoArmLift):
 
     def __init__(
         self,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        if variation not in VARIATIONS:
-            raise ValueError(f"Unknown variation '{variation}'. Choose one of {list(VARIATIONS)}")
-        config = dict(VARIATIONS[variation])
-        if variation_overrides:
-            config.update(variation_overrides)
-
-        self.variation = variation
-        self.variation_config = config
+        self.variation, self.variation_config = resolve_variation_config(
+            VARIATIONS, variation, variation_overrides
+        )
         self.distractor_objects: list[Any] = []
         self.language_instruction: str | None = None
 
@@ -407,7 +410,7 @@ class RobosuiteTwoArmLiftVariantsEnv(RobosuiteBaseEnv):
         viser_debug: bool = False,  # TODO: move the viser visualization manager into a separate class, low level env agnostic
         privileged: bool = True,
         enable_render: bool = False,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
     ) -> None:
         super().__init__(

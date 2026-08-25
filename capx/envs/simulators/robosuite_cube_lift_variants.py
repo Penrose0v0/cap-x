@@ -17,7 +17,7 @@ the existing cube_lift task exactly.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 import viser.transforms as vtf
@@ -32,6 +32,7 @@ from robosuite.utils.mjcf_utils import CustomMaterial, array_to_string, find_ele
 from robosuite.utils.placement_samplers import UniformRandomSampler
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variants_common import resolve_variation_config
 
 # Object classes usable as a visually-similar swap for the lift cube, or as task-irrelevant
 # distractors. Lift only has a single scored object (self.cube), unlike Stack's cubeA/cubeB.
@@ -55,6 +56,10 @@ PROMPT_PARAPHRASES = [
 # Named variation presets. Each maps to a dict of overrides consumed by LiftVariants.
 # "baseline" reproduces the original Lift task and is useful as a control condition when
 # measuring policy robustness against the other nine perturbations.
+# KNOWN ISSUE (documented, not fixed -- see variants_common.py's module docstring): the
+# prompt says "the red cube"; color_tint can recolor it to something else entirely (e.g.
+# color_shift_strong is a green tint), and target_object_swap turns it into a cylinder --
+# neither updates the prompt text.
 VARIATIONS: dict[str, dict[str, Any]] = {
     "baseline": {},
     "color_shift_mild": {"color_tint": (1.0, 0.75, 0.75, 1.0)},
@@ -107,18 +112,13 @@ class LiftVariants(Lift):
 
     def __init__(
         self,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        if variation not in VARIATIONS:
-            raise ValueError(f"Unknown variation '{variation}'. Choose one of {list(VARIATIONS)}")
-        config = dict(VARIATIONS[variation])
-        if variation_overrides:
-            config.update(variation_overrides)
-
-        self.variation = variation
-        self.variation_config = config
+        self.variation, self.variation_config = resolve_variation_config(
+            VARIATIONS, variation, variation_overrides
+        )
         self.distractor_objects: list[Any] = []
         self._distractor_sampler: UniformRandomSampler | None = None
         self.language_instruction: str | None = None
@@ -353,7 +353,7 @@ class FrankaRobosuiteCubeLiftVariantsLowLevel(RobosuiteBaseEnv):
         viser_debug: bool = False,
         privileged: bool = False,
         enable_render: bool = False,
-        variation: str = "baseline",
+        variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
     ) -> None:
         super().__init__(
