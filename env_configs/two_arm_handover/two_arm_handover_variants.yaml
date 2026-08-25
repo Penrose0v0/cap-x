@@ -23,7 +23,14 @@ env:
       variation: color_shift_mild
     apis:
       - FrankaHandoverApi
-    # prompt is inherited from TwoArmHandoverCodeEnv class default
+    # prompt is inherited from TwoArmHandoverCodeEnv class default here -- NOT correct for
+    # target_object_swap: the swap kwargs deliberately make the hammer "look like a
+    # visually-distinct tool (e.g. a mallet)" (see robosuite_handover_variants.py), but this
+    # class default still says "hammer" throughout (see variants_common.py's module
+    # docstring). No color word in this prompt, so color_shift_mild/strong are unaffected. Set
+    # `prompt:` explicitly (or use
+    # capx.envs.simulators.variant_prompts.resolve_prompt("two_arm_handover", variation)) to
+    # get the corrected text for target_object_swap.
 
 api_servers:
   - _target_: capx.serving.launch_sam3_server.main

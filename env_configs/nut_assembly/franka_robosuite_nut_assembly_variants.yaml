@@ -26,7 +26,23 @@ env:
     privileged: true
     apis:
       - FrankaControlApi
-    # prompt is inherited from FrankaNutAssemblyCodeEnv class default
+    # The class default prompt (FrankaNutAssemblyCodeEnv's) says "brown square nut" -- wrong
+    # once color_shift_mild retints it, and this wording is also the literal vision-grounding
+    # query text passed to get_object_pose/sample_grasp_pose (see variants_common.py's module
+    # docstring). `prompt:` below matches what
+    # capx.envs.simulators.variant_prompts.resolve_prompt("nut_assembly", "color_shift_mild")
+    # returns; the claude-code sweep script's yaml-patching step calls this for you when it
+    # switches variation to something else.
+    prompt: |
+      You are controlling a Franka Emika robot with API described below.
+      Goal: grasp and insert the `square nut` onto the `brown square block`.
+      Note that you would grasp the nut by its handle. You can try language query `extruded handle of the square nut` to get a good grasp at the handle.
+      The square nut and the extruded handle of the square nut are part of the same rigid body.
+      The grasp pose query for 'extruded handle of the square nut' returns an end-effector pose expressed in world frame, located on the handle region.
+      The nut's object center pose obtained via 'white hollow center of the square nut' and the handle grasp pose obtained via 'extruded handle of the square nut' have a fixed rigid transform, which must be applied correctly when inserting the nut onto the peg.
+      You may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.
+      The functions (APIs) below are already imported to the environment.
+      If you want to use numpy, or scipy for spatial transformations, you need to import it explicitly.
 
 api_servers:
   - _target_: capx.serving.launch_pyroki_server.main

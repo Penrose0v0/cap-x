@@ -76,19 +76,34 @@ BASE_CONFIG_PATHS=(
     env_configs/two_arm_handover/two_arm_handover_variants.yaml
     env_configs/two_arm_lift/franka_robosuite_two_arm_lift_variants.yaml
 )
+# Parallel to BASE_CONFIG_PATHS -- short task names, for the prompt-fix lookup below.
+BASE_TASK_NAMES=(
+    cube_stack cube_restack cube_lifting nut_assembly spill_wipe two_arm_handover two_arm_lift
+)
 
-# --- Python helper: sets low_level.variation and empties api_servers (see note above). ---
+# --- Python helper: sets low_level.variation, empties api_servers (see note above), and sets
+# env.cfg.prompt to the corrected text for any preset with a known prompt/scene conflict (see
+# capx/envs/simulators/variant_prompts.py) -- e.g. target_object_swap turning cubeA into a
+# cylinder while the class-default prompt still says "cube". Leaves cfg.prompt unset (falls
+# through to the class default) for presets with no known conflict.
 PATCH_SCRIPT="/tmp/patch_capx_variant_yaml.py"
 cat > "$PATCH_SCRIPT" << 'PYEOF'
 import sys
 import yaml
 
-src, dst, variation = sys.argv[1], sys.argv[2], sys.argv[3]
+sys.path.insert(0, ".")
+from capx.envs.simulators.variant_prompts import resolve_prompt
+
+src, dst, variation, task_name = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 with open(src) as f:
     data = yaml.safe_load(f)
 
 data["env"]["cfg"]["low_level"]["variation"] = variation
 data["api_servers"] = []
+
+corrected_prompt = resolve_prompt(task_name, variation)
+if corrected_prompt is not None:
+    data["env"]["cfg"]["prompt"] = corrected_prompt
 
 with open(dst, "w") as f:
     yaml.safe_dump(data, f, sort_keys=False)
@@ -210,8 +225,9 @@ make_variant_configs() {
     local variant="$1"
     local out_dir="$2"
     mkdir -p "$out_dir"
-    for cfg in "${BASE_CONFIG_PATHS[@]}"; do
-        .venv/bin/python "$PATCH_SCRIPT" "$cfg" "${out_dir}/$(basename "$cfg")" "$variant"
+    for i in "${!BASE_CONFIG_PATHS[@]}"; do
+        local cfg="${BASE_CONFIG_PATHS[$i]}"
+        .venv/bin/python "$PATCH_SCRIPT" "$cfg" "${out_dir}/$(basename "$cfg")" "$variant" "${BASE_TASK_NAMES[$i]}"
     done
 }
 

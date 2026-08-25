@@ -65,9 +65,11 @@ declare -A TASK_CONFIG_MAP=(
 TASK_ORDER=(cube_stack cube_restack cube_lifting nut_assembly spill_wipe two_arm_handover two_arm_lift)
 
 TASK_CONFIGS=()
+TASK_NAMES=()
 if [ "$TASKS_FILTER" = "all" ]; then
     for t in "${TASK_ORDER[@]}"; do
         TASK_CONFIGS+=("${TASK_CONFIG_MAP[$t]}")
+        TASK_NAMES+=("$t")
     done
 else
     IFS=',' read -ra REQUESTED_TASKS <<< "$TASKS_FILTER"
@@ -77,21 +79,33 @@ else
             exit 1
         fi
         TASK_CONFIGS+=("${TASK_CONFIG_MAP[$t]}")
+        TASK_NAMES+=("$t")
     done
 fi
 
-# --- Python helper: sets low_level.variation and empties api_servers (see note above). ---
+# --- Python helper: sets low_level.variation, empties api_servers (see note above), and sets
+# env.cfg.prompt to the corrected text for any preset with a known prompt/scene conflict (see
+# capx/envs/simulators/variant_prompts.py) -- e.g. target_object_swap turning cubeA into a
+# cylinder while the class-default prompt still says "cube". Leaves cfg.prompt unset (falls
+# through to the class default) for presets with no known conflict.
 PATCH_SCRIPT="/tmp/patch_capx_variant_yaml.py"
 cat > "$PATCH_SCRIPT" << 'PYEOF'
 import sys
 import yaml
 
-src, dst, variation = sys.argv[1], sys.argv[2], sys.argv[3]
+sys.path.insert(0, ".")
+from capx.envs.simulators.variant_prompts import resolve_prompt
+
+src, dst, variation, task_name = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 with open(src) as f:
     data = yaml.safe_load(f)
 
 data["env"]["cfg"]["low_level"]["variation"] = variation
 data["api_servers"] = []
+
+corrected_prompt = resolve_prompt(task_name, variation)
+if corrected_prompt is not None:
+    data["env"]["cfg"]["prompt"] = corrected_prompt
 
 with open(dst, "w") as f:
     yaml.safe_dump(data, f, sort_keys=False)
@@ -192,6 +206,7 @@ echo "=== claude-code proxy ready (model=${MODEL}). ==="
 
 run_task_worker() {
     local task_cfg="$1"
+    local task_short_name="$2"
     local task_name
     task_name=$(basename "$task_cfg" .yaml)
     local worker_log="/tmp/claude_sweep_${task_name}.log"
@@ -202,7 +217,7 @@ run_task_worker() {
     for variant in "${ALL_VARIANTS[@]}"; do
         echo "[${task_name}] === variant: ${variant} ===" | tee -a "$worker_log"
         local tmp_cfg="/tmp/claude_sweep_configs_${task_name}_${variant}.yaml"
-        .venv/bin/python "$PATCH_SCRIPT" "$task_cfg" "$tmp_cfg" "$variant"
+        .venv/bin/python "$PATCH_SCRIPT" "$task_cfg" "$tmp_cfg" "$variant" "$task_short_name"
 
         uv run --frozen python -m capx.envs.scripts.run_batch \
             --args.config-paths "$tmp_cfg" \
@@ -219,8 +234,8 @@ run_task_worker() {
 }
 
 WORKER_PIDS=()
-for task_cfg in "${TASK_CONFIGS[@]}"; do
-    run_task_worker "$task_cfg" &
+for i in "${!TASK_CONFIGS[@]}"; do
+    run_task_worker "${TASK_CONFIGS[$i]}" "${TASK_NAMES[$i]}" &
     WORKER_PIDS+=("$!")
 done
 

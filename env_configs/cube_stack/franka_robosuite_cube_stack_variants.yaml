@@ -22,9 +22,26 @@ env:
     privileged: false
     apis:
       - FrankaControlApi
-    # prompt is inherited from FrankaPickPlaceCodeEnv class default; StackVariants overrides the
-    # low-level env's own task_prompt/get_ep_meta()["lang"] independently when
-    # variation: language_paraphrase (or compound_hard) is selected.
+    # The class default prompt (FrankaPickPlaceCodeEnv's) says "red cube"/"green cube", which is
+    # wrong once color_shift_mild retints both cubes to the same color -- so `prompt:` below is
+    # set explicitly to the corrected text for variation: color_shift_mild (matches what
+    # capx.envs.simulators.variant_prompts.resolve_prompt("cube_stack", "color_shift_mild")
+    # returns; the claude-code sweep script's yaml-patching step calls this for you when it
+    # switches variation to something else). See variants_common.py's module docstring for the
+    # full list of which presets need this.
+    prompt: |
+      You are controlling a Franka Emika robot with the API described below.
+      Goal: Pick up the smaller cube and gently stack it on top of the larger cube, then release it.
+
+      Key rules:
+      - The extent from get_object_pose(..., return_bbox_extent=True) is the FULL side length. Use extent[2]/2 for half-height.
+      - For placement orientation, reuse the grasp quaternion from sample_grasp_pose. Do NOT use the quaternion from get_object_pose (it is unreliable for orientation).
+      - Always use z_approach=0.1 when approaching an object for grasping or placing.
+      - After grasping, lift the cube to a safe height (at least +0.2m in Z) before moving laterally to the placement location.
+      - The stacking height formula is: place_z = larger_center_z + larger_extent[2]/2 + smaller_extent[2]/2
+      - Nothing should be dropped from a height. Always approach with z_approach for controlled descent.
+
+      Write ONLY executable Python code (no code fences). Import numpy if needed.
 
 api_servers:
   - _target_: capx.serving.launch_sam3_server.main

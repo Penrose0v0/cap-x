@@ -22,7 +22,18 @@ env:
     privileged: false
     apis:
       - FrankaControlApi
-    # prompt is inherited from FrankaRestackCodeEnv class default
+    # The class default prompt (FrankaRestackCodeEnv's) says "red cube"/"green cube", which is
+    # wrong once color_shift_mild retints both cubes to the same color -- see
+    # variants_common.py's module docstring. `prompt:` below matches what
+    # capx.envs.simulators.variant_prompts.resolve_prompt("cube_restack", "color_shift_mild")
+    # returns; the claude-code sweep script's yaml-patching step calls this for you when it
+    # switches variation to something else.
+    prompt: |
+      You are controlling a Franka Emika robot with API described below.
+      Goal: Gently place the smaller cube on top of the larger cube and then open the gripper. Nothing should be dropped from a height.
+      Use the extent of the cubes to calculate the exact height for placement.
+      You may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.
+      The functions (APIs) below are already imported to the environment. If you want to use numpy, scipy, torch, etc. you need to import them explicitly.
 
 api_servers:
   - _target_: capx.serving.launch_sam3_server.main

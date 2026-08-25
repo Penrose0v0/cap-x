@@ -22,7 +22,16 @@ env:
     privileged: false
     apis:
       - FrankaControlApi
-    # prompt is inherited from FrankaLiftCodeEnv class default
+    # The class default prompt (FrankaLiftCodeEnv's) says "the red cube", which is wrong once
+    # color_shift_mild retints it -- see variants_common.py's module docstring. `prompt:` below
+    # matches what capx.envs.simulators.variant_prompts.resolve_prompt("cube_lifting",
+    # "color_shift_mild") returns; the claude-code sweep script's yaml-patching step calls this
+    # for you when it switches variation to something else.
+    prompt: |
+      You are controlling a Franka Emika robot with API described below.
+      Goal: pick up the cube and lift it.
+      You may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.
+      The functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.
 
 api_servers:
   - _target_: capx.serving.launch_sam3_server.main
