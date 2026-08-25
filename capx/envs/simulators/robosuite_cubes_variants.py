@@ -63,6 +63,12 @@ VARIATIONS: dict[str, dict[str, Any]] = {
         "distractor_classes": ["cylinder"],
         "paraphrase_language": True,
     },
+    # Difficulty knob, not a robustness perturbation: upstream Stack hardcodes reward()/
+    # _check_success() to exactly cubeA/cubeB, with no num_cubes constructor param -- adding a
+    # 3rd cube needs the dedicated cubeC construction + overridden reward/success below, unlike
+    # object_position_shift/lighting_bright/etc. which just set a config key upstream already
+    # reads generically.
+    "stack_3_cubes": {"stack_3_cubes": True},
 }
 
 
@@ -81,6 +87,9 @@ class StackVariants(Stack):
           visually-similar but different object while keeping its stacking role.
         - paraphrase_language (bool): if True, `get_ep_meta()["lang"]` is sampled from a pool of
           paraphrases instead of the fixed canonical wording.
+        - stack_3_cubes (bool): if True, adds a third cube (cubeC, blue) and success/reward
+          require a 3-cube tower (cubeA on cubeB on cubeC) instead of upstream's 2-cube stack.
+          A difficulty knob, not a perturbation -- see `reward()`/`_check_success()` overrides.
 
     Pick one of the ~10 named presets in `VARIATIONS` via `variation`, optionally layering
     ad-hoc tweaks via `variation_overrides`.
@@ -96,6 +105,7 @@ class StackVariants(Stack):
             VARIATIONS, variation, variation_overrides
         )
         self.distractor_objects: list[Any] = []
+        self.cubeC: Any = None
         self.language_instruction: str | None = None
 
         super().__init__(**kwargs)
@@ -118,6 +128,7 @@ class StackVariants(Stack):
         self._apply_robot_offset()
         self._apply_object_position_bias()
         self._add_distractors()
+        self._add_third_cube()
 
     # Matches FrankaRobosuiteCubesLowLevel's existing sampling range (robosuite_cubes.py), which
     # is wider than upstream Stack's own internal default ([-0.08, 0.08] on both axes). Applied
@@ -285,6 +296,39 @@ class StackVariants(Stack):
         # sampler above) keeps them from overlapping the task-relevant objects.
         self.placement_initializer.add_objects(self.distractor_objects)
 
+    def _add_third_cube(self) -> None:
+        """Difficulty knob, not a robustness perturbation: adds cubeC (blue) so the task becomes
+        a 3-cube tower (cubeA on cubeB on cubeC) instead of the upstream 2-cube stack. See
+        VARIATIONS["stack_3_cubes"] and the reward()/_check_success() overrides below, which are
+        the only other things that know this cube exists -- everything else (scene merge,
+        placement sampling, per-episode reset) reuses the exact same generic mechanism
+        _add_distractors already relies on (self.model.merge_objects /
+        self.placement_initializer.add_objects), so cubeC is just another real, scoreable object
+        rather than a special case.
+        """
+        if not self.variation_config.get("stack_3_cubes"):
+            self.cubeC = None
+            return
+
+        tex_attrib = {"type": "cube"}
+        mat_attrib = {"texrepeat": "1 1", "specular": "0.4", "shininess": "0.1"}
+        bluewood = CustomMaterial(
+            texture="WoodBlue",
+            tex_name="bluewood",
+            mat_name="bluewood_mat",
+            tex_attrib=tex_attrib,
+            mat_attrib=mat_attrib,
+        )
+        self.cubeC = BoxObject(
+            name="cubeC",
+            size_min=[self.cube_A_length] * 3,
+            size_max=[self.cube_A_length] * 3,
+            rgba=[0, 0, 1, 1],
+            material=bluewood,
+        )
+        self.model.merge_objects([self.cubeC])
+        self.placement_initializer.add_objects([self.cubeC])
+
     # ----------------------- Sim references / reset -----------------------
 
     def _setup_references(self) -> None:
@@ -292,6 +336,9 @@ class StackVariants(Stack):
         self._distractor_body_ids = [
             self.sim.model.body_name2id(obj.root_body) for obj in self.distractor_objects
         ]
+        self.cubeC_body_id = (
+            self.sim.model.body_name2id(self.cubeC.root_body) if self.cubeC is not None else None
+        )
 
     def _reset_internal(self) -> None:
         super()._reset_internal()
@@ -304,6 +351,41 @@ class StackVariants(Stack):
         ep_meta = super().get_ep_meta()
         ep_meta["lang"] = self.language_instruction
         return ep_meta
+
+    # ----------------------- Difficulty override -----------------------
+
+    def _check_success(self) -> bool:
+        """3-cube tower success: cubeA resting on cubeB (upstream's own pairwise contact +
+        not-grasping check, reused verbatim) AND cubeB resting on cubeC the same way. See
+        VARIATIONS["stack_3_cubes"] / _add_third_cube()."""
+        if not self.variation_config.get("stack_3_cubes") or self.cubeC is None:
+            return super()._check_success()
+
+        grasping_a = self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cubeA)
+        grasping_b = self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cubeB)
+        a_on_b = self.check_contact(self.cubeA, self.cubeB) and not grasping_a
+        b_on_c = self.check_contact(self.cubeB, self.cubeC) and not grasping_b
+        return a_on_b and b_on_c
+
+    def reward(self, action=None) -> float:
+        """Simplified 2-stage reward for the 3-cube tower: 0.5 once cubeB is resting on cubeC
+        (the base pair is done), 1.0 once cubeA is also resting on cubeB (full tower).
+        Deliberately not a full reach/grasp/lift/align shaping curve like upstream's
+        staged_rewards() -- this is a difficulty-knob preset for eval, not a reward tuned for
+        training from scratch."""
+        if not self.variation_config.get("stack_3_cubes") or self.cubeC is None:
+            return super().reward(action)
+
+        grasping_a = self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cubeA)
+        grasping_b = self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cubeB)
+        a_on_b = self.check_contact(self.cubeA, self.cubeB) and not grasping_a
+        b_on_c = self.check_contact(self.cubeB, self.cubeC) and not grasping_b
+
+        if a_on_b and b_on_c:
+            return 1.0
+        if b_on_c:
+            return 0.5
+        return 0.0
 
 
 class FrankaRobosuiteCubesVariantsLowLevel(RobosuiteBaseEnv):

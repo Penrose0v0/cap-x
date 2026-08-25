@@ -78,6 +78,11 @@ VARIATIONS: dict[str, dict[str, Any]] = {
         "distractor_classes": ["cylinder"],
         "paraphrase_language": True,
     },
+    # Difficulty knob, not a robustness perturbation: upstream Lift hardcodes its 0.04m success
+    # margin as a literal in both reward() and _check_success() (no constructor kwarg), so
+    # raising it needs a method override rather than a passthrough kwarg -- see
+    # lift_height_threshold below and the two method overrides that consume it.
+    "lift_higher": {"lift_height_threshold": 0.12},
 }
 
 
@@ -98,6 +103,9 @@ class LiftVariants(Lift):
           visually-similar but different object while keeping its lift-target role.
         - paraphrase_language (bool): if True, `get_ep_meta()["lang"]` is sampled from a pool of
           paraphrases instead of the fixed canonical wording.
+        - lift_height_threshold (float): overrides upstream Lift's hardcoded 0.04m
+          success/reward-shaping margin above the table. A difficulty knob, not a
+          perturbation -- see `reward()`/`_check_success()` overrides below.
 
     Pick one of the ~10 named presets in `VARIATIONS` via `variation`, optionally layering
     ad-hoc tweaks via `variation_overrides`.
@@ -332,6 +340,35 @@ class LiftVariants(Lift):
         ep_meta = super().get_ep_meta()
         ep_meta["lang"] = self.language_instruction
         return ep_meta
+
+    # ----------------------- Difficulty override -----------------------
+
+    def _check_success(self) -> bool:
+        """Verbatim from Lift._check_success, parameterized on lift_height_threshold instead
+        of the hardcoded 0.04m margin (see VARIATIONS["lift_higher"])."""
+        threshold = self.variation_config.get("lift_height_threshold")
+        if threshold is None:
+            return super()._check_success()
+        cube_height = self.sim.data.body_xpos[self.cube_body_id][2]
+        table_height = self.model.mujoco_arena.table_offset[2]
+        return cube_height > table_height + threshold
+
+    def reward(self, action=None) -> float:
+        """Verbatim from Lift.reward, parameterized on lift_height_threshold (both the
+        success check and the shaping normalization use it, matching upstream's own use of
+        0.04 for both) instead of the hardcoded margin."""
+        threshold = self.variation_config.get("lift_height_threshold")
+        if threshold is None:
+            return super().reward(action)
+
+        reward = 0.0
+        if self._check_success():
+            reward = 1.0
+        elif self.reward_shaping:
+            cube_height = self.sim.data.body_xpos[self.cube_body_id][2]
+            table_height = self.model.mujoco_arena.table_offset[2]
+            reward = min((cube_height - table_height) / threshold, 1.0)
+        return reward
 
 
 class FrankaRobosuiteCubeLiftVariantsLowLevel(RobosuiteBaseEnv):
