@@ -113,6 +113,13 @@ VARIATIONS: dict[str, dict[str, Any]] = {
         "distractor_classes": ["cylinder"],
         "paraphrase_language": True,
     },
+    # Difficulty knob, not a robustness perturbation: unlike the other 6 tasks' difficulty
+    # knobs, this one needed a full reward()/_check_success() override -- both the 0.10m
+    # height margin and the 30-degree tilt tolerance are inline literals in the method bodies
+    # upstream, not even instance attributes (see the overrides above). Raises the lift height
+    # to 0.18m and tightens the tilt tolerance to 15 degrees -- both arms have to lift higher
+    # and keep the pot noticeably more level.
+    "harder_lift": {"lift_height_threshold": 0.18, "tilt_tolerance_deg": 15.0},
 }
 
 
@@ -135,6 +142,10 @@ class TwoArmLiftVariants(TwoArmLift):
           class swap isn't used here).
         - paraphrase_language (bool): if True, `get_ep_meta()["lang"]` is sampled from a pool
           of paraphrases instead of the fixed canonical wording.
+        - lift_height_threshold (float) / tilt_tolerance_deg (float): override upstream
+          TwoArmLift's hardcoded 0.10m success margin and 30-degree tilt tolerance. Difficulty
+          knobs, not perturbations -- see `reward()`/`_check_success()` overrides below and
+          VARIATIONS["harder_lift"].
 
     Pick one of the ~10 named presets in `VARIATIONS` via `variation`, optionally layering
     ad-hoc tweaks via `variation_overrides`.
@@ -383,6 +394,77 @@ class TwoArmLiftVariants(TwoArmLift):
         ep_meta = super().get_ep_meta()
         ep_meta["lang"] = self.language_instruction
         return ep_meta
+
+    # ----------------------- Difficulty override -----------------------
+
+    def _check_success(self) -> bool:
+        """Verbatim from TwoArmLift._check_success, parameterized on lift_height_threshold
+        instead of the hardcoded 0.10m margin (see VARIATIONS["harder_lift"]). Upstream's own
+        success check has no tilt component (only reward() does, via direction_coef), so this
+        only reads lift_height_threshold, not tilt_tolerance_deg."""
+        threshold = self.variation_config.get("lift_height_threshold")
+        if threshold is None:
+            return super()._check_success()
+        pot_bottom_height = self.sim.data.site_xpos[self.pot_center_id][2] - self.pot.top_offset[2]
+        table_height = self.sim.data.site_xpos[self.table_top_id][2]
+        return pot_bottom_height > table_height + threshold
+
+    def reward(self, action=None) -> float:
+        """Verbatim from TwoArmLift.reward, parameterized on lift_height_threshold and
+        tilt_tolerance_deg instead of the hardcoded 0.10m margin / 30-degree tilt tolerance --
+        both inline literals upstream, not even instance attributes like
+        two_arm_handover's height_threshold (see VARIATIONS["harder_lift"])."""
+        threshold = self.variation_config.get("lift_height_threshold")
+        tilt_deg = self.variation_config.get("tilt_tolerance_deg")
+        if threshold is None and tilt_deg is None:
+            return super().reward(action)
+
+        threshold = threshold if threshold is not None else 0.10
+        tilt_deg = tilt_deg if tilt_deg is not None else 30.0
+
+        reward = 0
+
+        # check if the pot is tilted more than tilt_deg
+        mat = T.quat2mat(self._pot_quat)
+        z_unit = [0, 0, 1]
+        z_rotated = np.matmul(mat, z_unit)
+        cos_z = np.dot(z_unit, z_rotated)
+        cos_tolerance = np.cos(np.deg2rad(tilt_deg))
+        direction_coef = 1 if cos_z >= cos_tolerance else 0
+
+        if self._check_success():
+            reward = 3.0 * direction_coef
+        elif self.reward_shaping:
+            pot_bottom_height = self.sim.data.site_xpos[self.pot_center_id][2] - self.pot.top_offset[2]
+            table_height = self.sim.data.site_xpos[self.table_top_id][2]
+            elevation = pot_bottom_height - table_height
+            r_lift = min(max(elevation - (threshold - 0.05), 0), threshold + 0.05)
+            reward += 10.0 * direction_coef * r_lift
+
+            _gripper0_to_handle0 = self._gripper0_to_handle0
+            _gripper1_to_handle1 = self._gripper1_to_handle1
+
+            (g0, g1) = (
+                (self.robots[0].gripper["right"], self.robots[0].gripper["left"])
+                if self.env_configuration == "single-robot"
+                else (self.robots[0].gripper, self.robots[1].gripper)
+            )
+
+            _g0h_dist = np.linalg.norm(_gripper0_to_handle0)
+            _g1h_dist = np.linalg.norm(_gripper1_to_handle1)
+
+            if self._check_grasp(gripper=g0, object_geoms=self.pot.handle0_geoms):
+                reward += 0.25
+            reward += 0.5 * (1 - np.tanh(10.0 * _g0h_dist))
+
+            if self._check_grasp(gripper=g1, object_geoms=self.pot.handle1_geoms):
+                reward += 0.25
+            reward += 0.5 * (1 - np.tanh(10.0 * _g1h_dist))
+
+        if self.reward_scale is not None:
+            reward *= self.reward_scale / 3.0
+
+        return reward
 
 
 class RobosuiteTwoArmLiftVariantsEnv(RobosuiteBaseEnv):

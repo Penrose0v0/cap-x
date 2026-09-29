@@ -112,6 +112,10 @@ VARIATIONS: dict[str, dict[str, Any]] = {
         "distractor_classes": ["cylinder"],
         "paraphrase_language": True,
     },
+    # Difficulty knob, not a robustness perturbation: raises the handover height bar from the
+    # upstream default (0.1) to 0.16 -- less margin for a sloppy or low handoff before Arm 1's
+    # grasp stops counting as a success. See the __init__ override note above.
+    "harder_handover": {"handover_height_threshold": 0.16},
 }
 
 
@@ -134,6 +138,9 @@ class TwoArmHandoverVariants(TwoArmHandover):
           parameter swap rather than an object-class swap).
         - paraphrase_language (bool): if True, `get_ep_meta()["lang"]` is sampled from a pool
           of paraphrases instead of the fixed canonical wording.
+        - handover_height_threshold (float): overrides upstream TwoArmHandover's
+          height_threshold (default 0.1). A difficulty knob, not a perturbation -- see
+          VARIATIONS["harder_handover"].
 
     Pick one of the ~10 named presets in `VARIATIONS` via `variation`, optionally layering
     ad-hoc tweaks via `variation_overrides`.
@@ -152,6 +159,16 @@ class TwoArmHandoverVariants(TwoArmHandover):
         self.language_instruction: str | None = None
 
         super().__init__(**kwargs)
+
+        # Difficulty knob, not a robustness perturbation: height_threshold is a plain instance
+        # attribute TwoArmHandover.__init__ sets (not a constructor kwarg), read (not
+        # recomputed) by both reward() and _check_success() -- overridable here with no method
+        # override needed, unlike cube_lifting's lift_height_threshold which had to override
+        # both methods since upstream Lift writes its margin as an inline literal instead of an
+        # attribute. See VARIATIONS["harder_handover"].
+        handover_threshold = self.variation_config.get("handover_height_threshold")
+        if handover_threshold is not None:
+            self.height_threshold = handover_threshold
 
     # ----------------------- Scene construction -----------------------
 

@@ -91,6 +91,17 @@ VARIATIONS: dict[str, dict[str, Any]] = {
         "distractor_classes": ["round_nut"],
         "paraphrase_language": True,
     },
+    # Difficulty knob, not a robustness perturbation: single_object_mode is already a
+    # first-class upstream NutAssembly constructor kwarg (mode 0 puts both nuts in the scene,
+    # both scored -- reward()/_check_success() already loop over self.nuts generically, no
+    # override needed), so this is genuinely free unlike stack_3_cubes/lift_higher. Not
+    # composable with color_tint/object_position_bias/distractor_classes/swap_nut_type -- those
+    # all target "the active nut" (self.active_nut_type/_active_nut_name), a concept that
+    # doesn't apply once both nuts are in play; combining both_nuts with one of those is a
+    # silent no-op for that perturbation rather than an error (self.active_nut_type still
+    # defaults to "square" so _active_nut_name stays valid, it just doesn't correspond to
+    # anything scored).
+    "both_nuts": {"both_nuts": True},
 }
 
 
@@ -113,6 +124,9 @@ class NutAssemblyVariants(NutAssemblySquare):
           re-deriving `_load_model` (unlike Stack, which has to rebuild cubeA from scratch).
         - paraphrase_language (bool): if True, `get_ep_meta()["lang"]` is sampled from a pool of
           paraphrases instead of the fixed canonical wording.
+        - both_nuts (bool): if True, uses upstream single_object_mode=0 (both the square and
+          round nut present, both must be inserted). A difficulty knob, not a perturbation --
+          see the VARIATIONS["both_nuts"] note on why it doesn't compose with the other presets.
 
     Pick one of the ~10 named presets in `VARIATIONS` via `variation`, optionally layering
     ad-hoc tweaks via `variation_overrides`.
@@ -139,7 +153,12 @@ class NutAssemblyVariants(NutAssemblySquare):
         # target_object_swap can select nut_type="round" via that same upstream mechanism.
         # This reproduces exactly what NutAssemblySquare.__init__ does, parameterized on nut_type.
         assert "single_object_mode" not in kwargs and "nut_type" not in kwargs, "invalid set of arguments"
-        NutAssembly.__init__(self, single_object_mode=2, nut_type=swap_nut_type, **kwargs)
+        if self.variation_config.get("both_nuts", False):
+            # nut_type is "only used if single_object_mode is 2" (NutAssembly's own docstring)
+            # -- omitted here since mode 0 ignores it, matching upstream's own convention.
+            NutAssembly.__init__(self, single_object_mode=0, **kwargs)
+        else:
+            NutAssembly.__init__(self, single_object_mode=2, nut_type=swap_nut_type, **kwargs)
 
     @property
     def _active_nut_name(self) -> str:

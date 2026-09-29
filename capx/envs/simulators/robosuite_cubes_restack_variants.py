@@ -281,6 +281,11 @@ VARIATIONS: dict[str, dict[str, Any]] = {
         "distractor_classes": ["cylinder"],
         "paraphrase_language": True,
     },
+    # Difficulty knob, not a robustness perturbation -- same idea as StackVariants'
+    # stack_3_cubes (robosuite_cubes_variants.py), adapted for the extra wrapper-level
+    # "secondary check" this task has (see FrankaRobosuiteCubesRestackVariantsLowLevel):
+    # cubeA on cubeB on cubeC, base (cubeC) must rest on the table for success to count.
+    "stack_3_cubes": {"stack_3_cubes": True},
 }
 
 
@@ -304,6 +309,11 @@ class RestackVariants(Stack):
         - swap_target (str): key of SIMILAR_OBJECT_CLASSES; replaces cubeA's shape.
         - paraphrase_language (bool): if True, `get_ep_meta()["lang"]` is sampled from a pool
           of paraphrases instead of the fixed canonical wording.
+        - stack_3_cubes (bool): if True, adds a third cube (cubeC, blue) placed independently
+          of the pre-stacked cubeA/cubeB pair; success/reward require a full 3-cube tower
+          (cubeA on cubeB on cubeC). A difficulty knob, not a perturbation -- see
+          `reward()`/`_check_success()` overrides below and
+          FrankaRobosuiteCubesRestackVariantsLowLevel's wrapper-level "secondary check".
 
     Pick one of the ~10 named presets in `VARIATIONS` via `variation`, optionally layering
     ad-hoc tweaks via `variation_overrides`.
@@ -319,6 +329,7 @@ class RestackVariants(Stack):
             VARIATIONS, variation, variation_overrides
         )
         self.distractor_objects: list[Any] = []
+        self.cubeC: Any = None
         self.language_instruction: str | None = None
 
         kwargs.setdefault("cube_A_length", 0.02)
@@ -361,6 +372,18 @@ class RestackVariants(Stack):
         self.cubeB = BoxObject(name="cubeB", size=[self.cube_B_length] * 3, rgba=rgba_b)
 
         cubes = [self.cubeA, self.cubeB]
+        if self.variation_config.get("stack_3_cubes"):
+            # StackedObjectRandomSampler only pre-stacks the first two objects it's given
+            # (cubeA on cubeB) and places anything beyond that independently (see its own
+            # docstring/the module docstring above) -- so cubeC rides along as a 3rd,
+            # separately-placed object for free, same mechanism _add_distractors already
+            # relies on below for distractor objects, just included here instead so it's a
+            # real scoreable object rather than a never-scored one.
+            self.cubeC = BoxObject(name="cubeC", size=[self.cube_A_length] * 3, rgba=[0, 0, 1, 1])
+            cubes.append(self.cubeC)
+        else:
+            self.cubeC = None
+
         self.placement_initializer = StackedObjectRandomSampler(
             name="ObjectSampler",
             mujoco_objects=cubes,
@@ -468,6 +491,9 @@ class RestackVariants(Stack):
         self._distractor_body_ids = [
             self.sim.model.body_name2id(obj.root_body) for obj in self.distractor_objects
         ]
+        self.cubeC_body_id = (
+            self.sim.model.body_name2id(self.cubeC.root_body) if self.cubeC is not None else None
+        )
 
     def _reset_internal(self) -> None:
         super()._reset_internal()
@@ -480,6 +506,41 @@ class RestackVariants(Stack):
         ep_meta = super().get_ep_meta()
         ep_meta["lang"] = self.language_instruction
         return ep_meta
+
+    # ----------------------- Difficulty override -----------------------
+
+    def _check_success(self) -> bool:
+        """3-cube tower success: cubeA resting on cubeB AND cubeB resting on cubeC (same
+        contact + not-grasping check as StackVariants' stack_3_cubes). See
+        VARIATIONS["stack_3_cubes"]. The wrapper-level "secondary check"
+        (FrankaRobosuiteCubesRestackVariantsLowLevel.task_completed) still separately verifies
+        the whole tower is resting on the table, not held in the air."""
+        if not self.variation_config.get("stack_3_cubes") or self.cubeC is None:
+            return super()._check_success()
+
+        grasping_a = self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cubeA)
+        grasping_b = self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cubeB)
+        a_on_b = self.check_contact(self.cubeA, self.cubeB) and not grasping_a
+        b_on_c = self.check_contact(self.cubeB, self.cubeC) and not grasping_b
+        return a_on_b and b_on_c
+
+    def reward(self, action=None) -> float:
+        """Simplified 2-stage reward for the 3-cube tower, matching StackVariants'
+        stack_3_cubes: 0.5 once cubeB is resting on cubeC, 1.0 once cubeA is also resting on
+        cubeB."""
+        if not self.variation_config.get("stack_3_cubes") or self.cubeC is None:
+            return super().reward(action)
+
+        grasping_a = self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cubeA)
+        grasping_b = self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cubeB)
+        a_on_b = self.check_contact(self.cubeA, self.cubeB) and not grasping_a
+        b_on_c = self.check_contact(self.cubeB, self.cubeC) and not grasping_b
+
+        if a_on_b and b_on_c:
+            return 1.0
+        if b_on_c:
+            return 0.5
+        return 0.0
 
 
 class FrankaRobosuiteCubesRestackVariantsLowLevel(RobosuiteBaseEnv):
@@ -626,7 +687,7 @@ class FrankaRobosuiteCubesRestackVariantsLowLevel(RobosuiteBaseEnv):
         cubeA_robot_base = base_transform @ cubeA_world
         cubeB_robot_base = base_transform @ cubeB_world
 
-        return {
+        pose_dict = {
             "primary": [
                 float(x)
                 for x in np.concatenate(
@@ -641,12 +702,44 @@ class FrankaRobosuiteCubesRestackVariantsLowLevel(RobosuiteBaseEnv):
             ],
         }
 
+        cubeC_body_id = getattr(self.robosuite_env, "cubeC_body_id", None)
+        if cubeC_body_id is not None:
+            # cubeC has no registered observable sensor (upstream Stack._setup_observables is
+            # hardcoded to cubeA/cubeB only), so read its pose directly from sim data instead
+            # of the observation dict -- same world-frame source _get_observations() itself
+            # reads cubeA_pos/cubeB_pos from, just not routed through an observable.
+            cubeC_world = vtf.SE3(
+                wxyz_xyz=np.concatenate(
+                    [
+                        self.robosuite_env.sim.data.xquat[cubeC_body_id],
+                        self.robosuite_env.sim.data.xpos[cubeC_body_id],
+                    ]
+                )
+            )
+            cubeC_robot_base = base_transform @ cubeC_world
+            pose_dict["tertiary"] = [
+                float(x)
+                for x in np.concatenate(
+                    [cubeC_robot_base.translation(), cubeC_robot_base.rotation().wxyz]
+                )
+            ]
+
+        return pose_dict
+
     def compute_reward(self) -> float:
-        """Dense stacking reward, zeroed if both cubes are held elevated rather than resting
-        on the table (verbatim from FrankaRobosuiteCubesRestackLowLevel.compute_reward)."""
+        """Dense stacking reward, zeroed if the tower is held elevated rather than resting on
+        the table (verbatim from FrankaRobosuiteCubesRestackLowLevel.compute_reward for the
+        2-cube case). For stack_3_cubes, "resting" means the base (cubeC) isn't elevated --
+        cubeA/cubeB being elevated is expected once they're stacked on top of it, so checking
+        all three the same way the 2-cube case checks both would always fail."""
         if self.robosuite_env.reward(action=None) > 0.4:
             robosuite_obs = self.robosuite_env._get_observations()
             pose_dict = self._cube_pose_dict(robosuite_obs)
+            if "tertiary" in pose_dict:
+                if pose_dict["tertiary"][2] > 0.04:
+                    return 0.0
+                else:
+                    return self.robosuite_env.reward(action=None)
             cube_pose_array = np.stack(
                 [
                     np.asarray(pose_dict["primary"], dtype=np.float32),
@@ -662,10 +755,14 @@ class FrankaRobosuiteCubesRestackVariantsLowLevel(RobosuiteBaseEnv):
             return self.robosuite_env.reward(action=None)
 
     def task_completed(self) -> bool:
-        """Verbatim from FrankaRobosuiteCubesRestackLowLevel.task_completed."""
+        """Verbatim from FrankaRobosuiteCubesRestackLowLevel.task_completed for the 2-cube
+        case; see compute_reward()'s docstring for why stack_3_cubes checks only the base
+        (cubeC)."""
         if self.robosuite_env._check_success():
             robosuite_obs = self.robosuite_env._get_observations()
             pose_dict = self._cube_pose_dict(robosuite_obs)
+            if "tertiary" in pose_dict:
+                return pose_dict["tertiary"][2] <= 0.04
             cube_pose_array = np.stack(
                 [
                     np.asarray(pose_dict["primary"], dtype=np.float32),

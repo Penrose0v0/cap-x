@@ -77,6 +77,14 @@ VARIATIONS: dict[str, dict[str, Any]] = {
         "distractor_classes": ["box"],
         "paraphrase_language": True,
     },
+    # Difficulty knob, not a robustness perturbation: num_markers/coverage_factor/two_clusters
+    # are all plain instance attributes upstream Wipe copies from task_config at __init__ time
+    # (self.num_markers, self.coverage_factor, self.two_clusters -- same mechanism
+    # dirt_pattern_swap above already uses for two_clusters alone), and reward() is already a
+    # wiped/total ratio that adapts to whatever num_markers ends up being, so this is genuinely
+    # free like nut_assembly's both_nuts -- no override needed beyond setting the attributes
+    # before _load_model builds the WipeArena.
+    "harder_spill": {"spill_difficulty": {"num_markers": 260, "coverage_factor": 0.92, "two_clusters": True}},
 }
 
 
@@ -107,6 +115,9 @@ class WipeVariants(Wipe):
           swapping cubeA's box shape for a cylinder.
         - paraphrase_language (bool): if True, `get_ep_meta()["lang"]` is sampled from a pool of
           paraphrases instead of the fixed canonical wording.
+        - spill_difficulty (dict with optional "num_markers"/"coverage_factor"/"two_clusters"):
+          overrides upstream Wipe's dirt-generation attributes directly. A difficulty knob, not
+          a perturbation -- see VARIATIONS["harder_spill"].
 
     Pick one of the ten named presets in `VARIATIONS` via `variation`, optionally layering
     ad-hoc tweaks via `variation_overrides`.
@@ -137,6 +148,17 @@ class WipeVariants(Wipe):
             if swap != "two_clusters":
                 raise ValueError(f"Unknown dirt_pattern_swap '{swap}'. Only 'two_clusters' is supported.")
             self.two_clusters = True
+
+        # Same mechanism as dirt_pattern_swap above -- set the instance attrs Wipe._load_model
+        # reads before calling it, rather than passing a merged task_config at construction.
+        difficulty = self.variation_config.get("spill_difficulty")
+        if difficulty is not None:
+            if "num_markers" in difficulty:
+                self.num_markers = difficulty["num_markers"]
+            if "coverage_factor" in difficulty:
+                self.coverage_factor = difficulty["coverage_factor"]
+            if "two_clusters" in difficulty:
+                self.two_clusters = difficulty["two_clusters"]
 
         super()._load_model()
 
