@@ -12,7 +12,9 @@
 #
 # Usage: bash scripts/run_heuristic_sweep_parallel.sh [SHARED_SERVICES_GPU] [TOTAL_TRIALS] [STUB_PORT] [TASKS] [OUTPUT_PREFIX] [VARIANT_SET]
 #   SHARED_SERVICES_GPU  GPU for the shared SAM3/SAM2/GraspNet/PyRoki/OWL-ViT (default: 0)
-#   TOTAL_TRIALS         Trials per (task, variant) (default: 10)
+#   TOTAL_TRIALS         Trials per (task, variant) (default: 10). May also be a path to a
+#                         TSV of "<task> <variant> <n>" lines to run a different count per
+#                         cell (cells missing from the file or with n<=0 are skipped).
 #   STUB_PORT            Port for the static-solver stub (default: 8118)
 #   TASKS                Comma-separated task short names (default: cube_restack,nut_assembly).
 #                         Must have a heuristics/<task>/solver_s3.py file.
@@ -84,11 +86,12 @@ PAIRWISE_VARIANTS=(
 )
 
 case "$VARIANT_SET" in
+    baseline) ALL_VARIANTS=(baseline) ;;
     singles)  ALL_VARIANTS=("${SINGLE_VARIANTS[@]}") ;;
     pairwise) ALL_VARIANTS=("${PAIRWISE_VARIANTS[@]}") ;;
     combined) ALL_VARIANTS=("${SINGLE_VARIANTS[@]}" "${PAIRWISE_VARIANTS[@]}") ;;
     *)
-        echo "ERROR: unknown VARIANT_SET '$VARIANT_SET'. Choices: singles, pairwise, combined"
+        echo "ERROR: unknown VARIANT_SET '$VARIANT_SET'. Choices: baseline, singles, pairwise, combined"
         exit 1
         ;;
 esac
@@ -96,8 +99,13 @@ esac
 declare -A TASK_CONFIG_MAP=(
     [cube_restack]="env_configs/cube_restack/franka_robosuite_cube_restack_variants.yaml"
     [nut_assembly]="env_configs/nut_assembly/franka_robosuite_nut_assembly_variants.yaml"
+    [cube_lifting]="env_configs/cube_lifting/franka_robosuite_cube_lifting_variants.yaml"
+    [cube_stack]="env_configs/cube_stack/franka_robosuite_cube_stack_variants.yaml"
+    [spill_wipe]="env_configs/spill_wipe/franka_robosuite_spill_wipe_variants.yaml"
+    [two_arm_handover]="env_configs/two_arm_handover/two_arm_handover_variants.yaml"
+    [two_arm_lift]="env_configs/two_arm_lift/franka_robosuite_two_arm_lift_variants.yaml"
 )
-TASK_ORDER=(cube_restack nut_assembly)
+TASK_ORDER=(cube_restack nut_assembly cube_lifting cube_stack spill_wipe two_arm_handover two_arm_lift)
 
 TASK_CONFIGS=()
 TASK_NAMES=()
@@ -134,6 +142,20 @@ with open(src) as f:
 
 data["env"]["cfg"]["low_level"]["variation"] = variation
 data["api_servers"] = []
+# S3 tier: swap the higher-level FrankaControlApi (get_object_pose/goto_pose) for
+# FrankaControlApiReduced, which exposes the low-level primitives star's solver needs
+# (get_observation / plan_grasp / solve_ik / move_to_joints / open+close_gripper /
+# get_oriented_bounding_box_from_3d_points). Every task listed in TASK_CONFIG_MAP is
+# expected to work at S3 tier; the API class itself gates by task via internal flags.
+# spill_wipe needs a shorter TCP offset (sponge attachment); switch API accordingly.
+if task_name == "spill_wipe":
+    data["env"]["cfg"]["apis"] = ["FrankaControlSpillWipeApiReduced"]
+elif task_name == "two_arm_handover":
+    data["env"]["cfg"]["apis"] = ["FrankaHandoverApiReduced"]
+elif task_name == "two_arm_lift":
+    data["env"]["cfg"]["apis"] = ["FrankaControlApiReducedBimanual"]
+else:
+    data["env"]["cfg"]["apis"] = ["FrankaControlApiReduced"]
 
 corrected_prompt = resolve_prompt(task_name, variation)
 if corrected_prompt is not None:
@@ -244,7 +266,15 @@ run_task_worker() {
     echo "[${task_name}] Starting (model=${MODEL}) -- ${#ALL_VARIANTS[@]} variants x ${TOTAL_TRIALS} trials" | tee -a "$worker_log"
 
     for variant in "${ALL_VARIANTS[@]}"; do
-        echo "[${task_name}] === variant: ${variant} ===" | tee -a "$worker_log"
+        local n_trials="$TOTAL_TRIALS"
+        if [ -f "$TOTAL_TRIALS" ]; then
+            n_trials=$(awk -v t="$task_short_name" -v v="$variant" '$1==t && $2==v {print $3}' "$TOTAL_TRIALS")
+            if [ -z "$n_trials" ] || [ "$n_trials" -le 0 ]; then
+                echo "[${task_name}] === variant: ${variant} -- nothing to run, skipping ===" | tee -a "$worker_log"
+                continue
+            fi
+        fi
+        echo "[${task_name}] === variant: ${variant} (${n_trials} trials) ===" | tee -a "$worker_log"
         local tmp_cfg="/tmp/heur_sweep_configs_${task_name}_${variant}.yaml"
         .venv/bin/python "$PATCH_SCRIPT" "$task_cfg" "$tmp_cfg" "$variant" "$task_short_name"
 
@@ -252,7 +282,7 @@ run_task_worker() {
             --args.config-paths "$tmp_cfg" \
             --args.models "${MODEL}" \
             --args.server-url "${STUB_SERVER_URL}" \
-            --args.total-trials "${TOTAL_TRIALS}" \
+            --args.total-trials "${n_trials}" \
             --args.output-dir "outputs/${OUTPUT_PREFIX}_${variant}" \
             >> "$worker_log" 2>&1
 
