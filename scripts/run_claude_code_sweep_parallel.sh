@@ -13,7 +13,7 @@
 # comment for the full explanation) -- so this reuses the same fix: ONE shared set of those
 # servers, with `api_servers` stripped from every per-variant yaml copy.
 #
-# Usage: bash scripts/run_claude_code_sweep_parallel.sh [MODEL_ALIAS] [SHARED_SERVICES_GPU] [TOTAL_TRIALS] [CLAUDE_PORT] [TASKS]
+# Usage: bash scripts/run_claude_code_sweep_parallel.sh [MODEL_ALIAS] [SHARED_SERVICES_GPU] [TOTAL_TRIALS] [CLAUDE_PORT] [TASKS] [OUTPUT_PREFIX] [VARIANT_SET]
 #   MODEL_ALIAS          claude -p --model alias, e.g. opus / sonnet / haiku (default: sonnet)
 #   SHARED_SERVICES_GPU  GPU for the shared SAM3/SAM2/GraspNet/PyRoki/OWL-ViT (default: 0)
 #   TOTAL_TRIALS         Trials per (task, variant) (default: 3)
@@ -26,6 +26,18 @@
 #                         different prefix for a rerun so it doesn't mix trial numbering with
 #                         an earlier run's folders in the same outputs/claude_code_<variant>/
 #                         directory (run_batch always starts counting from trial_01).
+#   VARIANT_SET           "singles" (the 11 named presets, default), "pairwise" (33 two-axis
+#                         combinations, e.g. "color_shift_mild+target_object_swap" -- every way
+#                         to turn on exactly 2 of the 6 independent perturbation axes at once;
+#                         presets on the SAME axis, like color_shift_mild/_strong, aren't
+#                         combined with each other since one just overwrites the other's config
+#                         key rather than compounding), or "combined" (singles + pairwise, 44
+#                         variants per task -- use when a single sweep needs both the reference
+#                         single-axis rates AND the pairwise interaction terms at matched
+#                         trial count, without paying the shared-services startup cost twice).
+#                         A "+"-joined variant is passed through PATCH_SCRIPT as a list, using
+#                         the same combination support resolve_variation_config()/resolve_prompt()
+#                         already have.
 set -e
 
 cd "$(git rev-parse --show-toplevel)"
@@ -36,10 +48,12 @@ TOTAL_TRIALS=${3:-3}
 CLAUDE_PORT=${4:-8112}
 TASKS_FILTER=${5:-all}
 OUTPUT_PREFIX=${6:-claude_code}
+VARIANT_SET=${7:-singles}
+APIS_OVERRIDE=${8:-}
 MODEL="claude-code/${MODEL_ALIAS}"
 CLAUDE_SERVER_URL="http://127.0.0.1:${CLAUDE_PORT}/chat/completions"
 
-ALL_VARIANTS=(
+SINGLE_VARIANTS=(
     baseline
     color_shift_mild
     color_shift_strong
@@ -52,6 +66,68 @@ ALL_VARIANTS=(
     language_paraphrase
     compound_hard
 )
+
+# Every way to have exactly 2 of the 6 independent perturbation axes (color, position,
+# lighting, distractor, swap, language) active at once -- see the VARIANT_SET usage note above.
+PAIRWISE_VARIANTS=(
+    target_object_swap+language_paraphrase
+    distractor_object+language_paraphrase
+    distractor_object+target_object_swap
+    lighting_bright+language_paraphrase
+    lighting_bright+target_object_swap
+    lighting_bright+distractor_object
+    lighting_dim+language_paraphrase
+    lighting_dim+target_object_swap
+    lighting_dim+distractor_object
+    object_position_shift+language_paraphrase
+    object_position_shift+target_object_swap
+    object_position_shift+distractor_object
+    object_position_shift+lighting_bright
+    object_position_shift+lighting_dim
+    robot_position_shift+language_paraphrase
+    robot_position_shift+target_object_swap
+    robot_position_shift+distractor_object
+    robot_position_shift+lighting_bright
+    robot_position_shift+lighting_dim
+    color_shift_mild+language_paraphrase
+    color_shift_mild+target_object_swap
+    color_shift_mild+distractor_object
+    color_shift_mild+lighting_bright
+    color_shift_mild+lighting_dim
+    color_shift_mild+object_position_shift
+    color_shift_mild+robot_position_shift
+    color_shift_strong+language_paraphrase
+    color_shift_strong+target_object_swap
+    color_shift_strong+distractor_object
+    color_shift_strong+lighting_bright
+    color_shift_strong+lighting_dim
+    color_shift_strong+object_position_shift
+    color_shift_strong+robot_position_shift
+)
+
+# Per-task difficulty-knob variant (not a shared perturbation): baseline + task's own
+# harder preset. Named differently per task because each targets its own metric --
+# see the VARIATIONS dict in each robosuite_*_variants.py.
+declare -A TASK_HARDER_MAP=(
+    [cube_stack]="stack_3_cubes"
+    [cube_restack]="stack_3_cubes"
+    [cube_lifting]="lift_higher"
+    [nut_assembly]="both_nuts"
+    [spill_wipe]="harder_spill"
+    [two_arm_handover]="harder_handover"
+    [two_arm_lift]="harder_lift"
+)
+
+case "$VARIANT_SET" in
+    singles)      ALL_VARIANTS=("${SINGLE_VARIANTS[@]}") ;;
+    pairwise)     ALL_VARIANTS=("${PAIRWISE_VARIANTS[@]}") ;;
+    combined)     ALL_VARIANTS=("${SINGLE_VARIANTS[@]}" "${PAIRWISE_VARIANTS[@]}") ;;
+    hard_vs_base) ALL_VARIANTS=(baseline __task_harder__) ;;
+    *)
+        echo "ERROR: unknown VARIANT_SET '$VARIANT_SET'. Choices: singles, pairwise, combined, hard_vs_base"
+        exit 1
+        ;;
+esac
 
 declare -A TASK_CONFIG_MAP=(
     [cube_stack]="env_configs/cube_stack/franka_robosuite_cube_stack_variants.yaml"
@@ -96,12 +172,19 @@ import yaml
 sys.path.insert(0, ".")
 from capx.envs.simulators.variant_prompts import resolve_prompt
 
-src, dst, variation, task_name = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+src, dst, variation_arg, task_name = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+# Optional 5th arg: override the API class (e.g. FrankaControlApiReduced for S3 tier).
+apis_override = sys.argv[5] if len(sys.argv) > 5 and sys.argv[5] else None
+# A "+"-joined variant string (e.g. "color_shift_mild+target_object_swap") is a preset
+# combination -- split it into a list, matching resolve_variation_config()'s list support.
+variation = variation_arg.split("+") if "+" in variation_arg else variation_arg
 with open(src) as f:
     data = yaml.safe_load(f)
 
 data["env"]["cfg"]["low_level"]["variation"] = variation
 data["api_servers"] = []
+if apis_override:
+    data["env"]["cfg"]["apis"] = [apis_override]
 
 corrected_prompt = resolve_prompt(task_name, variation)
 if corrected_prompt is not None:
@@ -112,6 +195,9 @@ with open(dst, "w") as f:
 PYEOF
 
 echo "=== ${#TASK_CONFIGS[@]} tasks x ${#ALL_VARIANTS[@]} variants x ${TOTAL_TRIALS} trials = $(( ${#TASK_CONFIGS[@]} * ${#ALL_VARIANTS[@]} * TOTAL_TRIALS )) total trials ==="
+if [ -n "$APIS_OVERRIDE" ]; then
+    echo "=== APIs override: $APIS_OVERRIDE (overrides whatever the yaml's env.cfg.apis says) ==="
+fi
 echo "=== Model: ${MODEL}; shared vision/planning services on GPU ${SHARED_SERVICES_GPU} ==="
 
 ALL_BG_PIDS=()
@@ -215,9 +301,18 @@ run_task_worker() {
     echo "[${task_name}] Starting -- ${#ALL_VARIANTS[@]} variants x ${TOTAL_TRIALS} trials" | tee -a "$worker_log"
 
     for variant in "${ALL_VARIANTS[@]}"; do
+        # hard_vs_base mode: substitute the per-task harder preset from TASK_HARDER_MAP.
+        # Skip the task entirely if no harder preset is registered for it.
+        if [ "$variant" = "__task_harder__" ]; then
+            variant="${TASK_HARDER_MAP[$task_short_name]:-}"
+            if [ -z "$variant" ]; then
+                echo "[${task_name}] no harder preset for ${task_short_name}, skipping" | tee -a "$worker_log"
+                continue
+            fi
+        fi
         echo "[${task_name}] === variant: ${variant} ===" | tee -a "$worker_log"
         local tmp_cfg="/tmp/claude_sweep_configs_${task_name}_${variant}.yaml"
-        .venv/bin/python "$PATCH_SCRIPT" "$task_cfg" "$tmp_cfg" "$variant" "$task_short_name"
+        .venv/bin/python "$PATCH_SCRIPT" "$task_cfg" "$tmp_cfg" "$variant" "$task_short_name" "$APIS_OVERRIDE"
 
         uv run --frozen python -m capx.envs.scripts.run_batch \
             --args.config-paths "$tmp_cfg" \

@@ -27,6 +27,7 @@ import itertools
 import json
 import logging
 import os
+import shutil
 import time
 from pathlib import Path
 from typing import Literal
@@ -40,6 +41,17 @@ from pydantic import BaseModel
 logger = logging.getLogger(__name__)
 
 _id_counter = itertools.count()
+
+# Resolve the claude CLI to an absolute path at import time. Non-login shells
+# don't source /root/.profile so PATH may miss /root/.local/bin -- without this
+# every subprocess call would 500 with "[Errno 2] No such file or directory:
+# 'claude'". Fall back to the canonical install path if PATH lookup fails.
+CLAUDE_BIN = shutil.which("claude") or "/root/.local/bin/claude"
+if not Path(CLAUDE_BIN).exists():
+    raise RuntimeError(
+        f"claude CLI not found (tried PATH and {CLAUDE_BIN}); install it "
+        "or set PATH to include its directory before starting this server."
+    )
 
 
 class ImageUrl(BaseModel):
@@ -132,7 +144,7 @@ async def _run_claude_p(
     timeout: float,
 ) -> str:
     cmd = [
-        "claude", "-p",
+        CLAUDE_BIN, "-p",
         "--output-format", "json",
         "--model", model,
         "--tools", "",
