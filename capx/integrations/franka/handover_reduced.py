@@ -256,7 +256,13 @@ class FrankaHandoverApiReduced(ApiBase):
             >>> move_to_joints_arm0(joints)
         """
         joints = np.asarray(joints, dtype=np.float64).reshape(7)
-        self._env.move_to_joints_blocking_arm0(joints)
+        # RobosuiteHandoverEnv historically names arm0's method
+        # ``move_to_joints_blocking`` while arm1 has an explicit suffix.  Accept both
+        # spellings so this reduced API works with the base and variant environments.
+        move = getattr(self._env, "move_to_joints_blocking_arm0", None)
+        if move is None:
+            move = self._env.move_to_joints_blocking
+        move(joints)
 
     def move_to_joints_arm1(self, joints: np.ndarray) -> None:
         """Move arm1 (robot1) to a given joint configuration in a blocking manner.

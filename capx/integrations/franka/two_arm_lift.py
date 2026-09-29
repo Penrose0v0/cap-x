@@ -226,13 +226,22 @@ class FrankaTwoArmLiftApi(ApiBase):
         return queried_instance_idx, seg_crop
 
     def _get_handle_pose_with_graspnet(
-        self, object_name: str, index: int = 0
+        self,
+        object_name: str,
+        index: int = 0,
+        disambiguate_pair_by_y_side: str | None = None,
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Helper to get handle pose using vision detection + GraspNet for orientation.
 
         Args:
             object_name: (str) Name of the object to get the pose for.
-            index: (int) Index of the object to get the pose for.
+            index: (int) Index of the object to get the pose for. Ignored when
+                disambiguate_pair_by_y_side is set.
+            disambiguate_pair_by_y_side: If "positive"/"negative", pick between the
+                top-2 detections by comparing their world-y coordinates and return
+                the one on the requested side. Used when two visually-identical
+                objects (e.g. both handles of the swapped grey pot) match the same
+                OWL-ViT query and score ordering isn't a reliable disambiguator.
 
         Returns:
             grasp_position: (3,) XYZ position of grasp pose in world coordinates
@@ -267,12 +276,30 @@ class FrankaTwoArmLiftApi(ApiBase):
         candidate_limit = 5
         candidates = dets[:candidate_limit]
 
-        if index >= len(candidates):
-            raise ValueError(
-                f"Requested index {index} for {object_name}, but only found {len(candidates)} candidates."
-            )
-
-        target_det = candidates[index]
+        if disambiguate_pair_by_y_side is not None:
+            if disambiguate_pair_by_y_side not in ("positive", "negative"):
+                raise ValueError(
+                    f"disambiguate_pair_by_y_side must be 'positive' or 'negative', got {disambiguate_pair_by_y_side!r}"
+                )
+            if len(candidates) < 2:
+                raise ValueError(
+                    f"disambiguate_pair_by_y_side requires >=2 candidates for {object_name}, got {len(candidates)}"
+                )
+            # Take top-2 by score, then pick the one on the requested world-y side.
+            pair = candidates[:2]
+            pair_world_y = [
+                self._detection_world_y(obs, rgb, det, object_name) for det in pair
+            ]
+            if disambiguate_pair_by_y_side == "positive":
+                target_det = pair[int(np.argmax(pair_world_y))]
+            else:
+                target_det = pair[int(np.argmin(pair_world_y))]
+        else:
+            if index >= len(candidates):
+                raise ValueError(
+                    f"Requested index {index} for {object_name}, but only found {len(candidates)} candidates."
+                )
+            target_det = candidates[index]
         box = target_det["box"]
 
         if self._debug:
@@ -337,6 +364,90 @@ class FrankaTwoArmLiftApi(ApiBase):
 
     # ----------------------- Pose Getters -----------------------
 
+    # Query strings passed straight to OWL-ViT / SAM3 for pot + handles. Declared per
+    # swap_pot_config key so target_object_swap doesn't leave the integration querying
+    # colors/shapes that no longer exist in the scene. Keep these in sync with
+    # POT_CONFIG_SWAPS in capx/envs/simulators/robosuite_two_arm_lift_variants.py.
+    _HANDLE_QUERIES_DEFAULT = {
+        "pot": "red box-like pot",
+        "handle0": "The green square frame",
+        "handle1": "The blue square",
+    }
+    _HANDLE_QUERIES_BY_POT_SWAP = {
+        # compact_solid_handle: uniform grey pot, both handles are visually identical
+        # solid grey stubs, so both handles use the same query and are disambiguated by
+        # y-position (see disambiguate_pair_by_y_side branch below).
+        "compact_solid_handle": {
+            "pot": "small grey cube in the middle",
+            "handle0": "small grey cube",
+            "handle1": "small grey cube",
+        },
+    }
+
+    def _get_object_queries(self) -> dict[str, str]:
+        """Return the (pot, handle0, handle1) query strings for the current variant.
+
+        Reads swap_pot_config off the underlying variants env's variation_config so
+        target_object_swap and any other pot-swapping variants don't leave the integration
+        querying a description that no longer matches the scene. Falls back to the default
+        queries when the underlying env doesn't expose a swap.
+        """
+        swap_key = None
+        inner = getattr(self._env, "robosuite_env", None)
+        if inner is not None:
+            variation_config = getattr(inner, "variation_config", None)
+            if variation_config is not None:
+                swap_key = variation_config.get("swap_pot_config")
+        if swap_key and swap_key in self._HANDLE_QUERIES_BY_POT_SWAP:
+            return self._HANDLE_QUERIES_BY_POT_SWAP[swap_key]
+        return self._HANDLE_QUERIES_DEFAULT
+
+    def _detection_world_y(
+        self, obs: dict, rgb: np.ndarray, det: dict, object_name: str
+    ) -> float:
+        """Return the world-y coordinate of a single OWL-ViT detection box's center.
+
+        Cheap approximation used only to disambiguate top-2 candidates when both share
+        the same query (see disambiguate_pair_by_y_side in _get_handle_pose_with_graspnet).
+        Uses box-center pixel depth + camera intrinsics/extrinsics, without full
+        segmentation, since we just need to compare which detection is on which side.
+        """
+        box = det["box"]
+        x1, y1, x2, y2 = box
+        cx = int((x1 + x2) / 2)
+        cy = int((y1 + y2) / 2)
+
+        depth_raw = obs["agentview"]["images"]["depth"]
+        depth = depth_raw.copy() if isinstance(depth_raw, np.ndarray) else np.array(depth_raw)
+        depth_2d = depth[:, :, 0] if depth.ndim == 3 else depth
+
+        h, w = depth_2d.shape[:2]
+        cx = max(0, min(w - 1, cx))
+        cy = max(0, min(h - 1, cy))
+        depth_val = depth_2d[cy, cx]
+        if np.isnan(depth_val) or depth_val <= 0:
+            # Fall back to mean of surrounding valid pixels in a small window.
+            r = 3
+            y0, y1w = max(0, cy - r), min(h, cy + r + 1)
+            x0, x1w = max(0, cx - r), min(w, cx + r + 1)
+            patch = depth_2d[y0:y1w, x0:x1w]
+            valid = patch[~np.isnan(patch) & (patch > 0)]
+            if valid.size == 0:
+                raise ValueError(
+                    f"No valid depth in box center for {object_name} @ ({cx},{cy})"
+                )
+            depth_val = float(valid.mean())
+
+        intrinsics = obs["agentview"]["intrinsics"]
+        point_cam = deproject_pixel_to_camera((cx, cy), depth_val, intrinsics)
+        cam_extr_tf = vtf.SE3.from_rotation_and_translation(
+            rotation=vtf.SO3(wxyz=obs["agentview"]["pose"][3:]),
+            translation=obs["agentview"]["pose"][:3],
+        )
+        point_cam_tf = vtf.SE3.from_translation(np.asarray(point_cam, dtype=np.float64))
+        point_world_tf = cam_extr_tf @ point_cam_tf
+        return float(point_world_tf.translation()[1])
+
     def get_pot_pose(self) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Get the pose of the pot body using vision detection + GraspNet for orientation.
 
@@ -348,7 +459,7 @@ class FrankaTwoArmLiftApi(ApiBase):
             bbox_center_position: (3,) XYZ position of bounding box center in world coordinates
         """
         # Use GraspNet to get pot orientation
-        return self._get_handle_pose_with_graspnet("red box-like pot", index=0)
+        return self._get_handle_pose_with_graspnet(self._get_object_queries()["pot"], index=0)
 
     def get_handle0_pos(self) -> np.ndarray:
         """Get the bounding box center position of handle 0 using vision detection.
@@ -358,8 +469,16 @@ class FrankaTwoArmLiftApi(ApiBase):
         Returns:
             bbox_center: (3,) XYZ position of bounding box center in world coordinates
         """
-        # Use vision detection to get handle bbox center
-        _, _, bbox_center = self._get_handle_pose_with_graspnet("The green square frame", index=0)
+        queries = self._get_object_queries()
+        # When handle0 and handle1 share the same query (e.g. compact_solid_handle where the
+        # two handles are visually identical), pick the top-2 detections and disambiguate by
+        # y-position: handle0 = larger y (arm0's side).
+        same_query = queries["handle0"] == queries["handle1"]
+        _, _, bbox_center = self._get_handle_pose_with_graspnet(
+            queries["handle0"],
+            index=0,
+            disambiguate_pair_by_y_side="positive" if same_query else None,
+        )
         return bbox_center
 
     def get_handle1_pos(self) -> np.ndarray:
@@ -370,8 +489,13 @@ class FrankaTwoArmLiftApi(ApiBase):
         Returns:
             bbox_center: (3,) XYZ position of bounding box center in world coordinates
         """
-        # Use vision detection to get handle bbox center
-        _, _, bbox_center = self._get_handle_pose_with_graspnet("The blue square", index=0)
+        queries = self._get_object_queries()
+        same_query = queries["handle0"] == queries["handle1"]
+        _, _, bbox_center = self._get_handle_pose_with_graspnet(
+            queries["handle1"],
+            index=0,
+            disambiguate_pair_by_y_side="negative" if same_query else None,
+        )
         return bbox_center
 
     def get_arm0_gripper_pose(self) -> tuple[np.ndarray, np.ndarray]:
