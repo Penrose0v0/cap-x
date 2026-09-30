@@ -16,7 +16,9 @@
 # Usage: bash scripts/run_claude_code_sweep_parallel.sh [MODEL_ALIAS] [SHARED_SERVICES_GPU] [TOTAL_TRIALS] [CLAUDE_PORT] [TASKS] [OUTPUT_PREFIX] [VARIANT_SET]
 #   MODEL_ALIAS          claude -p --model alias, e.g. opus / sonnet / haiku (default: sonnet)
 #   SHARED_SERVICES_GPU  GPU for the shared SAM3/SAM2/GraspNet/PyRoki/OWL-ViT (default: 0)
-#   TOTAL_TRIALS         Trials per (task, variant) (default: 3)
+#   TOTAL_TRIALS         Trials per (task, variant) (default: 3). May also be a path to a TSV
+#                         of "<task> <variant> <n>" lines to run a different count per cell
+#                         (cells missing from the file or with n<=0 are skipped).
 #   CLAUDE_PORT          Port for the shared claude-code-cli proxy (default: 8112)
 #   TASKS                Comma-separated task short names to run (default: all). One worker
 #                         per task, so this also controls how many workers launch. Choices:
@@ -38,6 +40,9 @@
 #                         A "+"-joined variant is passed through PATCH_SCRIPT as a list, using
 #                         the same combination support resolve_variation_config()/resolve_prompt()
 #                         already have.
+#   APIS_OVERRIDE         Optional API class name written into every task's env.cfg.apis, or
+#                         "S3" to give each task its own reduced low-level API (the tier the
+#                         hard-coded heuristics/ solvers run at). Default: the yaml's own apis.
 set -e
 
 cd "$(git rev-parse --show-toplevel)"
@@ -65,6 +70,8 @@ SINGLE_VARIANTS=(
     target_object_swap
     language_paraphrase
     compound_hard
+    camera_shift_mild
+    camera_shift_strong
 )
 
 # Every way to have exactly 2 of the 6 independent perturbation axes (color, position,
@@ -183,7 +190,16 @@ with open(src) as f:
 
 data["env"]["cfg"]["low_level"]["variation"] = variation
 data["api_servers"] = []
-if apis_override:
+# "S3" selects each task's own reduced (low-level primitives) API class, the same tier the
+# hard-coded solvers in heuristics/ run at; any other value is used verbatim for every task.
+S3_APIS = {
+    "spill_wipe": "FrankaControlSpillWipeApiReduced",
+    "two_arm_handover": "FrankaHandoverApiReduced",
+    "two_arm_lift": "FrankaControlApiReducedBimanual",
+}
+if apis_override == "S3":
+    data["env"]["cfg"]["apis"] = [S3_APIS.get(task_name, "FrankaControlApiReduced")]
+elif apis_override:
     data["env"]["cfg"]["apis"] = [apis_override]
 
 corrected_prompt = resolve_prompt(task_name, variation)
@@ -194,7 +210,11 @@ with open(dst, "w") as f:
     yaml.safe_dump(data, f, sort_keys=False)
 PYEOF
 
-echo "=== ${#TASK_CONFIGS[@]} tasks x ${#ALL_VARIANTS[@]} variants x ${TOTAL_TRIALS} trials = $(( ${#TASK_CONFIGS[@]} * ${#ALL_VARIANTS[@]} * TOTAL_TRIALS )) total trials ==="
+if [ -f "$TOTAL_TRIALS" ]; then
+    echo "=== ${#TASK_CONFIGS[@]} tasks x ${#ALL_VARIANTS[@]} variants; per-cell trial counts from ${TOTAL_TRIALS} ==="
+else
+    echo "=== ${#TASK_CONFIGS[@]} tasks x ${#ALL_VARIANTS[@]} variants x ${TOTAL_TRIALS} trials = $(( ${#TASK_CONFIGS[@]} * ${#ALL_VARIANTS[@]} * TOTAL_TRIALS )) total trials ==="
+fi
 if [ -n "$APIS_OVERRIDE" ]; then
     echo "=== APIs override: $APIS_OVERRIDE (overrides whatever the yaml's env.cfg.apis says) ==="
 fi
@@ -310,15 +330,24 @@ run_task_worker() {
                 continue
             fi
         fi
-        echo "[${task_name}] === variant: ${variant} ===" | tee -a "$worker_log"
+        local n_trials="$TOTAL_TRIALS"
+        if [ -f "$TOTAL_TRIALS" ]; then
+            n_trials=$(awk -v t="$task_short_name" -v v="$variant" '$1==t && $2==v {print $3}' "$TOTAL_TRIALS")
+            if [ -z "$n_trials" ] || [ "$n_trials" -le 0 ]; then
+                echo "[${task_name}] === variant: ${variant} -- nothing to run, skipping ===" | tee -a "$worker_log"
+                continue
+            fi
+        fi
+        echo "[${task_name}] === variant: ${variant} (${n_trials} trials) ===" | tee -a "$worker_log"
         local tmp_cfg="/tmp/claude_sweep_configs_${task_name}_${variant}.yaml"
         .venv/bin/python "$PATCH_SCRIPT" "$task_cfg" "$tmp_cfg" "$variant" "$task_short_name" "$APIS_OVERRIDE"
 
+        MUJOCO_EGL_DEVICE_ID="${SHARED_SERVICES_GPU}" \
         uv run --frozen python -m capx.envs.scripts.run_batch \
             --args.config-paths "$tmp_cfg" \
             --args.models "${MODEL}" \
             --args.server-url "${CLAUDE_SERVER_URL}" \
-            --args.total-trials "${TOTAL_TRIALS}" \
+            --args.total-trials "${n_trials}" \
             --args.output-dir "outputs/${OUTPUT_PREFIX}_${variant}" \
             >> "$worker_log" 2>&1
 

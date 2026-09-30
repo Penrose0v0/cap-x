@@ -45,6 +45,8 @@ SINGLE_VARIANTS=(
     target_object_swap
     language_paraphrase
     compound_hard
+    camera_shift_mild
+    camera_shift_strong
 )
 
 # Every way to have exactly 2 of the 6 independent perturbation axes active at once --
@@ -165,7 +167,11 @@ with open(dst, "w") as f:
     yaml.safe_dump(data, f, sort_keys=False)
 PYEOF
 
-echo "=== ${#TASK_CONFIGS[@]} tasks x ${#ALL_VARIANTS[@]} variants x ${TOTAL_TRIALS} trials = $(( ${#TASK_CONFIGS[@]} * ${#ALL_VARIANTS[@]} * TOTAL_TRIALS )) total trials ==="
+if [ -f "$TOTAL_TRIALS" ]; then
+    echo "=== ${#TASK_CONFIGS[@]} tasks x ${#ALL_VARIANTS[@]} variants; per-cell trial counts from ${TOTAL_TRIALS} ==="
+else
+    echo "=== ${#TASK_CONFIGS[@]} tasks x ${#ALL_VARIANTS[@]} variants x ${TOTAL_TRIALS} trials = $(( ${#TASK_CONFIGS[@]} * ${#ALL_VARIANTS[@]} * TOTAL_TRIALS )) total trials ==="
+fi
 echo "=== Backend: static-solver stub on port ${STUB_PORT}; shared vision/planning services on GPU ${SHARED_SERVICES_GPU} ==="
 
 ALL_BG_PIDS=()
@@ -278,6 +284,11 @@ run_task_worker() {
         local tmp_cfg="/tmp/heur_sweep_configs_${task_name}_${variant}.yaml"
         .venv/bin/python "$PATCH_SCRIPT" "$task_cfg" "$tmp_cfg" "$variant" "$task_short_name"
 
+        # Pin the render workers' EGL contexts to the same GPU as the shared services. Left
+        # unset, mujoco takes the first EGL device that initializes, which on a shared box can
+        # be a GPU saturated by someone else -- the workers then die on driver OOM and
+        # run_batch hangs forever waiting on its dead pool.
+        MUJOCO_EGL_DEVICE_ID="${SHARED_SERVICES_GPU}" \
         uv run --frozen python -m capx.envs.scripts.run_batch \
             --args.config-paths "$tmp_cfg" \
             --args.models "${MODEL}" \
