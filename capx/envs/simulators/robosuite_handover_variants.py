@@ -36,6 +36,11 @@ from robot_descriptions.loaders.yourdfpy import load_robot_description
 from viser.extras import ViserUrdf
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variant_camera import (
+    CAMERA_ORBIT_PRESETS,
+    apply_camera_orbit,
+    capture_camera_reference,
+)
 from capx.envs.simulators.variants_common import resolve_variation_config
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
@@ -117,6 +122,9 @@ VARIATIONS: dict[str, dict[str, Any]] = {
     # grasp stops counting as a success. See the __init__ override note above.
     "harder_handover": {"handover_height_threshold": 0.16},
 }
+
+
+VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
 class TwoArmHandoverVariants(TwoArmHandover):
@@ -559,6 +567,7 @@ class RobosuiteHandoverVariantsEnv(RobosuiteBaseEnv):
         agentview_cam_id = self.robosuite_env.sim.model.camera_name2id("agentview")
         self.robosuite_env.sim.model.cam_pos[agentview_cam_id] = [1.5, 0.0, 2.5]
         self.robosuite_env.sim.model.cam_quat[agentview_cam_id] = [0.653, 0.271, 0.271, 0.653]
+        self._apply_camera_orbit()
 
         # State tracking
         self._step_count = 0
@@ -637,6 +646,7 @@ class RobosuiteHandoverVariantsEnv(RobosuiteBaseEnv):
         agentview_cam_id = self.robosuite_env.sim.model.camera_name2id("agentview")
         self.robosuite_env.sim.model.cam_pos[agentview_cam_id] = [1.5, 0.0, 2.5]
         self.robosuite_env.sim.model.cam_quat[agentview_cam_id] = [0.653, 0.271, 0.271, 0.653]
+        self._apply_camera_orbit()
 
         self._step_count = 0
         self._sim_step_count = 0
@@ -914,6 +924,7 @@ class RobosuiteHandoverVariantsEnv(RobosuiteBaseEnv):
         agentview_cam_id = self.robosuite_env.sim.model.camera_name2id("agentview")
         self.robosuite_env.sim.model.cam_pos[agentview_cam_id] = [1.5, 0.0, 2.5]
         self.robosuite_env.sim.model.cam_quat[agentview_cam_id] = [0.653, 0.271, 0.271, 0.653]
+        self._apply_camera_orbit()
         # Forward the simulation to update camera transforms before capturing observations
         self.robosuite_env.sim.forward()
         # Force update to ensure fresh camera images are captured with the new camera position
@@ -1061,6 +1072,14 @@ class RobosuiteHandoverVariantsEnv(RobosuiteBaseEnv):
 
     # ------------------------- Video Capture -------------------------
 
+    def _apply_camera_orbit(self) -> None:
+        # This wrapper pins agentview to a fixed pose (above) after every reset/observation,
+        # so the orbit has to be applied here, on top of that pinned pose, not inside the
+        # robosuite env's _reset_internal where it would be overwritten.
+        sim = self.robosuite_env.sim
+        reference = capture_camera_reference(sim, "agentview")
+        apply_camera_orbit(sim, reference, self.robosuite_env.variation_config.get("camera_orbit"))
+
     def enable_video_capture(self, enabled: bool = True, *, clear: bool = True) -> None:
         self._record_frames = enabled
         if clear:
@@ -1070,6 +1089,7 @@ class RobosuiteHandoverVariantsEnv(RobosuiteBaseEnv):
             agentview_cam_id = self.robosuite_env.sim.model.camera_name2id("agentview")
             self.robosuite_env.sim.model.cam_pos[agentview_cam_id] = [1.5, 0.0, 2.5]
             self.robosuite_env.sim.model.cam_quat[agentview_cam_id] = [0.653, 0.271, 0.271, 0.653]
+            self._apply_camera_orbit()
             self.robosuite_env.sim.forward()
             self._record_frame()
 

@@ -27,6 +27,11 @@ from robot_descriptions.loaders.yourdfpy import load_robot_description
 from viser.extras import ViserUrdf
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variant_camera import (
+    CAMERA_ORBIT_PRESETS,
+    apply_camera_orbit,
+    capture_camera_reference,
+)
 from capx.envs.simulators.variants_common import resolve_variation_config
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
@@ -103,6 +108,9 @@ VARIATIONS: dict[str, dict[str, Any]] = {
     # anything scored).
     "both_nuts": {"both_nuts": True},
 }
+
+
+VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
 class NutAssemblyVariants(NutAssemblySquare):
@@ -242,8 +250,15 @@ class NutAssemblyVariants(NutAssemblySquare):
 
     # ----------------------- Reset / success -----------------------
 
+    def _setup_references(self) -> None:
+        super()._setup_references()
+        # The capx wrapper observes this task through "birdview" (aliased to the
+        # "robot0_robotview" key), so that's the camera to perturb.
+        self._camera_orbit_ref = capture_camera_reference(self.sim, "birdview")
+
     def _reset_internal(self) -> None:
         super()._reset_internal()
+        apply_camera_orbit(self.sim, self._camera_orbit_ref, self.variation_config.get("camera_orbit"))
 
         distractor_names = self.variation_config.get("distractor_classes", [])
         if distractor_names and isinstance(self.placement_initializer, SequentialCompositeSampler):
@@ -347,7 +362,6 @@ class FrankaRobosuiteNutAssemblyVariantsLowLevel(RobosuiteBaseEnv):
                 )
         else:
             self.robosuite_env = NutAssemblyVariants(
-                robots=["Panda"],
                 has_renderer=True,
                 has_offscreen_renderer=True,
                 camera_names=self.render_camera_names,

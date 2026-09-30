@@ -25,6 +25,11 @@ from robosuite.utils.mjcf_utils import CustomMaterial, array_to_string, find_ele
 from robosuite.utils.placement_samplers import UniformRandomSampler
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variant_camera import (
+    CAMERA_ORBIT_PRESETS,
+    apply_camera_orbit,
+    capture_camera_reference,
+)
 from capx.envs.simulators.variants_common import resolve_variation_config
 
 # Object classes usable as a visually-similar swap for cubeA, or as task-irrelevant distractors.
@@ -70,6 +75,9 @@ VARIATIONS: dict[str, dict[str, Any]] = {
     # reads generically.
     "stack_3_cubes": {"stack_3_cubes": True},
 }
+
+
+VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
 class StackVariants(Stack):
@@ -336,12 +344,14 @@ class StackVariants(Stack):
         self._distractor_body_ids = [
             self.sim.model.body_name2id(obj.root_body) for obj in self.distractor_objects
         ]
+        self._camera_orbit_ref = capture_camera_reference(self.sim, "robot0_robotview")
         self.cubeC_body_id = (
             self.sim.model.body_name2id(self.cubeC.root_body) if self.cubeC is not None else None
         )
 
     def _reset_internal(self) -> None:
         super()._reset_internal()
+        apply_camera_orbit(self.sim, self._camera_orbit_ref, self.variation_config.get("camera_orbit"))
         paraphrase = self.variation_config.get("paraphrase_language", False)
         self.language_instruction = (
             str(self.rng.choice(PROMPT_PARAPHRASES)) if paraphrase else CANONICAL_PROMPT

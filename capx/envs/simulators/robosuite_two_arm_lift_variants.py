@@ -49,6 +49,11 @@ from robosuite.utils.mjcf_utils import array_to_string, find_elements
 from robosuite.utils.placement_samplers import SequentialCompositeSampler, UniformRandomSampler
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variant_camera import (
+    CAMERA_ORBIT_PRESETS,
+    apply_camera_orbit,
+    capture_camera_reference,
+)
 from capx.envs.simulators.variants_common import resolve_variation_config
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
@@ -121,6 +126,9 @@ VARIATIONS: dict[str, dict[str, Any]] = {
     # and keep the pot noticeably more level.
     "harder_lift": {"lift_height_threshold": 0.18, "tilt_tolerance_deg": 15.0},
 }
+
+
+VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
 class TwoArmLiftVariants(TwoArmLift):
@@ -382,9 +390,16 @@ class TwoArmLiftVariants(TwoArmLift):
         self._distractor_body_ids = [
             self.sim.model.body_name2id(obj.root_body) for obj in self.distractor_objects
         ]
+        # The observation image is the one robosuite renders during reset(), from the arena's
+        # own agentview pose. (The capx wrapper later pins agentview to a different pose for
+        # subsequent frames, but without a forward, so the reset observation and its
+        # extrinsics both come from the arena pose.) Perturb that camera, before the reset
+        # render, so image and extrinsics stay consistent.
+        self._camera_orbit_ref = capture_camera_reference(self.sim, "agentview")
 
     def _reset_internal(self) -> None:
         super()._reset_internal()
+        apply_camera_orbit(self.sim, self._camera_orbit_ref, self.variation_config.get("camera_orbit"))
         paraphrase = self.variation_config.get("paraphrase_language", False)
         self.language_instruction = (
             str(self.rng.choice(PROMPT_PARAPHRASES)) if paraphrase else CANONICAL_PROMPT

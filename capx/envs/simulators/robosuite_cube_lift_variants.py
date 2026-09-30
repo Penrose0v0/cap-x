@@ -32,6 +32,11 @@ from robosuite.utils.mjcf_utils import CustomMaterial, array_to_string, find_ele
 from robosuite.utils.placement_samplers import UniformRandomSampler
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
+from capx.envs.simulators.variant_camera import (
+    CAMERA_ORBIT_PRESETS,
+    apply_camera_orbit,
+    capture_camera_reference,
+)
 from capx.envs.simulators.variants_common import resolve_variation_config
 
 # Object classes usable as a visually-similar swap for the lift cube, or as task-irrelevant
@@ -84,6 +89,9 @@ VARIATIONS: dict[str, dict[str, Any]] = {
     # lift_height_threshold below and the two method overrides that consume it.
     "lift_higher": {"lift_height_threshold": 0.12},
 }
+
+
+VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
 class LiftVariants(Lift):
@@ -320,9 +328,11 @@ class LiftVariants(Lift):
         self._distractor_body_ids = [
             self.sim.model.body_name2id(obj.root_body) for obj in self.distractor_objects
         ]
+        self._camera_orbit_ref = capture_camera_reference(self.sim, "robot0_robotview")
 
     def _reset_internal(self) -> None:
         super()._reset_internal()
+        apply_camera_orbit(self.sim, self._camera_orbit_ref, self.variation_config.get("camera_orbit"))
 
         if not self.deterministic_reset and self._distractor_sampler is not None:
             distractor_placements = self._distractor_sampler.sample()
