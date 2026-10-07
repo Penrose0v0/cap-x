@@ -26,6 +26,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from scipy import ndimage
 from scipy.spatial.transform import Rotation
+from heuristics.common import *  # noqa: F401,F403 -- inlined by static_solver_server
 
 
 CAMERA_NAME = "robot0_robotview"
@@ -49,37 +50,9 @@ ARTIFACT_DIR = Path(_artifact_dir_value) if _artifact_dir_value else None
 TRACE: list[dict[str, Any]] = []
 
 
-def _jsonable(value: Any) -> Any:
-    if isinstance(value, np.ndarray):
-        return value.tolist()
-    if isinstance(value, (np.floating, np.integer)):
-        return value.item()
-    if isinstance(value, dict):
-        return {str(key): _jsonable(item) for key, item in value.items()}
-    if isinstance(value, (list, tuple)):
-        return [_jsonable(item) for item in value]
-    return value
 
+record = make_recorder("cube_restack", TRACE, ARTIFACT_DIR)
 
-def record(event: str, **values: Any) -> None:
-    entry = {"event": event, **{key: _jsonable(value) for key, value in values.items()}}
-    TRACE.append(entry)
-    compact = ", ".join(f"{key}={value}" for key, value in entry.items() if key != "event")
-    print(f"[cube_restack:s3] {event}" + (f": {compact}" if compact else ""))
-    if ARTIFACT_DIR is not None:
-        ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-        (ARTIFACT_DIR / "trajectory_trace.json").write_text(
-            json.dumps(TRACE, indent=2) + "\n", encoding="utf-8"
-        )
-
-
-def _depth_2d(depth: np.ndarray) -> np.ndarray:
-    array = np.asarray(depth, dtype=np.float64)
-    if array.ndim == 3 and array.shape[-1] == 1:
-        array = array[:, :, 0]
-    if array.ndim != 2:
-        raise ValueError(f"Expected a 2-D depth image, got {array.shape}")
-    return array
 
 
 def erode_mask(mask: np.ndarray, iterations: int = 1) -> np.ndarray:
@@ -222,10 +195,6 @@ def deproject_mask(
     return np.column_stack([x, y, z]), valid
 
 
-def transform_points(transform: np.ndarray, points: np.ndarray) -> np.ndarray:
-    homogeneous = np.column_stack([points, np.ones(len(points), dtype=np.float64)])
-    return (np.asarray(transform, dtype=np.float64) @ homogeneous.T).T[:, :3]
-
 
 def estimate_cube_geometry(
     points_camera: np.ndarray, camera_to_base: np.ndarray
@@ -263,9 +232,6 @@ def estimate_cube_geometry(
         "points_base": points_base,
     }
 
-
-def _safe_name(value: str) -> str:
-    return re.sub(r"[^a-zA-Z0-9_.-]+", "_", value).strip("_")
 
 
 def save_detection_overlay(
@@ -369,10 +335,6 @@ def estimate_table_height(observation: dict[str, Any], fallback: float) -> float
     record("table_height", height=height)
     return height
 
-
-def matrix_to_quaternion_wxyz(matrix: np.ndarray) -> np.ndarray:
-    quaternion_xyzw = Rotation.from_matrix(np.asarray(matrix, dtype=np.float64)).as_quat()
-    return quaternion_xyzw[[3, 0, 1, 2]]
 
 
 def rank_grasp_candidates(

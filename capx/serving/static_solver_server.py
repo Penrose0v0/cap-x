@@ -14,6 +14,7 @@ No auth, no state -- one file per task on disk is the whole "policy".
 from __future__ import annotations
 
 import itertools
+import re
 import time
 from pathlib import Path
 from typing import Literal
@@ -81,6 +82,23 @@ def _resolve_solver_path(model: str, model_prefix: str, solver_root: Path) -> Pa
     return path
 
 
+_COMMON_IMPORT = re.compile(r"^from heuristics\.common import \*.*$", re.M)
+
+
+def load_solver_source(solver_path: Path, solver_root: Path) -> str:
+    """The solver file with ``from heuristics.common import *`` replaced by the helpers'
+    source, so the sandbox receives one self-contained block (the sandbox has no
+    ``heuristics`` package on its path, and a served policy should read as a single
+    submission). Any ``from __future__`` line in common.py is dropped: it would no longer
+    be at the top of the file."""
+    source = solver_path.read_text(encoding="utf-8")
+    if not _COMMON_IMPORT.search(source):
+        return source
+    common = (solver_root / "common.py").read_text(encoding="utf-8")
+    common = "\n".join(line for line in common.splitlines() if not line.startswith("from __future__"))
+    return _COMMON_IMPORT.sub(lambda _: "# --- heuristics/common.py (inlined) ---\n" + common + "\n# --- end common ---", source, count=1)
+
+
 def create_app(solver_root: Path, model_prefix: str) -> FastAPI:
     app = FastAPI(title="Static Solver Stub", version="1.0.0")
     app.add_middleware(
@@ -98,7 +116,7 @@ def create_app(solver_root: Path, model_prefix: str) -> FastAPI:
 
         solver_path = _resolve_solver_path(request.model, model_prefix, solver_root)
         # Re-read on every request so the file is hot-swappable without restart.
-        solver_src = solver_path.read_text(encoding="utf-8")
+        solver_src = load_solver_source(solver_path, solver_root)
         content = f"```python\n{solver_src}\n```\n"
 
         return ChatCompletionResponse(

@@ -20,6 +20,7 @@ import json
 from typing import Any
 
 import numpy as np
+from heuristics.common import *  # noqa: F401,F403 -- inlined by static_solver_server
 
 
 CAMERA_NAME = "robot0_robotview"
@@ -41,31 +42,9 @@ MIN_HANDLE_POINTS = 200
 TRACE: list[dict[str, Any]] = []
 
 
-def _plain(value: Any) -> Any:
-    if isinstance(value, np.ndarray):
-        return value.tolist()
-    if isinstance(value, (np.floating, np.integer)):
-        return value.item()
-    if isinstance(value, dict):
-        return {str(k): _plain(v) for k, v in value.items()}
-    if isinstance(value, (list, tuple)):
-        return [_plain(v) for v in value]
-    return value
 
+record = make_recorder("two_arm_lift", TRACE, json_lines=True)
 
-def record(event: str, **values: Any) -> None:
-    entry = {"event": event, **{key: _plain(value) for key, value in values.items()}}
-    TRACE.append(entry)
-    print(f"[two_arm_lift:s3] {json.dumps(entry)}", flush=True)
-
-
-def depth_2d(depth: np.ndarray) -> np.ndarray:
-    result = np.asarray(depth, dtype=np.float64)
-    if result.ndim == 3 and result.shape[-1] == 1:
-        result = result[:, :, 0]
-    if result.ndim != 2:
-        raise ValueError(f"expected 2-D depth, got {result.shape}")
-    return result
 
 
 def deproject(depth: np.ndarray, intrinsics: np.ndarray) -> np.ndarray:
@@ -76,10 +55,6 @@ def deproject(depth: np.ndarray, intrinsics: np.ndarray) -> np.ndarray:
     y = (rows - K[1, 2]) * depth / K[1, 1]
     return np.stack([x, y, depth], axis=-1)
 
-
-def transform_points(transform: np.ndarray, points: np.ndarray) -> np.ndarray:
-    homogeneous = np.column_stack([points, np.ones(len(points), dtype=np.float64)])
-    return (np.asarray(transform, dtype=np.float64) @ homogeneous.T).T[:, :3]
 
 
 def perceive_pot() -> tuple[float, np.ndarray, np.ndarray]:

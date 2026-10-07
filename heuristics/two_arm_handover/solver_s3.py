@@ -6,6 +6,7 @@ import json
 from typing import Any
 
 import numpy as np
+from heuristics.common import *  # noqa: F401,F403 -- inlined by static_solver_server
 
 
 CAMERA_NAME = "agentview"
@@ -17,22 +18,8 @@ HANDOVER_Z = 0.19
 TRACE: list[dict[str, Any]] = []
 
 
-def _plain(value: Any) -> Any:
-    if isinstance(value, np.ndarray):
-        return value.tolist()
-    if isinstance(value, (np.floating, np.integer)):
-        return value.item()
-    if isinstance(value, dict):
-        return {str(k): _plain(v) for k, v in value.items()}
-    if isinstance(value, (list, tuple)):
-        return [_plain(v) for v in value]
-    return value
 
-
-def record(event: str, **values: Any) -> None:
-    entry = {"event": event, **{key: _plain(value) for key, value in values.items()}}
-    TRACE.append(entry)
-    print(f"[two_arm_handover:s3] {json.dumps(entry)}", flush=True)
+record = make_recorder("two_arm_handover", TRACE, json_lines=True)
 
 
 def deproject_mask(depth: np.ndarray, intrinsics: np.ndarray, mask: np.ndarray) -> np.ndarray:
@@ -46,10 +33,6 @@ def deproject_mask(depth: np.ndarray, intrinsics: np.ndarray, mask: np.ndarray) 
     y = (rows - matrix[1, 2]) * z / matrix[1, 1]
     return np.column_stack([x, y, z])
 
-
-def transform_points(transform: np.ndarray, points: np.ndarray) -> np.ndarray:
-    homogeneous = np.column_stack([points, np.ones(len(points), dtype=np.float64)])
-    return (np.asarray(transform, dtype=np.float64) @ homogeneous.T).T[:, :3]
 
 
 def detect_hammer(rgb: np.ndarray) -> dict[str, Any]:

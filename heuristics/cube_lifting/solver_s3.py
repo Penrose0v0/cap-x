@@ -34,6 +34,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from scipy import ndimage
 from scipy.spatial.transform import Rotation
+from heuristics.common import *  # noqa: F401,F403 -- inlined by static_solver_server
 
 
 CAMERA_NAME = "robot0_robotview"
@@ -61,37 +62,9 @@ ARTIFACT_DIR = Path(_artifact_dir_value) if _artifact_dir_value else None
 TRACE: list[dict[str, Any]] = []
 
 
-def _jsonable(value: Any) -> Any:
-    if isinstance(value, np.ndarray):
-        return value.tolist()
-    if isinstance(value, (np.floating, np.integer)):
-        return value.item()
-    if isinstance(value, dict):
-        return {str(key): _jsonable(item) for key, item in value.items()}
-    if isinstance(value, (list, tuple)):
-        return [_jsonable(item) for item in value]
-    return value
 
+record = make_recorder("cube_lifting", TRACE, ARTIFACT_DIR)
 
-def record(event: str, **values: Any) -> None:
-    entry = {"event": event, **{key: _jsonable(value) for key, value in values.items()}}
-    TRACE.append(entry)
-    compact = ", ".join(f"{key}={value}" for key, value in entry.items() if key != "event")
-    print(f"[cube_lifting:s3] {event}" + (f": {compact}" if compact else ""))
-    if ARTIFACT_DIR is not None:
-        ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
-        (ARTIFACT_DIR / "trajectory_trace.json").write_text(
-            json.dumps(TRACE, indent=2) + "\n", encoding="utf-8"
-        )
-
-
-def _depth_2d(depth: np.ndarray) -> np.ndarray:
-    array = np.asarray(depth, dtype=np.float64)
-    if array.ndim == 3 and array.shape[-1] == 1:
-        array = array[:, :, 0]
-    if array.ndim != 2:
-        raise ValueError(f"Expected a 2-D depth image, got {array.shape}")
-    return array
 
 
 def erode_mask(mask: np.ndarray, iterations: int = 1) -> np.ndarray:
@@ -113,10 +86,6 @@ def erode_mask(mask: np.ndarray, iterations: int = 1) -> np.ndarray:
         result = eroded
     return result
 
-
-def transform_points(transform: np.ndarray, points: np.ndarray) -> np.ndarray:
-    homogeneous = np.column_stack([points, np.ones(len(points), dtype=np.float64)])
-    return (np.asarray(transform, dtype=np.float64) @ homogeneous.T).T[:, :3]
 
 
 def deproject_depth_image(
@@ -188,33 +157,6 @@ def workspace_foreground_mask(
     cleaned = ndimage.binary_opening(cleaned, structure=structure, iterations=1)
     return cleaned
 
-
-def component_detections(
-    mask: np.ndarray, points_base: np.ndarray
-) -> list[dict[str, Any]]:
-    labels, count = ndimage.label(mask)
-    detections: list[dict[str, Any]] = []
-    height, width = mask.shape
-    for component_id in range(1, count + 1):
-        component = labels == component_id
-        pixels = int(component.sum())
-        if pixels < MIN_MASK_PIXELS:
-            continue
-        rows, cols = np.nonzero(component)
-        cluster_points = points_base.reshape(height, width, 3)[component]
-        center_xy = cluster_points[:, :2].mean(axis=0)
-        top_z = float(np.quantile(cluster_points[:, 2], 0.90))
-        detections.append(
-            {
-                "mask": component,
-                "box": [float(cols.min()), float(rows.min()),
-                        float(cols.max() + 1), float(rows.max() + 1)],
-                "pixels": pixels,
-                "center_xy": center_xy,
-                "top_z": top_z,
-            }
-        )
-    return detections
 
 
 def select_target_detection(
@@ -296,9 +238,6 @@ def estimate_object_geometry(
     }
 
 
-def _safe_name(value: str) -> str:
-    return re.sub(r"[^a-zA-Z0-9_.-]+", "_", value).strip("_")
-
 
 def save_detection_overlay(
     phase: str,
@@ -346,7 +285,7 @@ def perceive_target(phase: str) -> dict[str, Any]:
         raise RuntimeError("insufficient finite depth points to estimate table")
     table_height = estimate_table_height(flat_points[finite])
     fg_mask = workspace_foreground_mask(points_base, valid, table_height)
-    detections = component_detections(fg_mask, points_base)
+    detections = component_detections(fg_mask, points_base, MIN_MASK_PIXELS)
     target = select_target_detection(detections, rgb)
 
     interior_mask = erode_mask(target["mask"], iterations=1)
@@ -377,10 +316,6 @@ def perceive_target(phase: str) -> dict[str, Any]:
     save_detection_overlay(phase, rgb, target["mask"], target, result)
     return result
 
-
-def matrix_to_quaternion_wxyz(matrix: np.ndarray) -> np.ndarray:
-    quaternion_xyzw = Rotation.from_matrix(np.asarray(matrix, dtype=np.float64)).as_quat()
-    return quaternion_xyzw[[3, 0, 1, 2]]
 
 
 def rank_grasp_candidates(
