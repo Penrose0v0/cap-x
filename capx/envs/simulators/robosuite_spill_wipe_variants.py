@@ -33,12 +33,8 @@ from robosuite.models.objects import BoxObject
 from robosuite.utils.mjcf_utils import array_to_string, find_elements
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
-from capx.envs.simulators.variant_camera import (
-    CAMERA_ORBIT_PRESETS,
-    apply_camera_orbit,
-    capture_camera_reference,
-)
-from capx.envs.simulators.variants_common import resolve_variation_config
+from capx.envs.simulators.variant_camera import CAMERA_ORBIT_PRESETS
+from capx.envs.simulators.variants_common import VariantMixin
 
 # Wipe has no discrete graspable/target object the way Stack has cubeA/cubeB -- the "target"
 # here is the procedurally generated dirt/spill marker path. So there's no natural
@@ -96,7 +92,7 @@ VARIATIONS: dict[str, dict[str, Any]] = {
 VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
-class WipeVariants(Wipe):
+class WipeVariants(VariantMixin, Wipe):
     """Wipe with composable, independently-toggleable perturbations for robustness eval.
 
         - color_tint (4-tuple): rgba tint applied to the shared "dirt_mat" material used by
@@ -131,17 +127,18 @@ class WipeVariants(Wipe):
     ad-hoc tweaks via `variation_overrides`.
     """
 
+    PRESETS = VARIATIONS
+    OBS_CAMERA = "robot0_robotview"
+    CANONICAL_PROMPT = CANONICAL_PROMPT
+    PROMPT_PARAPHRASES = PROMPT_PARAPHRASES
+
     def __init__(
         self,
         variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        self.variation, self.variation_config = resolve_variation_config(
-            VARIATIONS, variation, variation_overrides
-        )
-        self.distractor_objects: list[Any] = []
-        self.language_instruction: str | None = None
+        self._init_variant(variation, variation_overrides)
 
         super().__init__(**kwargs)
 
@@ -196,30 +193,6 @@ class WipeVariants(Wipe):
         )
         if material is not None:
             material.set("rgba", rgba_str)
-
-    def _apply_lighting(self) -> None:
-        diffuse_scale = self.variation_config.get("light_diffuse_scale")
-        ambient_scale = self.variation_config.get("light_ambient_scale")
-        if diffuse_scale is None and ambient_scale is None:
-            return
-        base_diffuse = np.array([0.7, 0.7, 0.7])
-        base_ambient = np.array([0.15, 0.15, 0.15])
-        lights = (
-            find_elements(root=self.model.mujoco_arena.worldbody, tags="light", return_first=False)
-            or []
-        )
-        for light in lights:
-            if diffuse_scale is not None:
-                light.set("diffuse", array_to_string(np.clip(base_diffuse * diffuse_scale, 0, 1)))
-            if ambient_scale is not None:
-                light.set("ambient", array_to_string(np.clip(base_ambient * ambient_scale, 0, 1)))
-
-    def _apply_robot_offset(self) -> None:
-        offset = self.variation_config.get("robot_base_offset")
-        if offset is None:
-            return
-        base_pos = np.array(self.robots[0].robot_model.base_xpos_offset["table"](self.table_full_size[0]))
-        self.robots[0].robot_model.set_base_xpos(base_pos + np.array(offset))
 
     def _apply_object_position_bias(self) -> None:
         pos_cfg = self.variation_config.get("object_position_bias")
@@ -302,26 +275,6 @@ class WipeVariants(Wipe):
             self.distractor_objects.append(obj)
 
     # ----------------------- Sim references / reset -----------------------
-
-    def _setup_references(self) -> None:
-        super()._setup_references()
-        self._distractor_body_ids = [
-            self.sim.model.body_name2id(obj.root_body) for obj in self.distractor_objects
-        ]
-        self._camera_orbit_ref = capture_camera_reference(self.sim, "robot0_robotview")
-
-    def _reset_internal(self) -> None:
-        super()._reset_internal()
-        apply_camera_orbit(self.sim, self._camera_orbit_ref, self.variation_config.get("camera_orbit"))
-        paraphrase = self.variation_config.get("paraphrase_language", False)
-        self.language_instruction = (
-            str(self.rng.choice(PROMPT_PARAPHRASES)) if paraphrase else CANONICAL_PROMPT
-        )
-
-    def get_ep_meta(self) -> dict[str, Any]:
-        ep_meta = super().get_ep_meta()
-        ep_meta["lang"] = self.language_instruction
-        return ep_meta
 
 
 class FrankaRobosuiteSpillWipeVariantsLowLevel(RobosuiteBaseEnv):
@@ -512,6 +465,7 @@ class FrankaRobosuiteSpillWipeVariantsLowLevel(RobosuiteBaseEnv):
         return frames
 
     # Override viser update to handle the different obs_cartesian slicing (no gripper in cartesian)
+
     def _update_viser_server(self) -> None:
         obs = self.get_observation()
         if self.viser_server is not None:

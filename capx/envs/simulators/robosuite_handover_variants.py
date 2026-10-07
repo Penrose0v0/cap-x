@@ -41,7 +41,7 @@ from capx.envs.simulators.variant_camera import (
     apply_camera_orbit,
     capture_camera_reference,
 )
-from capx.envs.simulators.variants_common import resolve_variation_config
+from capx.envs.simulators.variants_common import VariantMixin
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
 
@@ -127,7 +127,7 @@ VARIATIONS: dict[str, dict[str, Any]] = {
 VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
-class TwoArmHandoverVariants(TwoArmHandover):
+class TwoArmHandoverVariants(VariantMixin, TwoArmHandover):
     """TwoArmHandover with composable, independently-toggleable perturbations for robustness eval.
 
         - color_tint (4-tuple): rgba tint multiplier applied to the hammer's material(s)
@@ -154,17 +154,18 @@ class TwoArmHandoverVariants(TwoArmHandover):
     ad-hoc tweaks via `variation_overrides`.
     """
 
+    PRESETS = VARIATIONS
+    OBS_CAMERA = None  # the capx wrapper pins agentview itself and applies the camera orbit there
+    CANONICAL_PROMPT = CANONICAL_PROMPT
+    PROMPT_PARAPHRASES = PROMPT_PARAPHRASES
+
     def __init__(
         self,
         variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        self.variation, self.variation_config = resolve_variation_config(
-            VARIATIONS, variation, variation_overrides
-        )
-        self.distractor_objects: list[Any] = []
-        self.language_instruction: str | None = None
+        self._init_variant(variation, variation_overrides)
 
         super().__init__(**kwargs)
 
@@ -284,23 +285,6 @@ class TwoArmHandoverVariants(TwoArmHandover):
         for material in materials:
             material.set("rgba", rgba_str)
 
-    def _apply_lighting(self) -> None:
-        diffuse_scale = self.variation_config.get("light_diffuse_scale")
-        ambient_scale = self.variation_config.get("light_ambient_scale")
-        if diffuse_scale is None and ambient_scale is None:
-            return
-        base_diffuse = np.array([0.7, 0.7, 0.7])
-        base_ambient = np.array([0.15, 0.15, 0.15])
-        lights = (
-            find_elements(root=self.model.mujoco_arena.worldbody, tags="light", return_first=False)
-            or []
-        )
-        for light in lights:
-            if diffuse_scale is not None:
-                light.set("diffuse", array_to_string(np.clip(base_diffuse * diffuse_scale, 0, 1)))
-            if ambient_scale is not None:
-                light.set("ambient", array_to_string(np.clip(base_ambient * ambient_scale, 0, 1)))
-
     def _apply_robot_offset(self) -> None:
         """Perturb the robot base position(s) -- see class docstring for the config key.
 
@@ -359,6 +343,7 @@ class TwoArmHandoverVariants(TwoArmHandover):
     _DISTRACTOR_Y_RANGE = (-0.1, 0.1)
 
     @property
+
     def _hammer_sampler(self) -> UniformRandomSampler:
         """The UniformRandomSampler that actually owns hammer placement.
 
@@ -444,24 +429,6 @@ class TwoArmHandoverVariants(TwoArmHandover):
         self.placement_initializer = composite
 
     # ----------------------- Sim references / reset -----------------------
-
-    def _setup_references(self) -> None:
-        super()._setup_references()
-        self._distractor_body_ids = [
-            self.sim.model.body_name2id(obj.root_body) for obj in self.distractor_objects
-        ]
-
-    def _reset_internal(self) -> None:
-        super()._reset_internal()
-        paraphrase = self.variation_config.get("paraphrase_language", False)
-        self.language_instruction = (
-            str(self.rng.choice(PROMPT_PARAPHRASES)) if paraphrase else CANONICAL_PROMPT
-        )
-
-    def get_ep_meta(self) -> dict[str, Any]:
-        ep_meta = super().get_ep_meta()
-        ep_meta["lang"] = self.language_instruction
-        return ep_meta
 
 
 class RobosuiteHandoverVariantsEnv(RobosuiteBaseEnv):
@@ -1123,6 +1090,7 @@ class RobosuiteHandoverVariantsEnv(RobosuiteBaseEnv):
         return frame[::-1]
 
     # Temporary viser debugging
+
     def _update_viser_server(
         self,
     ) -> None:

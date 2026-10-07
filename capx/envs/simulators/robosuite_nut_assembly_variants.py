@@ -27,12 +27,8 @@ from robot_descriptions.loaders.yourdfpy import load_robot_description
 from viser.extras import ViserUrdf
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
-from capx.envs.simulators.variant_camera import (
-    CAMERA_ORBIT_PRESETS,
-    apply_camera_orbit,
-    capture_camera_reference,
-)
-from capx.envs.simulators.variants_common import resolve_variation_config
+from capx.envs.simulators.variant_camera import CAMERA_ORBIT_PRESETS
+from capx.envs.simulators.variants_common import VariantMixin
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
 
@@ -113,7 +109,7 @@ VARIATIONS: dict[str, dict[str, Any]] = {
 VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
-class NutAssemblyVariants(NutAssemblySquare):
+class NutAssemblyVariants(VariantMixin, NutAssemblySquare):
     """NutAssemblySquare with composable, independently-toggleable perturbations for robustness eval.
 
         - color_tint (4-tuple): rgba tint multiplier applied to the active nut's material(s).
@@ -140,16 +136,16 @@ class NutAssemblyVariants(NutAssemblySquare):
     ad-hoc tweaks via `variation_overrides`.
     """
 
+    PRESETS = VARIATIONS
+    OBS_CAMERA = "birdview"  # the capx wrapper observes this task through birdview (aliased to the robot0_robotview key)
+
     def __init__(
         self,
         variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        self.variation, self.variation_config = resolve_variation_config(
-            VARIATIONS, variation, variation_overrides
-        )
-        self.language_instruction: str | None = None
+        self._init_variant(variation, variation_overrides)
 
         swap_nut_type = self.variation_config.get("swap_nut_type", "square")
         assert swap_nut_type in ("square", "round"), "swap_nut_type must be 'square' or 'round'"
@@ -169,6 +165,7 @@ class NutAssemblyVariants(NutAssemblySquare):
             NutAssembly.__init__(self, single_object_mode=2, nut_type=swap_nut_type, **kwargs)
 
     @property
+
     def _active_nut_name(self) -> str:
         return "SquareNut" if self.active_nut_type == "square" else "RoundNut"
 
@@ -195,30 +192,6 @@ class NutAssemblyVariants(NutAssemblySquare):
         materials = find_elements(root=nut_obj.asset, tags="material", return_first=False) or []
         for material in materials:
             material.set("rgba", rgba_str)
-
-    def _apply_lighting(self) -> None:
-        diffuse_scale = self.variation_config.get("light_diffuse_scale")
-        ambient_scale = self.variation_config.get("light_ambient_scale")
-        if diffuse_scale is None and ambient_scale is None:
-            return
-        base_diffuse = np.array([0.7, 0.7, 0.7])
-        base_ambient = np.array([0.15, 0.15, 0.15])
-        lights = (
-            find_elements(root=self.model.mujoco_arena.worldbody, tags="light", return_first=False)
-            or []
-        )
-        for light in lights:
-            if diffuse_scale is not None:
-                light.set("diffuse", array_to_string(np.clip(base_diffuse * diffuse_scale, 0, 1)))
-            if ambient_scale is not None:
-                light.set("ambient", array_to_string(np.clip(base_ambient * ambient_scale, 0, 1)))
-
-    def _apply_robot_offset(self) -> None:
-        offset = self.variation_config.get("robot_base_offset")
-        if offset is None:
-            return
-        base_pos = np.array(self.robots[0].robot_model.base_xpos_offset["table"](self.table_full_size[0]))
-        self.robots[0].robot_model.set_base_xpos(base_pos + np.array(offset))
 
     def _apply_object_position_bias(self) -> None:
         pos_cfg = self.variation_config.get("object_position_bias")
@@ -250,16 +223,7 @@ class NutAssemblyVariants(NutAssemblySquare):
 
     # ----------------------- Reset / success -----------------------
 
-    def _setup_references(self) -> None:
-        super()._setup_references()
-        # The capx wrapper observes this task through "birdview" (aliased to the
-        # "robot0_robotview" key), so that's the camera to perturb.
-        self._camera_orbit_ref = capture_camera_reference(self.sim, "birdview")
-
-    def _reset_internal(self) -> None:
-        super()._reset_internal()
-        apply_camera_orbit(self.sim, self._camera_orbit_ref, self.variation_config.get("camera_orbit"))
-
+    def _reset_variant_extras(self) -> None:
         distractor_names = self.variation_config.get("distractor_classes", [])
         if distractor_names and isinstance(self.placement_initializer, SequentialCompositeSampler):
             for key in distractor_names:
@@ -272,10 +236,10 @@ class NutAssemblyVariants(NutAssemblySquare):
                     obj.joints[0], np.concatenate([np.array(obj_pos), np.array(obj_quat)])
                 )
 
+    def _sample_language(self) -> str:
         paraphrase = self.variation_config.get("paraphrase_language", False)
-        templates = PROMPT_PARAPHRASE_TEMPLATES if paraphrase else [CANONICAL_PROMPT_TEMPLATE]
-        template = str(self.rng.choice(templates)) if paraphrase else CANONICAL_PROMPT_TEMPLATE
-        self.language_instruction = template.format(nut=self.active_nut_type)
+        template = str(self.rng.choice(PROMPT_PARAPHRASE_TEMPLATES)) if paraphrase else CANONICAL_PROMPT_TEMPLATE
+        return template.format(nut=self.active_nut_type)
 
     def _check_success(self) -> bool:
         success = super()._check_success()
@@ -287,11 +251,6 @@ class NutAssemblyVariants(NutAssemblySquare):
             # distractor landing on its own peg by chance can never trigger a false success.
             return bool(self.objects_on_pegs[self.nut_id])
         return success
-
-    def get_ep_meta(self) -> dict[str, Any]:
-        ep_meta = super().get_ep_meta()
-        ep_meta["lang"] = self.language_instruction
-        return ep_meta
 
 
 class FrankaRobosuiteNutAssemblyVariantsLowLevel(RobosuiteBaseEnv):
@@ -456,6 +415,7 @@ class FrankaRobosuiteNutAssemblyVariantsLowLevel(RobosuiteBaseEnv):
         return obs, info
 
     # Override _step_once to include the double _sim_step_count increment from original
+
     def _step_once(self) -> None:
         """Execute one simulation step with current control state."""
         action = self._build_action()
@@ -482,6 +442,7 @@ class FrankaRobosuiteNutAssemblyVariantsLowLevel(RobosuiteBaseEnv):
         self._sim_step_count += 1
 
     # Override move_to_joints_blocking to use fast qpos path
+
     def move_to_joints_blocking(
         self, joints: np.ndarray, *, tolerance: float = 0.02, max_steps: int = 100
     ) -> None:
@@ -667,6 +628,7 @@ class FrankaRobosuiteNutAssemblyVariantsLowLevel(RobosuiteBaseEnv):
         return robosuite_obs
 
     # Nut assembly has its own viser debugging logic
+
     def _update_viser_server(self) -> None:
         obs = self.get_observation()
         if self.viser_debug:

@@ -25,12 +25,8 @@ from robosuite.utils.mjcf_utils import CustomMaterial, array_to_string, find_ele
 from robosuite.utils.placement_samplers import UniformRandomSampler
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
-from capx.envs.simulators.variant_camera import (
-    CAMERA_ORBIT_PRESETS,
-    apply_camera_orbit,
-    capture_camera_reference,
-)
-from capx.envs.simulators.variants_common import resolve_variation_config
+from capx.envs.simulators.variant_camera import CAMERA_ORBIT_PRESETS
+from capx.envs.simulators.variants_common import VariantMixin
 
 # Object classes usable as a visually-similar swap for cubeA, or as task-irrelevant distractors.
 SIMILAR_OBJECT_CLASSES = {"cylinder": CylinderObject}
@@ -80,7 +76,7 @@ VARIATIONS: dict[str, dict[str, Any]] = {
 VARIATIONS.update(CAMERA_ORBIT_PRESETS)
 
 
-class StackVariants(Stack):
+class StackVariants(VariantMixin, Stack):
     """Stack with composable, independently-toggleable perturbations for robustness eval.
 
         - color_tint (4-tuple): rgba tint multiplier applied to cubeA/cubeB's material(s).
@@ -103,18 +99,19 @@ class StackVariants(Stack):
     ad-hoc tweaks via `variation_overrides`.
     """
 
+    PRESETS = VARIATIONS
+    OBS_CAMERA = "robot0_robotview"
+    CANONICAL_PROMPT = CANONICAL_PROMPT
+    PROMPT_PARAPHRASES = PROMPT_PARAPHRASES
+
     def __init__(
         self,
         variation: str | Sequence[str] = "baseline",
         variation_overrides: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        self.variation, self.variation_config = resolve_variation_config(
-            VARIATIONS, variation, variation_overrides
-        )
-        self.distractor_objects: list[Any] = []
+        self._init_variant(variation, variation_overrides)
         self.cubeC: Any = None
-        self.language_instruction: str | None = None
 
         super().__init__(**kwargs)
 
@@ -143,10 +140,6 @@ class StackVariants(Stack):
     # unconditionally so variation="baseline" reproduces today's cube_stack task exactly.
     _DEFAULT_X_RANGE = (-0.18, 0.18)
     _DEFAULT_Y_RANGE = (-0.12, 0.12)
-
-    def _apply_default_placement_range(self) -> None:
-        self.placement_initializer.x_range = list(self._DEFAULT_X_RANGE)
-        self.placement_initializer.y_range = list(self._DEFAULT_Y_RANGE)
 
     def _load_model_with_swap(self, swap_target: str) -> None:
         """Reproduces Stack._load_model, substituting cubeA's class for a visually-similar object.
@@ -241,49 +234,6 @@ class StackVariants(Stack):
             for material in materials:
                 material.set("rgba", rgba_str)
 
-    def _apply_lighting(self) -> None:
-        diffuse_scale = self.variation_config.get("light_diffuse_scale")
-        ambient_scale = self.variation_config.get("light_ambient_scale")
-        if diffuse_scale is None and ambient_scale is None:
-            return
-        base_diffuse = np.array([0.7, 0.7, 0.7])
-        base_ambient = np.array([0.15, 0.15, 0.15])
-        lights = (
-            find_elements(root=self.model.mujoco_arena.worldbody, tags="light", return_first=False)
-            or []
-        )
-        for light in lights:
-            if diffuse_scale is not None:
-                light.set("diffuse", array_to_string(np.clip(base_diffuse * diffuse_scale, 0, 1)))
-            if ambient_scale is not None:
-                light.set("ambient", array_to_string(np.clip(base_ambient * ambient_scale, 0, 1)))
-
-    def _apply_robot_offset(self) -> None:
-        offset = self.variation_config.get("robot_base_offset")
-        if offset is None:
-            return
-        base_pos = np.array(self.robots[0].robot_model.base_xpos_offset["table"](self.table_full_size[0]))
-        self.robots[0].robot_model.set_base_xpos(base_pos + np.array(offset))
-
-    def _apply_object_position_bias(self) -> None:
-        pos_cfg = self.variation_config.get("object_position_bias")
-        if pos_cfg is None:
-            return
-        sampler = self.placement_initializer
-        bin_x_half, bin_y_half = -self._DEFAULT_X_RANGE[0], -self._DEFAULT_Y_RANGE[0]
-        bias_x, bias_y = pos_cfg.get("bias", (0.0, 0.0))
-        scale = pos_cfg.get("scale", 1.0)
-        center_x, center_y = bias_x * bin_x_half, bias_y * bin_y_half
-        half_x, half_y = bin_x_half * scale, bin_y_half * scale
-        sampler.x_range = [
-            float(np.clip(center_x - half_x, -bin_x_half, bin_x_half)),
-            float(np.clip(center_x + half_x, -bin_x_half, bin_x_half)),
-        ]
-        sampler.y_range = [
-            float(np.clip(center_y - half_y, -bin_y_half, bin_y_half)),
-            float(np.clip(center_y + half_y, -bin_y_half, bin_y_half)),
-        ]
-
     def _add_distractors(self) -> None:
         distractor_names = self.variation_config.get("distractor_classes", [])
         if not distractor_names:
@@ -341,26 +291,9 @@ class StackVariants(Stack):
 
     def _setup_references(self) -> None:
         super()._setup_references()
-        self._distractor_body_ids = [
-            self.sim.model.body_name2id(obj.root_body) for obj in self.distractor_objects
-        ]
-        self._camera_orbit_ref = capture_camera_reference(self.sim, "robot0_robotview")
         self.cubeC_body_id = (
             self.sim.model.body_name2id(self.cubeC.root_body) if self.cubeC is not None else None
         )
-
-    def _reset_internal(self) -> None:
-        super()._reset_internal()
-        apply_camera_orbit(self.sim, self._camera_orbit_ref, self.variation_config.get("camera_orbit"))
-        paraphrase = self.variation_config.get("paraphrase_language", False)
-        self.language_instruction = (
-            str(self.rng.choice(PROMPT_PARAPHRASES)) if paraphrase else CANONICAL_PROMPT
-        )
-
-    def get_ep_meta(self) -> dict[str, Any]:
-        ep_meta = super().get_ep_meta()
-        ep_meta["lang"] = self.language_instruction
-        return ep_meta
 
     # ----------------------- Difficulty override -----------------------
 
