@@ -61,6 +61,26 @@ from __future__ import annotations
 
 from typing import Any, Sequence
 
+# Each task's difficulty-knob preset (raises the task's own success bar; not a perturbation).
+# Sweep scripts' hard_vs_base mode reads this table.
+DIFFICULTY_PRESETS: dict[str, str] = {
+    "cube_lifting": "lift_higher",
+    "cube_stack": "stack_3_cubes",
+    "cube_restack": "stack_3_cubes",
+    "nut_assembly": "both_nuts",
+    "spill_wipe": "harder_spill",
+    "two_arm_handover": "harder_handover",
+    "two_arm_lift": "harder_lift",
+}
+
+# Each task's reduced low-level API class (the S3 tier the hard-coded heuristics/ solvers use).
+S3_API_CLASSES: dict[str, str] = {
+    "spill_wipe": "FrankaControlSpillWipeApiReduced",
+    "two_arm_handover": "FrankaHandoverApiReduced",
+    "two_arm_lift": "FrankaControlApiReducedBimanual",
+}
+S3_API_DEFAULT = "FrankaControlApiReduced"
+
 
 def resolve_variation_config(
     variations: dict[str, dict[str, Any]],
