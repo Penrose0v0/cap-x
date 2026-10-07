@@ -32,6 +32,14 @@ CAMERA_ORBIT_PRESETS: dict[str, dict[str, Any]] = {
     "camera_shift_mild": {"camera_orbit": {"radius": 0.10, "azimuth_deg": 10.0, "elevation_deg": 5.0}},
     "camera_shift_strong": {"camera_orbit": {"radius": 0.25, "azimuth_deg": 25.0, "elevation_deg": 12.0}},
 }
+# Systematic azimuth sweep: 0..180 deg in 45 deg steps (the scenes are mirror-symmetric
+# about the robot's forward axis, so 180..360 adds nothing) at two radius deltas, elevation
+# unchanged. Named camera_az<deg>_r<cm>, e.g. camera_az090_r025 / camera_az180_r100.
+for _az in (0, 45, 90, 135, 180):
+    for _r in (0.25, 1.0):
+        CAMERA_ORBIT_PRESETS[f"camera_az{_az:03d}_r{int(round(_r * 100)):03d}"] = {
+            "camera_orbit": {"radius": _r, "azimuth_deg": float(_az), "elevation_deg": 0.0}
+        }
 
 TABLE_TOP_SITE = "table_top"
 

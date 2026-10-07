@@ -13,8 +13,9 @@
 # Usage: bash scripts/run_heuristic_sweep_parallel.sh [SHARED_SERVICES_GPU] [TOTAL_TRIALS] [STUB_PORT] [TASKS] [OUTPUT_PREFIX] [VARIANT_SET]
 #   SHARED_SERVICES_GPU  GPU for the shared SAM3/SAM2/GraspNet/PyRoki/OWL-ViT (default: 0)
 #   TOTAL_TRIALS         Trials per (task, variant) (default: 10). May also be a path to a
-#                         TSV of "<task> <variant> <n>" lines to run a different count per
-#                         cell (cells missing from the file or with n<=0 are skipped).
+#                         TSV of "<task> <variant> <n>" lines: then exactly the listed cells
+#                         run, with their own counts (VARIANT_SET is ignored, and the variant
+#                         may be any preset in the task's VARIATIONS table, e.g. harder_spill).
 #   STUB_PORT            Port for the static-solver stub (default: 8118)
 #   TASKS                Comma-separated task short names (default: cube_restack,nut_assembly).
 #                         Must have a heuristics/<task>/solver_s3.py file.
@@ -269,16 +270,19 @@ run_task_worker() {
     : > "$worker_log"
     local MODEL="heuristic/${task_short_name}"
 
-    echo "[${task_name}] Starting (model=${MODEL}) -- ${#ALL_VARIANTS[@]} variants x ${TOTAL_TRIALS} trials" | tee -a "$worker_log"
+    # With a TSV plan the variants come from the plan itself (any preset the task's VARIATIONS
+    # table knows, e.g. difficulty knobs), not from VARIANT_SET.
+    local -a variants_to_run=("${ALL_VARIANTS[@]}")
+    if [ -f "$TOTAL_TRIALS" ]; then
+        mapfile -t variants_to_run < <(awk -v t="$task_short_name" '$1==t && $3>0 {print $2}' "$TOTAL_TRIALS")
+    fi
 
-    for variant in "${ALL_VARIANTS[@]}"; do
+    echo "[${task_name}] Starting (model=${MODEL}) -- ${#variants_to_run[@]} variants x ${TOTAL_TRIALS} trials" | tee -a "$worker_log"
+
+    for variant in "${variants_to_run[@]}"; do
         local n_trials="$TOTAL_TRIALS"
         if [ -f "$TOTAL_TRIALS" ]; then
             n_trials=$(awk -v t="$task_short_name" -v v="$variant" '$1==t && $2==v {print $3}' "$TOTAL_TRIALS")
-            if [ -z "$n_trials" ] || [ "$n_trials" -le 0 ]; then
-                echo "[${task_name}] === variant: ${variant} -- nothing to run, skipping ===" | tee -a "$worker_log"
-                continue
-            fi
         fi
         echo "[${task_name}] === variant: ${variant} (${n_trials} trials) ===" | tee -a "$worker_log"
         local tmp_cfg="/tmp/heur_sweep_configs_${task_name}_${variant}.yaml"
