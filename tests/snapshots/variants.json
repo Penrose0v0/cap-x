@@ -1,0 +1,6286 @@
+{
+ "cube_lifting/baseline": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9344,
+   0.5381,
+   0.6926,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "3dbd0c754b2f675f196de0de839fe2db",
+  "rgb_mean": [
+   220.606,
+   218.445,
+   214.096
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {}
+ },
+ "cube_lifting/camera_az000_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.177016,
+   0.0,
+   0.566537,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   1.2843,
+   0.7283,
+   0.9257,
+   2.7282
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f146ab45db074c060dbb442361536fe8",
+  "rgb_mean": [
+   213.013,
+   210.461,
+   205.718
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_lifting/camera_az000_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.708064,
+   0.0,
+   1.096148,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   2.4478,
+   1.4887,
+   2.2462,
+   3.4685
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "d7e9378b8fead4cdbf046c98d962f04c",
+  "rgb_mean": [
+   164.0,
+   156.691,
+   148.994
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_lifting/camera_az045_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.974801,
+   0.488191,
+   0.566537,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.2214,
+   0.723,
+   0.9387,
+   2.7927
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "61835a3c872deb8c8f3988e984af42ce",
+  "rgb_mean": [
+   205.127,
+   202.421,
+   197.845
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_lifting/camera_az045_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.350309,
+   0.863698,
+   1.096148,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.4087,
+   1.4976,
+   2.1714,
+   3.7386
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7866cf8ff8ac98de57d9e8cec8d237df",
+  "rgb_mean": [
+   158.896,
+   151.969,
+   144.711
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_lifting/camera_az090_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.48661,
+   0.690406,
+   0.566537,
+   -0.0,
+   -0.0,
+   0.92362,
+   -0.383309
+  ],
+  "depth_stats": [
+   1.2786,
+   0.7027,
+   0.9186,
+   2.9446
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "9fe4d6cde9325c86d4ff914bff195a95",
+  "rgb_mean": [
+   214.282,
+   210.755,
+   205.305
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_lifting/camera_az090_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.48661,
+   1.221454,
+   1.096148,
+   -0.0,
+   -0.0,
+   0.92362,
+   -0.383309
+  ],
+  "depth_stats": [
+   2.4089,
+   1.4588,
+   2.0573,
+   4.0288
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "58a9b84f91bd47ebbaa0405386e4e2d3",
+  "rgb_mean": [
+   154.556,
+   147.524,
+   140.382
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_lifting/camera_az135_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.00158,
+   0.488191,
+   0.566537,
+   0.146686,
+   -0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.3099,
+   0.6647,
+   0.9461,
+   2.9783
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "99cbaa0c9d725e6c9f6a6ec5fc7b2728",
+  "rgb_mean": [
+   197.235,
+   193.187,
+   187.522
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_lifting/camera_az135_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.377088,
+   0.863698,
+   1.096148,
+   0.146686,
+   -0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.3572,
+   1.1833,
+   2.067,
+   4.0754
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "65b8eb79099daad221649680b71543e6",
+  "rgb_mean": [
+   149.645,
+   142.469,
+   135.39
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_lifting/camera_az180_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.203795,
+   0.0,
+   0.566537,
+   -0.271041,
+   0.653098,
+   -0.653098,
+   0.271041
+  ],
+  "depth_stats": [
+   0.7526,
+   0.2032,
+   0.2733,
+   2.6025
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "d5539a3ad7a6ce6caa95f95f63dc6a9e",
+  "rgb_mean": [
+   161.03,
+   158.674,
+   156.009
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_lifting/camera_az180_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.734844,
+   0.0,
+   1.096148,
+   -0.271041,
+   0.653098,
+   -0.653098,
+   0.271041
+  ],
+  "depth_stats": [
+   2.4898,
+   1.0359,
+   2.2664,
+   4.232
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "79cfdcfc4c2aaae93733c13bc708b39b",
+  "rgb_mean": [
+   149.023,
+   140.843,
+   132.868
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_lifting/camera_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.009735,
+   0.092241,
+   0.509314,
+   -0.220256,
+   0.603874,
+   0.719669,
+   -0.26249
+  ],
+  "depth_stats": [
+   1.0067,
+   0.631,
+   0.7816,
+   2.4215
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1c3db2613b374c62edd83a016fa1ef5a",
+  "rgb_mean": [
+   222.903,
+   220.249,
+   215.411
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 10.0,
+    "elevation_deg": 5.0,
+    "radius": 0.1
+   }
+  }
+ },
+ "cube_lifting/camera_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.968915,
+   0.224902,
+   0.695034,
+   -0.15295,
+   0.51507,
+   0.808498,
+   -0.240084
+  ],
+  "depth_stats": [
+   1.1253,
+   0.7757,
+   0.9386,
+   2.2614
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1fa42e3723af799a008304ffa4fb5f91",
+  "rgb_mean": [
+   210.905,
+   207.915,
+   202.989
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 25.0,
+    "elevation_deg": 12.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_lifting/color_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9283,
+   0.5435,
+   0.6905,
+   2.4821
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: pick up the cube and lift it.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.\n",
+  "rgb_md5": "57adfd2038bed34f3c9895d09c91a24f",
+  "rgb_mean": [
+   220.965,
+   218.63,
+   214.284
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ]
+  }
+ },
+ "cube_lifting/color_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9382,
+   0.5395,
+   0.698,
+   2.485
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: pick up the cube and lift it.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.\n",
+  "rgb_md5": "cd08859508586936dd777a43e23420b1",
+  "rgb_mean": [
+   219.651,
+   218.379,
+   213.715
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    0.2,
+    1.0,
+    0.3,
+    1.0
+   ]
+  }
+ },
+ "cube_lifting/compound_hard": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9293,
+   0.5421,
+   0.6958,
+   2.4821
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: pick up the cube and lift it.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.\n",
+  "rgb_md5": "51d5068534b475709f4465b97e30d56b",
+  "rgb_mean": [
+   209.401,
+   206.1,
+   202.087
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Lift the cube up off the table surface. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ],
+   "distractor_classes": [
+    "cylinder"
+   ],
+   "light_ambient_scale": 0.5,
+   "light_diffuse_scale": 0.5,
+   "paraphrase_language": true
+  }
+ },
+ "cube_lifting/distractor_object": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9293,
+   0.5375,
+   0.6926,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "44e2536a824f9efc0d06b9412468c104",
+  "rgb_mean": [
+   220.586,
+   216.985,
+   212.679
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "distractor_classes": [
+    "cylinder"
+   ]
+  }
+ },
+ "cube_lifting/language_paraphrase": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9346,
+   0.5371,
+   0.698,
+   2.485
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "c3e51e9aef8e9254bcec01f1b9fbff4c",
+  "rgb_mean": [
+   220.315,
+   217.996,
+   213.668
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Grasp the cube and lift it clear of the table. Quaternions are WXYZ.",
+  "variation_config": {
+   "paraphrase_language": true
+  }
+ },
+ "cube_lifting/lift_higher": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9379,
+   0.5389,
+   0.6948,
+   2.485
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "95a6a89077f22d48b68004bd8de39bf8",
+  "rgb_mean": [
+   220.616,
+   218.415,
+   214.066
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "lift_height_threshold": 0.12
+  }
+ },
+ "cube_lifting/lighting_bright": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.934,
+   0.5376,
+   0.6937,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7e1b3494670b70c0080c5de81a9c4a3e",
+  "rgb_mean": [
+   233.937,
+   231.352,
+   226.787
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 2.5,
+   "light_diffuse_scale": 2.0
+  }
+ },
+ "cube_lifting/lighting_dim": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9332,
+   0.5412,
+   0.6937,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "db7b5621f7c8675bd145ab4e8ce1d95e",
+  "rgb_mean": [
+   174.476,
+   172.796,
+   169.451
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 0.3,
+   "light_diffuse_scale": 0.3
+  }
+ },
+ "cube_lifting/object_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9321,
+   0.5385,
+   0.6926,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "ea57164250e57eb72461a3732651e698",
+  "rgb_mean": [
+   220.778,
+   218.443,
+   214.118
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "object_position_bias": {
+    "bias": [
+     0.6,
+     0.6
+    ],
+    "scale": 0.5
+   }
+  }
+ },
+ "cube_lifting/robot_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9089,
+   0.5376,
+   0.6948,
+   2.4997
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "d3f6fac5661ce5903c8d31089e1a64f7",
+  "rgb_mean": [
+   225.692,
+   223.669,
+   219.497
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "robot_base_offset": [
+    0.06,
+    0.06,
+    0.0
+   ]
+  }
+ },
+ "cube_lifting/target_object_swap": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9322,
+   0.5413,
+   0.6926,
+   2.4828
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: pick up the red object and lift it.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.\n",
+  "rgb_md5": "54948d686f6f335af77ab7eff436cad5",
+  "rgb_mean": [
+   221.407,
+   219.36,
+   214.994
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "swap_target": "cylinder"
+  }
+ },
+ "cube_restack/baseline": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9322,
+   0.5435,
+   0.6937,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "476e6a94c4d02be3b70dde0545c8a5ce",
+  "rgb_mean": [
+   218.137,
+   217.538,
+   211.131
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {}
+ },
+ "cube_restack/camera_az000_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.177016,
+   0.0,
+   0.566537,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   1.283,
+   0.7291,
+   0.9257,
+   2.7282
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "9112b8bc5ebf9a13fd7e935443790000",
+  "rgb_mean": [
+   212.14,
+   210.309,
+   204.694
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_restack/camera_az000_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.708064,
+   0.0,
+   1.096148,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   2.4479,
+   1.4908,
+   2.2462,
+   3.4685
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "3dd97ef9b881aea67de83a249d783fce",
+  "rgb_mean": [
+   163.532,
+   156.429,
+   148.482
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_restack/camera_az045_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.974801,
+   0.488191,
+   0.566537,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.2311,
+   0.7253,
+   0.9431,
+   2.7987
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0aaec523bc1da79b5e5d5b0262aaec1a",
+  "rgb_mean": [
+   203.741,
+   201.753,
+   196.146
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_restack/camera_az045_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.350309,
+   0.863698,
+   1.096148,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.4117,
+   1.5021,
+   2.1735,
+   3.743
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "2d4d57d3e1803c1cfb12a5d0ae03bab7",
+  "rgb_mean": [
+   158.527,
+   151.821,
+   144.265
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_restack/camera_az090_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.48661,
+   0.690406,
+   0.566537,
+   -0.0,
+   -0.0,
+   0.92362,
+   -0.383309
+  ],
+  "depth_stats": [
+   1.2911,
+   0.7044,
+   0.9186,
+   2.9513
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "fbf2e4777d295917d7fbaff772d5d03f",
+  "rgb_mean": [
+   213.199,
+   210.377,
+   203.94
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_restack/camera_az090_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.48661,
+   1.221454,
+   1.096148,
+   -0.0,
+   -0.0,
+   0.92362,
+   -0.383309
+  ],
+  "depth_stats": [
+   2.4066,
+   1.4577,
+   2.0573,
+   4.0279
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "5a06f31294715e88efa8d2ba4e796233",
+  "rgb_mean": [
+   154.149,
+   147.311,
+   139.951
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_restack/camera_az135_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.00158,
+   0.488191,
+   0.566537,
+   0.146686,
+   -0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.3095,
+   0.6549,
+   0.9404,
+   2.9921
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "6d21247c30fc95c9e1da4ee4632f9f56",
+  "rgb_mean": [
+   195.581,
+   192.263,
+   185.916
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_restack/camera_az135_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.377088,
+   0.863698,
+   1.096148,
+   0.146686,
+   -0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.3595,
+   1.1835,
+   2.0694,
+   4.0754
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "af2f8171d32d12f3191182aea39a9af5",
+  "rgb_mean": [
+   149.39,
+   142.421,
+   135.131
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_restack/camera_az180_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.203795,
+   0.0,
+   0.566537,
+   -0.271041,
+   0.653098,
+   -0.653098,
+   0.271041
+  ],
+  "depth_stats": [
+   0.753,
+   0.2034,
+   0.2733,
+   2.6025
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "e1dad79500799383026467af46434eed",
+  "rgb_mean": [
+   160.258,
+   157.905,
+   155.038
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_restack/camera_az180_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.734844,
+   0.0,
+   1.096148,
+   -0.271041,
+   0.653098,
+   -0.653098,
+   0.271041
+  ],
+  "depth_stats": [
+   2.4909,
+   1.037,
+   2.2664,
+   4.232
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1c1f50c047727f2c9ceb3762fb7cebdb",
+  "rgb_mean": [
+   148.854,
+   140.712,
+   132.695
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_restack/camera_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.009735,
+   0.092241,
+   0.509314,
+   -0.220256,
+   0.603874,
+   0.719669,
+   -0.26249
+  ],
+  "depth_stats": [
+   0.9984,
+   0.6271,
+   0.7846,
+   2.4046
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "52e034eb679a88015205d9ea06ddd46f",
+  "rgb_mean": [
+   221.385,
+   220.075,
+   213.733
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 10.0,
+    "elevation_deg": 5.0,
+    "radius": 0.1
+   }
+  }
+ },
+ "cube_restack/camera_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.968915,
+   0.224902,
+   0.695034,
+   -0.15295,
+   0.51507,
+   0.808498,
+   -0.240084
+  ],
+  "depth_stats": [
+   1.123,
+   0.7763,
+   0.9367,
+   2.253
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "c480388d6953ed47b5da5cecdbecdd2d",
+  "rgb_mean": [
+   209.89,
+   207.76,
+   202.001
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 25.0,
+    "elevation_deg": 12.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_restack/color_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9286,
+   0.5422,
+   0.6905,
+   2.4828
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: Gently place the smaller cube on top of the larger cube and then open the gripper. Nothing should be dropped from a height.\nUse the extent of the cubes to calculate the exact height for placement.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, scipy, torch, etc. you need to import them explicitly.\n",
+  "rgb_md5": "6fb566c1a8d500dfa6c9d38c00998dbb",
+  "rgb_mean": [
+   221.174,
+   219.122,
+   214.742
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ]
+  }
+ },
+ "cube_restack/color_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9368,
+   0.5376,
+   0.6991,
+   2.485
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: Gently place the smaller cube on top of the larger cube and then open the gripper. Nothing should be dropped from a height.\nUse the extent of the cubes to calculate the exact height for placement.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, scipy, torch, etc. you need to import them explicitly.\n",
+  "rgb_md5": "8b58241b050c9495a1e03fe78af73b75",
+  "rgb_mean": [
+   217.756,
+   218.12,
+   212.205
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    0.2,
+    1.0,
+    0.3,
+    1.0
+   ]
+  }
+ },
+ "cube_restack/compound_hard": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9385,
+   0.5352,
+   0.6926,
+   2.4879
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: Gently place the smaller cube on top of the larger cube and then open the gripper. Nothing should be dropped from a height.\nUse the extent of the cubes to calculate the exact height for placement.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, scipy, torch, etc. you need to import them explicitly.\n",
+  "rgb_md5": "e8e697028de920f845a2d525124eba16",
+  "rgb_mean": [
+   208.498,
+   205.433,
+   201.384
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ],
+   "distractor_classes": [
+    "cylinder"
+   ],
+   "light_ambient_scale": 0.5,
+   "light_diffuse_scale": 0.5,
+   "paraphrase_language": true
+  }
+ },
+ "cube_restack/distractor_object": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9416,
+   0.5338,
+   0.698,
+   2.4882
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "6d3bf185498fe7f67f411936e32f91b3",
+  "rgb_mean": [
+   217.735,
+   215.069,
+   209.35
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "distractor_classes": [
+    "cylinder"
+   ]
+  }
+ },
+ "cube_restack/language_paraphrase": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.936,
+   0.5363,
+   0.698,
+   2.485
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "926add04dfca93a31902039c8f039da0",
+  "rgb_mean": [
+   217.481,
+   216.838,
+   210.419
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "paraphrase_language": true
+  }
+ },
+ "cube_restack/lighting_bright": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.937,
+   0.5344,
+   0.698,
+   2.485
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "9f193aac119ab5247beafc03c92072d2",
+  "rgb_mean": [
+   231.279,
+   230.712,
+   223.449
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 2.5,
+   "light_diffuse_scale": 2.0
+  }
+ },
+ "cube_restack/lighting_dim": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9388,
+   0.5402,
+   0.6991,
+   2.4879
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "3a6d8ef844d1c4fc04b99b4026e51cb7",
+  "rgb_mean": [
+   172.414,
+   171.991,
+   167.105
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 0.3,
+   "light_diffuse_scale": 0.3
+  }
+ },
+ "cube_restack/object_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9338,
+   0.5351,
+   0.6969,
+   2.485
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "e5ffe5cbef2c3eb63bac80ece7072bd0",
+  "rgb_mean": [
+   217.465,
+   217.123,
+   210.285
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "object_position_bias": {
+    "bias": [
+     0.6,
+     0.6
+    ],
+    "scale": 0.5
+   }
+  }
+ },
+ "cube_restack/robot_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.908,
+   0.5407,
+   0.6883,
+   2.5025
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f59ae8ed405f523a753e27f467cec3ca",
+  "rgb_mean": [
+   224.568,
+   223.801,
+   218.052
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "robot_base_offset": [
+    0.06,
+    0.06,
+    0.0
+   ]
+  }
+ },
+ "cube_restack/stack_3_cubes": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9324,
+   0.5408,
+   0.6958,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "6a03b5e644a95a0897676decbd3f3946",
+  "rgb_mean": [
+   215.957,
+   215.456,
+   210.764
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "stack_3_cubes": true
+  }
+ },
+ "cube_restack/target_object_swap": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9289,
+   0.5435,
+   0.6907,
+   2.4821
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: Gently place the smaller object on top of the larger cube and then open the gripper. Nothing should be dropped from a height.\nUse the extent of the cubes to calculate the exact height for placement.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, scipy, torch, etc. you need to import them explicitly.\n",
+  "rgb_md5": "c455c72f37cd85a22b16f24deec6a8ff",
+  "rgb_mean": [
+   219.611,
+   218.829,
+   213.12
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "swap_target": "cylinder"
+  }
+ },
+ "cube_stack/baseline": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9389,
+   0.537,
+   0.7002,
+   2.4879
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "e1fe23577bd068d526b8f1e8c153de6a",
+  "rgb_mean": [
+   216.455,
+   214.715,
+   209.749
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {}
+ },
+ "cube_stack/camera_az000_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.177016,
+   0.0,
+   0.566537,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   1.284,
+   0.7283,
+   0.9257,
+   2.7282
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "3c7860fbbf78bac19ec5eeef1a1c61eb",
+  "rgb_mean": [
+   211.66,
+   209.279,
+   204.345
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_stack/camera_az000_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.708064,
+   0.0,
+   1.096148,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   2.447,
+   1.4883,
+   2.2462,
+   3.4685
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "67a5a95ceecc39f82f6a3158616d7b27",
+  "rgb_mean": [
+   163.714,
+   156.499,
+   148.724
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_stack/camera_az045_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.974801,
+   0.488191,
+   0.566537,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.2447,
+   0.7351,
+   0.9523,
+   2.823
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "6ff250c5144d9e805379df6c3baf8fd5",
+  "rgb_mean": [
+   203.712,
+   201.097,
+   196.231
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_stack/camera_az045_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.350309,
+   0.863698,
+   1.096148,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.4123,
+   1.5013,
+   2.1741,
+   3.7461
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "3ebeeeb84059ff68f60f6967a4543b9f",
+  "rgb_mean": [
+   158.487,
+   151.66,
+   144.315
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_stack/camera_az090_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.48661,
+   0.690406,
+   0.566537,
+   -0.0,
+   -0.0,
+   0.92362,
+   -0.383309
+  ],
+  "depth_stats": [
+   1.2864,
+   0.7035,
+   0.9214,
+   2.9446
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "30c70318cb709f91ec16009e816b8888",
+  "rgb_mean": [
+   213.257,
+   209.914,
+   204.26
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_stack/camera_az090_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.48661,
+   1.221454,
+   1.096148,
+   -0.0,
+   -0.0,
+   0.92362,
+   -0.383309
+  ],
+  "depth_stats": [
+   2.4017,
+   1.4557,
+   2.0549,
+   4.0288
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "af44b2c0bc4aedcc15f8a4a2a74bd84a",
+  "rgb_mean": [
+   153.994,
+   147.088,
+   139.904
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_stack/camera_az135_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.00158,
+   0.488191,
+   0.566537,
+   0.146686,
+   -0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.3215,
+   0.681,
+   0.9521,
+   2.9852
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f69ed8d2a291cedfda0d8cf2d0100784",
+  "rgb_mean": [
+   196.332,
+   192.608,
+   186.617
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_stack/camera_az135_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.377088,
+   0.863698,
+   1.096148,
+   0.146686,
+   -0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.3615,
+   1.1921,
+   2.0717,
+   4.0778
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "9cebcf751b2455c8ef0076de83cc0095",
+  "rgb_mean": [
+   149.497,
+   142.396,
+   135.258
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_stack/camera_az180_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.203795,
+   0.0,
+   0.566537,
+   -0.271041,
+   0.653098,
+   -0.653098,
+   0.271041
+  ],
+  "depth_stats": [
+   0.757,
+   0.205,
+   0.2735,
+   2.613
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f273f0d77d25e97eb72f9991960aab36",
+  "rgb_mean": [
+   161.881,
+   159.514,
+   156.83
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_stack/camera_az180_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.734844,
+   0.0,
+   1.096148,
+   -0.271041,
+   0.653098,
+   -0.653098,
+   0.271041
+  ],
+  "depth_stats": [
+   2.4914,
+   1.038,
+   2.2664,
+   4.232
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "a60601fdb4cfb429ff413e70df6e2cf3",
+  "rgb_mean": [
+   148.831,
+   140.563,
+   132.6
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "cube_stack/camera_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.009735,
+   0.092241,
+   0.509314,
+   -0.220256,
+   0.603874,
+   0.719669,
+   -0.26249
+  ],
+  "depth_stats": [
+   1.0017,
+   0.6303,
+   0.7836,
+   2.4046
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "8be88e0866ece6ce4cf1da7f9de6c6ba",
+  "rgb_mean": [
+   220.801,
+   218.537,
+   213.489
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 10.0,
+    "elevation_deg": 5.0,
+    "radius": 0.1
+   }
+  }
+ },
+ "cube_stack/camera_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.968915,
+   0.224902,
+   0.695034,
+   -0.15295,
+   0.51507,
+   0.808498,
+   -0.240084
+  ],
+  "depth_stats": [
+   1.1279,
+   0.7777,
+   0.9395,
+   2.267
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "e5392807a150b93c8c451e6be0d485c4",
+  "rgb_mean": [
+   209.809,
+   207.179,
+   201.958
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 25.0,
+    "elevation_deg": 12.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "cube_stack/color_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9338,
+   0.5376,
+   0.6958,
+   2.485
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with the API described below.\nGoal: Pick up the smaller cube and gently stack it on top of the larger cube, then release it.\n\nKey rules:\n- The extent from get_object_pose(..., return_bbox_extent=True) is the FULL side length. Use extent[2]/2 for half-height.\n- For placement orientation, reuse the grasp quaternion from sample_grasp_pose. Do NOT use the quaternion from get_object_pose (it is unreliable for orientation).\n- Always use z_approach=0.1 when approaching an object for grasping or placing.\n- After grasping, lift the cube to a safe height (at least +0.2m in Z) before moving laterally to the placement location.\n- The stacking height formula is: place_z = larger_center_z + larger_extent[2]/2 + smaller_extent[2]/2\n- Nothing should be dropped from a height. Always approach with z_approach for controlled descent.\n\nWrite ONLY executable Python code (no code fences). Import numpy if needed.\n",
+  "rgb_md5": "3c9cb666a29af8a57c9b307ea1ce93a1",
+  "rgb_mean": [
+   218.778,
+   216.739,
+   212.124
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ]
+  }
+ },
+ "cube_stack/color_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9266,
+   0.537,
+   0.6926,
+   2.4821
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with the API described below.\nGoal: Pick up the smaller cube and gently stack it on top of the larger cube, then release it.\n\nKey rules:\n- The extent from get_object_pose(..., return_bbox_extent=True) is the FULL side length. Use extent[2]/2 for half-height.\n- For placement orientation, reuse the grasp quaternion from sample_grasp_pose. Do NOT use the quaternion from get_object_pose (it is unreliable for orientation).\n- Always use z_approach=0.1 when approaching an object for grasping or placing.\n- After grasping, lift the cube to a safe height (at least +0.2m in Z) before moving laterally to the placement location.\n- The stacking height formula is: place_z = larger_center_z + larger_extent[2]/2 + smaller_extent[2]/2\n- Nothing should be dropped from a height. Always approach with z_approach for controlled descent.\n\nWrite ONLY executable Python code (no code fences). Import numpy if needed.\n",
+  "rgb_md5": "faa1d2ba79a1ea239dbfa8ba4d02955b",
+  "rgb_mean": [
+   215.535,
+   216.176,
+   209.863
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    0.2,
+    1.0,
+    0.3,
+    1.0
+   ]
+  }
+ },
+ "cube_stack/compound_hard": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9298,
+   0.5404,
+   0.6883,
+   2.4828
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with the API described below.\nGoal: Pick up the smaller cube and gently stack it on top of the larger cube, then release it.\n\nKey rules:\n- The extent from get_object_pose(..., return_bbox_extent=True) is the FULL side length. Use extent[2]/2 for half-height.\n- For placement orientation, reuse the grasp quaternion from sample_grasp_pose. Do NOT use the quaternion from get_object_pose (it is unreliable for orientation).\n- Always use z_approach=0.1 when approaching an object for grasping or placing.\n- After grasping, lift the cube to a safe height (at least +0.2m in Z) before moving laterally to the placement location.\n- The stacking height formula is: place_z = larger_center_z + larger_extent[2]/2 + smaller_extent[2]/2\n- Nothing should be dropped from a height. Always approach with z_approach for controlled descent.\n\nWrite ONLY executable Python code (no code fences). Import numpy if needed.\n",
+  "rgb_md5": "e461946fc468590de8a488793b2c9c30",
+  "rgb_mean": [
+   207.416,
+   204.153,
+   199.842
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Stack the first cube on top of the second cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ],
+   "distractor_classes": [
+    "cylinder"
+   ],
+   "light_ambient_scale": 0.5,
+   "light_diffuse_scale": 0.5,
+   "paraphrase_language": true
+  }
+ },
+ "cube_stack/distractor_object": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.933,
+   0.5383,
+   0.6915,
+   2.485
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "9ffd437b61866b35c68a71a014eae4f5",
+  "rgb_mean": [
+   216.73,
+   214.451,
+   209.418
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "distractor_classes": [
+    "cylinder"
+   ]
+  }
+ },
+ "cube_stack/language_paraphrase": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9348,
+   0.5435,
+   0.6969,
+   2.485
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "748cae9b57471cd85146206353243a9d",
+  "rgb_mean": [
+   218.717,
+   216.869,
+   212.232
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "paraphrase_language": true
+  }
+ },
+ "cube_stack/lighting_bright": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9278,
+   0.5422,
+   0.6905,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "4f2df37a3809ea814bd62b272d549615",
+  "rgb_mean": [
+   233.482,
+   231.136,
+   226.144
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 2.5,
+   "light_diffuse_scale": 2.0
+  }
+ },
+ "cube_stack/lighting_dim": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9277,
+   0.5429,
+   0.6926,
+   2.4821
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "2fe8bc04359d7e8c2cdd13b4bd2c44df",
+  "rgb_mean": [
+   173.796,
+   172.675,
+   169.058
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 0.3,
+   "light_diffuse_scale": 0.3
+  }
+ },
+ "cube_stack/object_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9366,
+   0.537,
+   0.698,
+   2.485
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "997295b8804df95d178eb83142eb46c1",
+  "rgb_mean": [
+   216.405,
+   214.979,
+   209.882
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "object_position_bias": {
+    "bias": [
+     0.6,
+     0.6
+    ],
+    "scale": 0.5
+   }
+  }
+ },
+ "cube_stack/robot_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9085,
+   0.5405,
+   0.6937,
+   2.5025
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "fe663fd23ae1770b732694ec9152e3d8",
+  "rgb_mean": [
+   223.753,
+   222.527,
+   217.874
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "robot_base_offset": [
+    0.06,
+    0.06,
+    0.0
+   ]
+  }
+ },
+ "cube_stack/stack_3_cubes": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9277,
+   0.5368,
+   0.6937,
+   2.4828
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "66725b19f751e02d5ee2d0a6e049e462",
+  "rgb_mean": [
+   215.565,
+   215.124,
+   210.629
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "stack_3_cubes": true
+  }
+ },
+ "cube_stack/target_object_swap": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9323,
+   0.5376,
+   0.6915,
+   2.4828
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with the API described below.\nGoal: Pick up the smaller object and gently stack it on top of the larger cube, then release it.\n\nKey rules:\n- The extent from get_object_pose(..., return_bbox_extent=True) is the FULL side length. Use extent[2]/2 for half-height.\n- For placement orientation, reuse the grasp quaternion from sample_grasp_pose. Do NOT use the quaternion from get_object_pose (it is unreliable for orientation).\n- Always use z_approach=0.1 when approaching an object for grasping or placing.\n- After grasping, lift the cube to a safe height (at least +0.2m in Z) before moving laterally to the placement location.\n- The stacking height formula is: place_z = larger_center_z + larger_extent[2]/2 + smaller_extent[2]/2\n- Nothing should be dropped from a height. Always approach with z_approach for controlled descent.\n\nWrite ONLY executable Python code (no code fences). Import numpy if needed.\n",
+  "rgb_md5": "5ead738ea1c48ab89e377ed58dab46c4",
+  "rgb_mean": [
+   218.144,
+   216.849,
+   212.064
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Place the primary cube on top of the secondary cube. Quaternions are WXYZ.",
+  "variation_config": {
+   "swap_target": "cylinder"
+  }
+ },
+ "nut_assembly/baseline": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4345,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0ec348c99bb929e62d55114166a304b3",
+  "rgb_mean": [
+   209.602,
+   204.41,
+   197.006
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {}
+ },
+ "nut_assembly/both_nuts": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4343,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "a8deb93aa78ea2a8464ed992cfd4a7f2",
+  "rgb_mean": [
+   208.844,
+   203.73,
+   196.355
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "both_nuts": true
+  }
+ },
+ "nut_assembly/camera_az000_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.328,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.8427,
+   1.43,
+   2.0,
+   2.25
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0b88fa7f2d2df89cfd7cd1da7ffb8900",
+  "rgb_mean": [
+   185.725,
+   177.883,
+   169.09
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "nut_assembly/camera_az000_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   2.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   2.78,
+   2.18,
+   3.0,
+   3.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "e98ba9d4d06e90ebe6507ac3f135ec5b",
+  "rgb_mean": [
+   158.495,
+   147.571,
+   137.181
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "nut_assembly/camera_az045_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.328,
+   -0.0,
+   0.382683,
+   0.92388,
+   0.0
+  ],
+  "depth_stats": [
+   1.8024,
+   1.43,
+   1.43,
+   2.25
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "90f6cbf3dca4750f2fe606b343eb1867",
+  "rgb_mean": [
+   183.954,
+   176.823,
+   168.678
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "nut_assembly/camera_az045_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   2.078,
+   -0.0,
+   0.382683,
+   0.92388,
+   0.0
+  ],
+  "depth_stats": [
+   2.7434,
+   2.18,
+   3.0,
+   3.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "c67a624d7719c257396049a69c0671d9",
+  "rgb_mean": [
+   159.907,
+   149.257,
+   139.033
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "nut_assembly/camera_az090_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.328,
+   -0.0,
+   -0.0,
+   1.0,
+   0.0
+  ],
+  "depth_stats": [
+   1.8426,
+   1.43,
+   2.0,
+   2.25
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0a3144d9acc07bd95a4f0e9e4ac27bd0",
+  "rgb_mean": [
+   185.762,
+   177.92,
+   169.13
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "nut_assembly/camera_az090_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   2.078,
+   -0.0,
+   -0.0,
+   1.0,
+   0.0
+  ],
+  "depth_stats": [
+   2.7799,
+   2.18,
+   3.0,
+   3.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f3d9bfa8fe6c688066071041c4a51537",
+  "rgb_mean": [
+   158.494,
+   147.57,
+   137.18
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "nut_assembly/camera_az135_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.328,
+   -0.0,
+   -0.382683,
+   0.92388,
+   -0.0
+  ],
+  "depth_stats": [
+   1.8022,
+   1.43,
+   1.43,
+   2.25
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0e4890de2172ee5cc747e062cb10af39",
+  "rgb_mean": [
+   183.963,
+   176.831,
+   168.687
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "nut_assembly/camera_az135_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   2.078,
+   -0.0,
+   -0.382683,
+   0.92388,
+   -0.0
+  ],
+  "depth_stats": [
+   2.7433,
+   2.18,
+   3.0,
+   3.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "027f08951c2714a0cb48879c5c329823",
+  "rgb_mean": [
+   159.749,
+   149.102,
+   138.888
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "nut_assembly/camera_az180_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.328,
+   0.0,
+   0.707107,
+   -0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.8425,
+   1.43,
+   1.9999,
+   2.25
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "cbd300534bdbfbfcf0b3b7ff731c78ef",
+  "rgb_mean": [
+   185.736,
+   177.894,
+   169.102
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "nut_assembly/camera_az180_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   2.078,
+   0.0,
+   0.707107,
+   -0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   2.7795,
+   2.18,
+   3.0,
+   3.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "787829e07cf498b7777af5db9550bea0",
+  "rgb_mean": [
+   158.501,
+   147.574,
+   137.181
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "nut_assembly/camera_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.450135,
+   -0.019372,
+   1.173129,
+   0.028038,
+   0.642176,
+   0.765315,
+   0.033414
+  ],
+  "depth_stats": [
+   1.6128,
+   1.2541,
+   1.3028,
+   2.1656
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "af04274dc814f5629d1def505337b885",
+  "rgb_mean": [
+   197.982,
+   191.527,
+   183.464
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 10.0,
+    "elevation_deg": 5.0,
+    "radius": 0.1
+   }
+  }
+ },
+ "nut_assembly/camera_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.290542,
+   -0.12565,
+   1.296751,
+   0.056163,
+   0.534356,
+   0.838771,
+   0.088158
+  ],
+  "depth_stats": [
+   1.841,
+   1.3629,
+   1.5333,
+   2.4402
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1bfc8a28e4f30fe407207e023cfb20f8",
+  "rgb_mean": [
+   184.452,
+   176.958,
+   168.432
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 25.0,
+    "elevation_deg": 12.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "nut_assembly/color_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4345,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: grasp and insert the `square nut` onto the `brown square block`.\nNote that you would grasp the nut by its handle. You can try language query `extruded handle of the square nut` to get a good grasp at the handle.\nThe square nut and the extruded handle of the square nut are part of the same rigid body.\nThe grasp pose query for 'extruded handle of the square nut' returns an end-effector pose expressed in world frame, located on the handle region.\nThe nut's object center pose obtained via 'white hollow center of the square nut' and the handle grasp pose obtained via 'extruded handle of the square nut' have a fixed rigid transform, which must be applied correctly when inserting the nut onto the peg.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment.\nIf you want to use numpy, or scipy for spatial transformations, you need to import it explicitly.\n",
+  "rgb_md5": "431e337fb7ad5963be376f324f9b0479",
+  "rgb_mean": [
+   209.608,
+   204.415,
+   197.012
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ]
+  }
+ },
+ "nut_assembly/color_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4345,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: grasp and insert the `square nut` onto the `brown square block`.\nNote that you would grasp the nut by its handle. You can try language query `extruded handle of the square nut` to get a good grasp at the handle.\nThe square nut and the extruded handle of the square nut are part of the same rigid body.\nThe grasp pose query for 'extruded handle of the square nut' returns an end-effector pose expressed in world frame, located on the handle region.\nThe nut's object center pose obtained via 'white hollow center of the square nut' and the handle grasp pose obtained via 'extruded handle of the square nut' have a fixed rigid transform, which must be applied correctly when inserting the nut onto the peg.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment.\nIf you want to use numpy, or scipy for spatial transformations, you need to import it explicitly.\n",
+  "rgb_md5": "e8706b860ee3c860bd3f7a9f90a11161",
+  "rgb_mean": [
+   209.182,
+   204.414,
+   196.908
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    0.2,
+    1.0,
+    0.3,
+    1.0
+   ]
+  }
+ },
+ "nut_assembly/compound_hard": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4343,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: grasp and insert the `square nut` onto the `brown square block`.\nNote that you would grasp the nut by its handle. You can try language query `extruded handle of the square nut` to get a good grasp at the handle.\nThe square nut and the extruded handle of the square nut are part of the same rigid body.\nThe grasp pose query for 'extruded handle of the square nut' returns an end-effector pose expressed in world frame, located on the handle region.\nThe nut's object center pose obtained via 'white hollow center of the square nut' and the handle grasp pose obtained via 'extruded handle of the square nut' have a fixed rigid transform, which must be applied correctly when inserting the nut onto the peg.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment.\nIf you want to use numpy, or scipy for spatial transformations, you need to import it explicitly.\n",
+  "rgb_md5": "c33ddbf535eb36c366adb5ad1d3fb691",
+  "rgb_mean": [
+   204.887,
+   200.142,
+   193.104
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ],
+   "distractor_classes": [
+    "round_nut"
+   ],
+   "light_ambient_scale": 0.5,
+   "light_diffuse_scale": 0.5,
+   "paraphrase_language": true
+  }
+ },
+ "nut_assembly/distractor_object": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4343,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "be2c66fc902f7f0d37f617b637cf8257",
+  "rgb_mean": [
+   208.844,
+   203.732,
+   196.361
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "distractor_classes": [
+    "round_nut"
+   ]
+  }
+ },
+ "nut_assembly/language_paraphrase": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4345,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0abf3252973172cfaca7a142a80fd62e",
+  "rgb_mean": [
+   209.599,
+   204.409,
+   197.004
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "paraphrase_language": true
+  }
+ },
+ "nut_assembly/lighting_bright": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4345,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "656246d72de3fb80f253574ffdc72d1b",
+  "rgb_mean": [
+   210.482,
+   205.259,
+   197.805
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 2.5,
+   "light_diffuse_scale": 2.0
+  }
+ },
+ "nut_assembly/lighting_dim": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4345,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "2bd15d657fc4fb87fbbb1743d24f791e",
+  "rgb_mean": [
+   183.15,
+   179.123,
+   172.961
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 0.3,
+   "light_diffuse_scale": 0.3
+  }
+ },
+ "nut_assembly/object_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4345,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "dfb91a2373b322b7c9ee769aa05e10c6",
+  "rgb_mean": [
+   209.583,
+   204.391,
+   196.986
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "object_position_bias": {
+    "bias": [
+     0.6,
+     0.6
+    ],
+    "scale": 0.5
+   }
+  }
+ },
+ "nut_assembly/robot_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.5,
+   -0.06,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4251,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7b659ada9de164252d2a8f4494c602bc",
+  "rgb_mean": [
+   209.899,
+   204.796,
+   197.459
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the square nut onto the small square peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "robot_base_offset": [
+    0.06,
+    0.06,
+    0.0
+   ]
+  }
+ },
+ "nut_assembly/target_object_swap": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.0,
+   1.078,
+   -0.0,
+   0.707107,
+   0.707107,
+   0.0
+  ],
+  "depth_stats": [
+   1.4344,
+   1.18,
+   1.18,
+   2.0
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: grasp and insert the `round nut` onto the `brown square block`.\nNote that you would grasp the nut by its handle. You can try language query `extruded handle of the round nut` to get a good grasp at the handle.\nThe round nut and the extruded handle of the round nut are part of the same rigid body.\nThe grasp pose query for 'extruded handle of the round nut' returns an end-effector pose expressed in world frame, located on the handle region.\nThe nut's object center pose obtained via 'white hollow center of the round nut' and the handle grasp pose obtained via 'extruded handle of the round nut' have a fixed rigid transform, which must be applied correctly when inserting the nut onto the peg.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment.\nIf you want to use numpy, or scipy for spatial transformations, you need to import it explicitly.\n",
+  "rgb_md5": "b7a84a8682231bd1dade33122f04eb43",
+  "rgb_mean": [
+   209.526,
+   204.735,
+   197.769
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Insert the round nut onto the small round peg. Quaternions are WXYZ.",
+  "variation_config": {
+   "swap_nut_type": "round"
+  }
+ },
+ "spill_wipe/baseline": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9417,
+   0.5171,
+   0.7062,
+   1.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "b75863c366808bc2c0f0d689ca6ba89b",
+  "rgb_mean": [
+   190.093,
+   186.416,
+   180.483
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {}
+ },
+ "spill_wipe/camera_az000_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.177016,
+   0.0,
+   0.566537,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   1.4097,
+   0.7686,
+   1.0675,
+   2.8294
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7de8f7673024d5e409a7e718e2e28da9",
+  "rgb_mean": [
+   175.175,
+   169.989,
+   163.345
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "spill_wipe/camera_az000_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.708064,
+   0.0,
+   1.096148,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   2.557,
+   1.6046,
+   2.3829,
+   3.5756
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "47e9c207033ef4a247f8d93e2c270146",
+  "rgb_mean": [
+   149.4,
+   140.534,
+   131.793
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "spill_wipe/camera_az045_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.00417,
+   0.417288,
+   0.566537,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.3705,
+   0.682,
+   1.0168,
+   2.8922
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f7b31f6b6dc27076079d92ffb1eee5b7",
+  "rgb_mean": [
+   179.818,
+   174.074,
+   166.996
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "spill_wipe/camera_az045_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.379678,
+   0.792796,
+   1.096148,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.5051,
+   1.5294,
+   2.296,
+   3.8192
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "5f488c77055a797e944e789bdb6d34a2",
+  "rgb_mean": [
+   148.408,
+   139.969,
+   131.608
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "spill_wipe/camera_az090_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.586882,
+   0.590134,
+   0.566537,
+   -0.0,
+   -0.0,
+   0.92362,
+   -0.383309
+  ],
+  "depth_stats": [
+   1.4331,
+   0.6165,
+   0.9121,
+   3.0199
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7f9a0d688a288cbb0a4b9e98cdcefffb",
+  "rgb_mean": [
+   192.706,
+   186.125,
+   178.137
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "spill_wipe/camera_az090_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.586882,
+   1.121183,
+   1.096148,
+   -0.0,
+   -0.0,
+   0.92362,
+   -0.383309
+  ],
+  "depth_stats": [
+   2.5305,
+   1.357,
+   2.2606,
+   4.0947
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "36bcf63cdf7a792bf51d0bcdb67b6bc4",
+  "rgb_mean": [
+   148.312,
+   139.822,
+   131.513
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "spill_wipe/camera_az135_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.169594,
+   0.417288,
+   0.566537,
+   0.146686,
+   -0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.2832,
+   0.445,
+   0.7368,
+   2.9852
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1a7b874c794b8bcbf00a83e0bf128197",
+  "rgb_mean": [
+   181.31,
+   175.853,
+   168.876
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "spill_wipe/camera_az135_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.205914,
+   0.792796,
+   1.096148,
+   0.146686,
+   -0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.4244,
+   1.0911,
+   2.1958,
+   4.0944
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "141d242d20f9964d8e2d77bb39187e44",
+  "rgb_mean": [
+   149.189,
+   141.304,
+   133.52
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "spill_wipe/camera_az180_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.003253,
+   0.0,
+   0.566537,
+   -0.271041,
+   0.653098,
+   -0.653098,
+   0.271041
+  ],
+  "depth_stats": [
+   0.5882,
+   0.0528,
+   0.0802,
+   2.8292
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7055c6ddb8a093dae9e506403ea1e9f6",
+  "rgb_mean": [
+   215.574,
+   213.261,
+   211.205
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "spill_wipe/camera_az180_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   -0.534301,
+   0.0,
+   1.096148,
+   -0.271041,
+   0.653098,
+   -0.653098,
+   0.271041
+  ],
+  "depth_stats": [
+   2.4455,
+   0.8648,
+   2.302,
+   4.0423
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "2f93c6453864e57ad3459107b9da7e53",
+  "rgb_mean": [
+   149.702,
+   141.783,
+   134.013
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "spill_wipe/camera_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.020217,
+   0.076409,
+   0.500955,
+   -0.220256,
+   0.603874,
+   0.719669,
+   -0.26249
+  ],
+  "depth_stats": [
+   1.059,
+   0.6249,
+   0.8119,
+   1.5711
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "d0e4e7c8e07edb5a3258f4f6500d10cf",
+  "rgb_mean": [
+   190.702,
+   185.758,
+   178.94
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 10.0,
+    "elevation_deg": 5.0,
+    "radius": 0.1
+   }
+  }
+ },
+ "spill_wipe/camera_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.999138,
+   0.192238,
+   0.676372,
+   -0.15295,
+   0.51507,
+   0.808498,
+   -0.240084
+  ],
+  "depth_stats": [
+   1.206,
+   0.7519,
+   0.9612,
+   1.7767
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "d86f851cbb58fe5ed51cd62df67b6473",
+  "rgb_mean": [
+   183.574,
+   177.725,
+   170.395
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 25.0,
+    "elevation_deg": 12.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "spill_wipe/color_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9412,
+   0.518,
+   0.7076,
+   1.4734
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: wipe up the 'spill'.\nA sponge is already attached to your gripper/end-effector.\nThe table surface height is exactly z = 0.0 m, and wiping should be performed at that height (no extra offset).\nUse the spill extents to inform the min/max x and y bounds of wiping motions.\nAvoid large wiping motions since large deltas between inverse kinematics solutions may not guarantee optimal trajectories.\nA sponge is already attached to the end-effector, and you should use a downward-facing orientation (0,0,1,0 wxyz) for wiping.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.\n",
+  "rgb_md5": "2f8494f43ed9c3a90a3c08ca3194da57",
+  "rgb_mean": [
+   188.9,
+   184.559,
+   178.729
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ]
+  }
+ },
+ "spill_wipe/color_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9417,
+   0.518,
+   0.7062,
+   1.4734
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: wipe up the 'spill'.\nA sponge is already attached to your gripper/end-effector.\nThe table surface height is exactly z = 0.0 m, and wiping should be performed at that height (no extra offset).\nUse the spill extents to inform the min/max x and y bounds of wiping motions.\nAvoid large wiping motions since large deltas between inverse kinematics solutions may not guarantee optimal trajectories.\nA sponge is already attached to the end-effector, and you should use a downward-facing orientation (0,0,1,0 wxyz) for wiping.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.\n",
+  "rgb_md5": "e10bb8ef5a4902a91762ad99aec8eb31",
+  "rgb_mean": [
+   185.605,
+   182.952,
+   178.528
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "color_tint": [
+    0.15,
+    0.35,
+    1.0,
+    1.0
+   ]
+  }
+ },
+ "spill_wipe/compound_hard": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9443,
+   0.518,
+   0.7102,
+   1.4734
+  ],
+  "prompt_fix": "\nYou are controlling a Franka Emika robot with API described below.\nGoal: wipe up the 'spill'.\nA sponge is already attached to your gripper/end-effector.\nThe table surface height is exactly z = 0.0 m, and wiping should be performed at that height (no extra offset).\nUse the spill extents to inform the min/max x and y bounds of wiping motions.\nAvoid large wiping motions since large deltas between inverse kinematics solutions may not guarantee optimal trajectories.\nA sponge is already attached to the end-effector, and you should use a downward-facing orientation (0,0,1,0 wxyz) for wiping.\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.\n",
+  "rgb_md5": "d04f6454c34a47e89394cce661b60a5c",
+  "rgb_mean": [
+   177.908,
+   174.392,
+   169.386
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Use the sponge to remove every bit of dirt from the table surface.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.75,
+    0.75,
+    1.0
+   ],
+   "distractor_classes": [
+    "box"
+   ],
+   "light_ambient_scale": 0.5,
+   "light_diffuse_scale": 0.5,
+   "paraphrase_language": true
+  }
+ },
+ "spill_wipe/distractor_object": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9406,
+   0.518,
+   0.7048,
+   1.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "dc7367637bcc502f8b012fca7d6d2dd6",
+  "rgb_mean": [
+   190.172,
+   186.494,
+   180.607
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "distractor_classes": [
+    "box"
+   ]
+  }
+ },
+ "spill_wipe/harder_spill": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9414,
+   0.5171,
+   0.7062,
+   1.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "b8fcd62124b3d869caf3b735a7357ad7",
+  "rgb_mean": [
+   179.419,
+   174.832,
+   167.879
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "spill_difficulty": {
+    "coverage_factor": 0.92,
+    "num_markers": 260,
+    "two_clusters": true
+   }
+  }
+ },
+ "spill_wipe/language_paraphrase": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9417,
+   0.518,
+   0.7062,
+   1.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "792c40309bfd83857e344c5d311643bc",
+  "rgb_mean": [
+   190.791,
+   187.147,
+   181.296
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Sweep the wiping tool across the table until no dirt remains.",
+  "variation_config": {
+   "paraphrase_language": true
+  }
+ },
+ "spill_wipe/lighting_bright": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9387,
+   0.518,
+   0.7002,
+   1.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "4a41cfee496cbcf52ecb4e7999f0b0bc",
+  "rgb_mean": [
+   209.205,
+   205.594,
+   199.598
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "light_ambient_scale": 2.5,
+   "light_diffuse_scale": 2.0
+  }
+ },
+ "spill_wipe/lighting_dim": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9446,
+   0.518,
+   0.7102,
+   1.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "a21bbcaad841985b8f309dc9921fa4d1",
+  "rgb_mean": [
+   148.265,
+   145.806,
+   141.546
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "light_ambient_scale": 0.3,
+   "light_diffuse_scale": 0.3
+  }
+ },
+ "spill_wipe/object_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9459,
+   0.518,
+   0.7132,
+   1.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "603be3e33c664c2a38a35615e39ba92d",
+  "rgb_mean": [
+   194.399,
+   191.034,
+   185.474
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "object_position_bias": {
+    "bias": [
+     0.6,
+     0.6
+    ],
+    "scale": 0.5
+   }
+  }
+ },
+ "spill_wipe/robot_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   1.0053,
+   0.5617,
+   0.7944,
+   1.5083
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "415513851eb41ef95a73f1ba29a86277",
+  "rgb_mean": [
+   180.459,
+   176.107,
+   169.988
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "robot_base_offset": [
+    0.06,
+    0.06,
+    0.0
+   ]
+  }
+ },
+ "spill_wipe/target_object_swap": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.0,
+   0.0,
+   0.39,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.9417,
+   0.518,
+   0.7062,
+   1.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "94ad1b417d2918eb4957c400081e57f7",
+  "rgb_mean": [
+   187.408,
+   183.514,
+   177.303
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Wipe all of the dirt off the table with the sponge.",
+  "variation_config": {
+   "dirt_pattern_swap": "two_clusters"
+  }
+ },
+ "two_arm_handover/baseline": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.087,
+   2.0632,
+   3.0986,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "8594b7f39b2b52410600bee2194fa0c4",
+  "rgb_mean": [
+   128.118,
+   120.905,
+   113.872
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {}
+ },
+ "two_arm_handover/camera_az000_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.677016,
+   1.754537,
+   -0.383309,
+   0.92362,
+   -0.0,
+   0.0
+  ],
+  "depth_stats": [
+   3.3078,
+   2.3292,
+   3.2755,
+   4.2294
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "c729921366b256c0f56223381bc0cf71",
+  "rgb_mean": [
+   126.507,
+   119.413,
+   112.48
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_handover/camera_az000_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -2.208064,
+   2.284148,
+   -0.383309,
+   0.92362,
+   -0.0,
+   0.0
+  ],
+  "depth_stats": [
+   4.0538,
+   3.2342,
+   4.1816,
+   4.9396
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "e6e4a36c03590b8fcd4d803404557b35",
+  "rgb_mean": [
+   123.507,
+   116.042,
+   108.813
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_handover/camera_az045_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   2.140513,
+   -1.125899,
+   1.754537,
+   -0.354132,
+   0.853314,
+   0.353454,
+   -0.146686
+  ],
+  "depth_stats": [
+   3.3783,
+   2.1815,
+   3.3411,
+   4.4966
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0a0a4e066594c084cb18087dfc5e9c57",
+  "rgb_mean": [
+   127.416,
+   119.873,
+   112.613
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_handover/camera_az045_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   2.516021,
+   -1.501407,
+   2.284148,
+   -0.354132,
+   0.853314,
+   0.353454,
+   -0.146686
+  ],
+  "depth_stats": [
+   4.1322,
+   3.2232,
+   4.084,
+   5.2051
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1574b64287aa1c57629ec668865a5992",
+  "rgb_mean": [
+   125.788,
+   117.75,
+   110.023
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_handover/camera_az090_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   2.69163,
+   0.204614,
+   1.754537,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   3.6214,
+   2.5976,
+   3.5277,
+   4.9683
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0ad9dec567668c3189733b8d39ae898b",
+  "rgb_mean": [
+   137.128,
+   127.326,
+   118.232
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_handover/camera_az090_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   3.222678,
+   0.204614,
+   2.284148,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   4.363,
+   3.2837,
+   4.3039,
+   5.6778
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "d5babfd738b3bc69fe4ed490186f8833",
+  "rgb_mean": [
+   131.96,
+   122.241,
+   113.192
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_handover/camera_az135_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   2.140513,
+   1.535127,
+   1.754537,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   3.6484,
+   2.5315,
+   3.4022,
+   5.1523
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "de811f9f61a627b97f3ff5bb15fe2ff7",
+  "rgb_mean": [
+   123.704,
+   114.127,
+   105.435
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_handover/camera_az135_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   2.516021,
+   1.910635,
+   2.284148,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   4.3358,
+   3.2115,
+   4.244,
+   5.9388
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "59196fb609ef0ebe3c1f5b434bb9cab8",
+  "rgb_mean": [
+   126.206,
+   116.77,
+   108.024
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_handover/camera_az180_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   2.086244,
+   1.754537,
+   -0.0,
+   0.0,
+   -0.92362,
+   0.383309
+  ],
+  "depth_stats": [
+   0.1146,
+   0.081,
+   0.1077,
+   0.1609
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "b50b9a3668da45a624c5a4ac3b7ec057",
+  "rgb_mean": [
+   88.149,
+   86.533,
+   83.903
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_handover/camera_az180_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   2.617292,
+   2.284148,
+   -0.0,
+   0.0,
+   -0.92362,
+   0.383309
+  ],
+  "depth_stats": [
+   0.9128,
+   0.6452,
+   0.8582,
+   1.2813
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "a6b2d668749509d9e830dd736550a6e8",
+  "rgb_mean": [
+   85.675,
+   84.152,
+   81.563
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_handover/camera_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.090328,
+   -1.385206,
+   1.796615,
+   -0.341353,
+   0.935886,
+   0.081879,
+   -0.029865
+  ],
+  "depth_stats": [
+   3.1645,
+   2.1742,
+   3.1389,
+   4.0638
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1ef26735c87d6893159ee32ce476a5ec",
+  "rgb_mean": [
+   128.265,
+   120.725,
+   113.461
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 10.0,
+    "elevation_deg": 5.0,
+    "radius": 0.1
+   }
+  }
+ },
+ "two_arm_handover/camera_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.422948,
+   -1.109857,
+   2.104743,
+   -0.277917,
+   0.935904,
+   0.207485,
+   -0.061613
+  ],
+  "depth_stats": [
+   3.3172,
+   2.3387,
+   3.3112,
+   4.171
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "36cd689359b4581d7dd3c3de0680a92c",
+  "rgb_mean": [
+   127.972,
+   119.588,
+   111.694
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 25.0,
+    "elevation_deg": 12.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_handover/color_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.0878,
+   2.0632,
+   3.103,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "4adc5f0ab50407b8ced488e2f03d283d",
+  "rgb_mean": [
+   128.128,
+   120.908,
+   113.837
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.85,
+    0.6,
+    1.0
+   ]
+  }
+ },
+ "two_arm_handover/color_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.0866,
+   2.0639,
+   3.0941,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "78e95f2301dc3b1805e950d965a92549",
+  "rgb_mean": [
+   127.91,
+   120.995,
+   113.969
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    0.2,
+    0.9,
+    1.0,
+    1.0
+   ]
+  }
+ },
+ "two_arm_handover/compound_hard": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.087,
+   2.0639,
+   3.0964,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "0b99a428a95c114b1b39447ee0542446",
+  "rgb_mean": [
+   113.546,
+   107.661,
+   101.769
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Have Arm 0 grasp the hammer, lift it off the table, and pass it to Arm 1, which should take hold of the handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.85,
+    0.6,
+    1.0
+   ],
+   "distractor_classes": [
+    "cylinder"
+   ],
+   "light_ambient_scale": 0.5,
+   "light_diffuse_scale": 0.5,
+   "paraphrase_language": true
+  }
+ },
+ "two_arm_handover/distractor_object": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.0878,
+   2.0642,
+   3.0986,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "d592f75f34a933647bff7cd9915d0990",
+  "rgb_mean": [
+   128.151,
+   120.936,
+   113.9
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "distractor_classes": [
+    "cylinder"
+   ]
+  }
+ },
+ "two_arm_handover/harder_handover": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.0888,
+   2.066,
+   3.0986,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "6ef83f34293d2dd439d8755e26926d17",
+  "rgb_mean": [
+   128.241,
+   121.032,
+   113.998
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "handover_height_threshold": 0.16
+  }
+ },
+ "two_arm_handover/language_paraphrase": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.0874,
+   2.0643,
+   3.0986,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "10537681533553543713bfe626fcae60",
+  "rgb_mean": [
+   128.161,
+   120.94,
+   113.897
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Have Arm 0 grasp the hammer, lift it off the table, and pass it to Arm 1, which should take hold of the handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "paraphrase_language": true
+  }
+ },
+ "two_arm_handover/lighting_bright": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.0875,
+   2.066,
+   3.0941,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "aef32fcbe6198bb88dacc9e180fe5dfb",
+  "rgb_mean": [
+   165.72,
+   158.045,
+   150.196
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 2.5,
+   "light_diffuse_scale": 2.0
+  }
+ },
+ "two_arm_handover/lighting_dim": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.087,
+   2.0632,
+   3.0986,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "2edb7ec698b55ed47b80adb6e6ef818b",
+  "rgb_mean": [
+   95.103,
+   90.395,
+   85.635
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "light_ambient_scale": 0.3,
+   "light_diffuse_scale": 0.3
+  }
+ },
+ "two_arm_handover/object_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.0872,
+   2.0643,
+   3.0941,
+   4.0095
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "402cf8c0f7df3224f0000aa71e8eb36c",
+  "rgb_mean": [
+   128.216,
+   121.021,
+   113.997
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "object_position_bias": {
+    "bias": [
+     0.6,
+     0.6
+    ],
+    "scale": 0.5
+   }
+  }
+ },
+ "two_arm_handover/robot_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.76,
+   -1.45,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.1016,
+   2.0557,
+   3.166,
+   4.0147
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "ce79b1fc1a898e1e64d5e4284b1ef366",
+  "rgb_mean": [
+   128.199,
+   120.942,
+   113.865
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "robot_base_offset": [
+    0.05,
+    0.05,
+    0.0
+   ]
+  }
+ },
+ "two_arm_handover/target_object_swap": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.81,
+   -1.5,
+   1.578,
+   -0.383218,
+   0.923481,
+   -8.1e-05,
+   0.0
+  ],
+  "depth_stats": [
+   3.0846,
+   2.0545,
+   3.0898,
+   4.0095
+  ],
+  "prompt_fix": "\nYou are controlling a two-arm Franka Emika robot system with API described below.\nGoal: Arm 0 should pick up the mallet, lift it, and hand it over to Arm 1. Arm 1 should then grasp the mallet handle (not mallet head). The z-value of mallet must be between 0.15 and 0.20 during the handover to count as a success.\n\nCoordinate system:\n- All pose functions accept positions in robot0's base frame (same coordinate system as returned/used by get_object_pose/goto_pose_arm*).\n- The table surface is not necessarily at z=0.\n- The coordinate axis follows these conventions:\n  - Z-axis: up (positive) and down (negative)\n  - X-axis: right (positive) and left (negative)\n  - Y-axis: forward (positive) and backward (negative)\n\nEnvironment details:\n- Arm 0 (left) and Arm 1 (right) are positioned on opposite sides of the table.\n- The mallet handle length is randomized between 0.15m and 0.25m.\n- The mallet initially lies flat on the table, aligned along the Y-axis, with the handle toward +Y and the mallet head toward -Y\n\nCritical information:\n- Handover must occur near the midpoint of the initial gripper positions. Reason about the best handover mallet orientation that allows collision-free transfer to Arm 1.\n- The table does not span the entire region between the two arms. If the mallet falls in the central gap it will drop to the floor, making the task UNRECOVERABLE\n- AVOID COLLISIONS. You must decompose movements into rotation and translation components, moving stepwise. Reason about the optimal sequence of waypoints to safely avoid collisions.\n- Arm links have volume, and intermediate motions are not collision-checked. Keep a minimum 8cm buffer between grippers\n\nReference quaternions:\n- Arm0 gripper facing down opening along X-axis: [0, 0.707, 0.707, 0].\n- Arm0 gripper facing down opening along Y-axis: [0, 1, 0, 0].\n- Arm1 gripper facing down opening along Y-axis: [0, 0, 1, 0].\n\nArm gripper approximate initial starting positions (robot0 frame). These values are rough and may vary by a few centimeters each trial:\n- Arm0: x = 0.44. y = 0.0\n- Arm1: x = 1.18. y = 0.0\n\nYou may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.\nThe functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.\n",
+  "rgb_md5": "6b04dff695d458a69739241594bbcd51",
+  "rgb_mean": [
+   127.454,
+   120.211,
+   113.16
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Arm 0 should pick up the hammer, lift it, and hand it over to Arm 1. Arm 1 should then grasp the hammer handle. Quaternions are WXYZ.",
+  "variation_config": {
+   "swap_target": "mallet"
+  }
+ },
+ "two_arm_lift/baseline": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9273,
+   0.5504,
+   0.6647,
+   2.5492
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "44d3ded152b1c8187a0b8fb8ea67822c",
+  "rgb_mean": [
+   198.374,
+   193.212,
+   190.401
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {}
+ },
+ "two_arm_lift/camera_az000_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.677016,
+   0.604537,
+   -0.383309,
+   0.92362,
+   0.0,
+   -0.0
+  ],
+  "depth_stats": [
+   1.1585,
+   0.6885,
+   0.8879,
+   2.7116
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "74d4d36ef66cf1d100601d51eb8b4c38",
+  "rgb_mean": [
+   198.769,
+   195.358,
+   191.923
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_lift/camera_az000_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -1.208064,
+   1.134148,
+   -0.383309,
+   0.92362,
+   0.0,
+   -0.0
+  ],
+  "depth_stats": [
+   2.1241,
+   1.3603,
+   1.9127,
+   3.4734
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f6843aafe127b0aa1b89158c15386da3",
+  "rgb_mean": [
+   138.215,
+   133.751,
+   129.41
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 0.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_lift/camera_az045_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.075134,
+   -0.463641,
+   0.604537,
+   -0.354132,
+   0.853314,
+   0.353454,
+   -0.146686
+  ],
+  "depth_stats": [
+   1.1052,
+   0.598,
+   0.9031,
+   2.4808
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "761e54a64df5ce33eb0b64f9850dc073",
+  "rgb_mean": [
+   181.955,
+   179.234,
+   176.337
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_lift/camera_az045_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.450641,
+   -0.839149,
+   1.134148,
+   -0.354132,
+   0.853314,
+   0.353454,
+   -0.146686
+  ],
+  "depth_stats": [
+   2.1418,
+   1.1631,
+   1.8735,
+   3.7217
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f4dfe76499ccaa691ab94c658183b188",
+  "rgb_mean": [
+   146.588,
+   141.629,
+   136.783
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_lift/camera_az090_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.288509,
+   0.051493,
+   0.604537,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   0.8039,
+   0.1794,
+   0.27,
+   2.7235
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "3fe07256b743380f0121b7c387bab637",
+  "rgb_mean": [
+   185.773,
+   183.515,
+   180.829
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_lift/camera_az090_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.819557,
+   0.051493,
+   1.134148,
+   -0.271041,
+   0.653098,
+   0.653098,
+   -0.271041
+  ],
+  "depth_stats": [
+   2.4914,
+   1.0453,
+   2.3002,
+   4.04
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "20350363ff0389edbcaf72522b04a3f7",
+  "rgb_mean": [
+   154.681,
+   146.873,
+   139.226
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 90.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_lift/camera_az135_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.075134,
+   0.566626,
+   0.604537,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   1.1534,
+   0.7368,
+   0.9693,
+   1.6304
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "2b0bbed8dd71945b92bc3cbb61be5849",
+  "rgb_mean": [
+   179.703,
+   176.669,
+   172.893
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_lift/camera_az135_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   1.450641,
+   0.942134,
+   1.134148,
+   -0.146686,
+   0.353454,
+   0.853314,
+   -0.354132
+  ],
+  "depth_stats": [
+   2.2641,
+   1.3323,
+   1.9606,
+   4.0309
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "066ddd55274f6f42e379ae46eb76d55b",
+  "rgb_mean": [
+   137.861,
+   131.706,
+   125.955
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 135.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_lift/camera_az180_r025": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   0.780002,
+   0.604537,
+   0.0,
+   -0.0,
+   -0.92362,
+   0.383309
+  ],
+  "depth_stats": [
+   1.3456,
+   0.7917,
+   0.9936,
+   2.9398
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "67e7fe789012133005ead854afed35fd",
+  "rgb_mean": [
+   187.891,
+   183.123,
+   177.617
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_lift/camera_az180_r100": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   1.31105,
+   1.134148,
+   0.0,
+   -0.0,
+   -0.92362,
+   0.383309
+  ],
+  "depth_stats": [
+   2.2772,
+   1.4666,
+   2.0534,
+   4.0039
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1181b63d7da1e8e2212e89704d0249c2",
+  "rgb_mean": [
+   131.428,
+   125.635,
+   120.033
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 180.0,
+    "elevation_deg": 0.0,
+    "radius": 1.0
+   }
+  }
+ },
+ "two_arm_lift/camera_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.658257,
+   -0.505752,
+   0.55049,
+   -0.341353,
+   0.935886,
+   0.081879,
+   -0.029865
+  ],
+  "depth_stats": [
+   0.9234,
+   0.547,
+   0.7591,
+   1.1028
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1da9edffb2f7bfb57fcdb8599155995b",
+  "rgb_mean": [
+   200.6,
+   195.779,
+   192.579
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 10.0,
+    "elevation_deg": 5.0,
+    "radius": 0.1
+   }
+  }
+ },
+ "two_arm_lift/camera_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.797314,
+   -0.45743,
+   0.740126,
+   -0.277917,
+   0.935904,
+   0.207485,
+   -0.061613
+  ],
+  "depth_stats": [
+   1.0762,
+   0.5625,
+   0.9135,
+   2.4107
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "2fe0a6d0a9cf7e6906b4c9036d6c6a2a",
+  "rgb_mean": [
+   187.711,
+   182.939,
+   178.796
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "camera_orbit": {
+    "azimuth_deg": 25.0,
+    "elevation_deg": 12.0,
+    "radius": 0.25
+   }
+  }
+ },
+ "two_arm_lift/color_shift_mild": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.908,
+   0.4986,
+   0.6601,
+   2.5382
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "1b4e2a55f60beae0d6fbd3dbbb263bd7",
+  "rgb_mean": [
+   196.715,
+   191.09,
+   188.733
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.85,
+    0.85,
+    1.0
+   ]
+  }
+ },
+ "two_arm_lift/color_shift_strong": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9234,
+   0.5223,
+   0.6647,
+   2.5464
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "8da513c0ff22131869483c7adfe44798",
+  "rgb_mean": [
+   187.591,
+   191.406,
+   183.435
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "color_tint": [
+    0.2,
+    1.0,
+    0.3,
+    1.0
+   ]
+  }
+ },
+ "two_arm_lift/compound_hard": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.894,
+   0.4916,
+   0.6665,
+   2.5328
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "f2558ccfecd68a6714ff9aa4ef34ea04",
+  "rgb_mean": [
+   189.53,
+   183.398,
+   180.122
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Using both arms, grasp the pot's two handles and lift it jointly off the table.",
+  "variation_config": {
+   "color_tint": [
+    1.0,
+    0.85,
+    0.85,
+    1.0
+   ],
+   "distractor_classes": [
+    "cylinder"
+   ],
+   "light_ambient_scale": 0.5,
+   "light_diffuse_scale": 0.5,
+   "paraphrase_language": true
+  }
+ },
+ "two_arm_lift/distractor_object": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9276,
+   0.5346,
+   0.6731,
+   2.5492
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "4c083b238ccde5a5c596d92e0ed17a41",
+  "rgb_mean": [
+   199.396,
+   194.312,
+   190.952
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "distractor_classes": [
+    "cylinder"
+   ]
+  }
+ },
+ "two_arm_lift/harder_lift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9511,
+   0.5561,
+   0.6757,
+   2.5603
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7376de75e0324c07af3312a4eef87c85",
+  "rgb_mean": [
+   199.986,
+   194.852,
+   191.739
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "lift_height_threshold": 0.18,
+   "tilt_tolerance_deg": 15.0
+  }
+ },
+ "two_arm_lift/language_paraphrase": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9248,
+   0.5161,
+   0.6778,
+   2.5464
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "a1cad7fa829f725d56e2a8fc8870b378",
+  "rgb_mean": [
+   201.121,
+   196.112,
+   192.761
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "paraphrase_language": true
+  }
+ },
+ "two_arm_lift/lighting_bright": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9298,
+   0.551,
+   0.6675,
+   2.5492
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7e32ab85c8471eb3d6f7ef838d104082",
+  "rgb_mean": [
+   220.718,
+   212.28,
+   209.928
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "light_ambient_scale": 2.5,
+   "light_diffuse_scale": 2.0
+  }
+ },
+ "two_arm_lift/lighting_dim": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9099,
+   0.4943,
+   0.6721,
+   2.5382
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "7bcaea2e5ff9e723ab27770f4b4e0292",
+  "rgb_mean": [
+   158.14,
+   153.83,
+   151.297
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "light_ambient_scale": 0.3,
+   "light_diffuse_scale": 0.3
+  }
+ },
+ "two_arm_lift/object_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9145,
+   0.5082,
+   0.6638,
+   2.5434
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "9145175d92a49a596227d53602fcbb21",
+  "rgb_mean": [
+   194.989,
+   191.119,
+   189.159
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "object_position_bias": {
+    "bias": [
+     0.6,
+     0.6
+    ],
+    "scale": 0.5
+   }
+  }
+ },
+ "two_arm_lift/robot_position_shift": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.5,
+   -0.56,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.8918,
+   0.4886,
+   0.6736,
+   2.5316
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "e4464442b338ae29606a2919ea2eb0d5",
+  "rgb_mean": [
+   200.817,
+   196.775,
+   193.596
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "robot_base_offset": [
+    0.06,
+    0.06,
+    0.0
+   ]
+  }
+ },
+ "two_arm_lift/target_object_swap": {
+  "camera_key": "robot0_robotview",
+  "camera_pose": [
+   0.56,
+   -0.5,
+   0.428,
+   -0.383309,
+   0.92362,
+   0.0,
+   0.0
+  ],
+  "depth_stats": [
+   0.9289,
+   0.4987,
+   0.6844,
+   2.5437
+  ],
+  "prompt_fix": null,
+  "rgb_md5": "923482b78dac296d510053f7b4c71ae1",
+  "rgb_mean": [
+   209.212,
+   207.982,
+   204.151
+  ],
+  "rgb_shape": [
+   512,
+   512,
+   3
+  ],
+  "scene_lang": "Two robotic arms (Panda) should coordinate to lift the pot. Arm 0 should grasp one handle, and Arm 1 should grasp the other handle.",
+  "variation_config": {
+   "swap_pot_config": "compact_solid_handle"
+  }
+ }
+}
