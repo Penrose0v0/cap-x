@@ -313,6 +313,13 @@ class FrankaRobosuiteSpillWipeVariantsLowLevel(RobosuiteBaseEnv):
         )
 
         common_kwargs: dict[str, Any] = dict(
+            # Forward the seed to robosuite so object placement and the robot's
+            # joint-init noise are deterministic: robosuite's MujocoEnv.__init__
+            # does self.rng = np.random.default_rng(seed) (environments/base.py),
+            # and this env already hands that same self.rng to every placement
+            # sampler. Without this line `seed` reached only RobosuiteBaseEnv's
+            # own _rng and the scene was effectively unseeded.
+            seed=seed,
             variation=variation,
             variation_overrides=variation_overrides,
             robots=["Panda"],
